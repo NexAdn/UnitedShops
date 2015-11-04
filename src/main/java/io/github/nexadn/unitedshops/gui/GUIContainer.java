@@ -78,6 +78,6 @@ public class GUIContainer {
 	// Inventory specific handlers
 	private static void handleEventsGuiCategories(InventoryClickEvent even)
 	{
-		
+		//
 	}
 }
