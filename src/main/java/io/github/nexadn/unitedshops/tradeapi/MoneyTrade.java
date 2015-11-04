@@ -1,6 +1,7 @@
 package io.github.nexadn.unitedshops.tradeapi;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import net.milkbowl.vault.economy.Economy;
@@ -22,6 +23,24 @@ public class MoneyTrade {
 				player.getInventory().addItem(offer);
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	public static boolean tradeMoneyForItem( Player player, double offer, ItemStack want )
+	{
+		Economy eco = null;
+		EconomyResponse eReturn = null;
+		Inventory playerinv = player.getInventory();
+		if ( playerinv.contains(want)) {
+			// Spieler hat das Zeugs
+			eReturn = eco.depositPlayer(player, offer);
+			if( eReturn.transactionSuccess() ) {
+				playerinv.remove(want);
+				return true;
+			}
+		} else {
+			return false;
 		}
 		return false;
 	}
