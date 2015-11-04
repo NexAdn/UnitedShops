@@ -16,6 +16,7 @@ public class ShopGUIHandler implements CommandExecutor {
 			Player player = (Player)commandSender;
 			if(player.hasPermission("unitedshops.useshop")) {
 				player.openInventory(GUIContainer.getMenuGui()); // Menü GUI öffnen
+				//
 				return true;
 			} else {
 				return false;
