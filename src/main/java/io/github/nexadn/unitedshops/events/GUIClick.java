@@ -12,7 +12,8 @@ public class GUIClick implements Listener {
 	{
 		if(GUIContainer.isGuiInventory(event.getInventory())) {
 			event.setCancelled(true);
-			
+			// Event weiterleiten
+			GUIContainer.handleClickEvents(event);
 		}
 	}
 }

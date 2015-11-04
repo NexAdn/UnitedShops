@@ -49,6 +49,12 @@ public class GUIContainer {
 		return ret;
 	}
 	
+	// Public getters
+	public static Inventory getMenuGui()
+	{
+		return guiCategories;
+	}
+	
 	// is-Funcs
 	public static boolean isGuiInventory(Inventory inv)
 	{
