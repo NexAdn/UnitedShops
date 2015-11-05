@@ -11,8 +11,9 @@ import net.milkbowl.vault.economy.Economy;
 
 public class UShopDebug implements CommandExecutor {
 
+	public UShopDebug() {};
+	
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] sArgv) {
-		
 		if( commandSender instanceof Player ) {
 			// Spieler
 			Player player = (Player) commandSender;

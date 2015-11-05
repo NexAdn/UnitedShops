@@ -9,6 +9,8 @@ import io.github.nexadn.unitedshops.gui.GUIContainer;
 
 public class ShopGUIHandler implements CommandExecutor {
 
+	public ShopGUIHandler() {};
+	
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] sArgv) {
 		GUIContainer.initGUI();
 		if(commandSender instanceof Player) {

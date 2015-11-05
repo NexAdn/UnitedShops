@@ -5,6 +5,8 @@ import java.util.logging.Level;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.nexadn.unitedshops.command.ShopGUIHandler;
+import io.github.nexadn.unitedshops.command.UShopDebug;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 
 public class UnitedShops extends JavaPlugin {
@@ -16,6 +18,7 @@ public class UnitedShops extends JavaPlugin {
 	{
 		this.server = getServer();
 		
+		// Hook into Vault
 		try 
 		{
 			Thread.sleep(5000);
@@ -30,6 +33,10 @@ public class UnitedShops extends JavaPlugin {
 			this.server.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
 		}
 		
+		// Commande executors
+		this.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
+		this.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop
+		
 	}
 	
 	@Override
@@ -42,6 +49,7 @@ public class UnitedShops extends JavaPlugin {
 /*
 	TODO: 
 	- [DONE] Testbefehl hinzufügen
+	- Testbefehl Executor registrieren
 	- GUI vervollständigen
 	- EventHandler einstellen
 	- CommandExecutor setzen
