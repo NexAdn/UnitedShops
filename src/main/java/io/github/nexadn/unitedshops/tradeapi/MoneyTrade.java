@@ -3,14 +3,18 @@ package io.github.nexadn.unitedshops.tradeapi;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
+import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class MoneyTrade {
+	
+	private static Economy eco = EcoManager.getEconomy();
+	
 	public static boolean tradeItemForMoney( Player player, ItemStack offer, double want )
 	{
-		Economy eco = null;
 		EconomyResponse eReturn = null;
 		double bal = eco.getBalance(player);
 		if(want > bal) {
@@ -29,7 +33,6 @@ public class MoneyTrade {
 	
 	public static boolean tradeMoneyForItem( Player player, double offer, ItemStack want )
 	{
-		Economy eco = null;
 		EconomyResponse eReturn = null;
 		Inventory playerinv = player.getInventory();
 		if ( playerinv.contains(want)) {
