@@ -16,7 +16,7 @@ public class UnitedShops extends JavaPlugin {
 	@Override
 	public void onEnable()
 	{
-		this.server = getServer();
+		UnitedShops.server = getServer();
 		
 		// Hook into Vault
 		try 
@@ -30,12 +30,12 @@ public class UnitedShops extends JavaPlugin {
 		
 		if ( !EcoManager.initEco() ) {
 			// Economy nicht eingestellt...
-			this.server.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
+			UnitedShops.server.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
 		}
 		
 		// Commande executors
-		this.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
-		this.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop
+		UnitedShops.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
+		UnitedShops.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop
 		
 	}
 	
