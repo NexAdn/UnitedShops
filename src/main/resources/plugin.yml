@@ -1,5 +1,9 @@
-Name: UnitedShops
-Version: 0.0.1
-Author: DerHerrFuchss
+name: UnitedShops
+version: 0.0.1
+vuthor: DerHerrFuchss
 main: io.github.nexadn.unitedshops.UnitedShops
-Commands:
+commands:
+  ushopdebug:
+    description: Debug command
+    permission: unitedshops.admin
+    usage: "Usage: /ushopdebug [command] [Args...]"
