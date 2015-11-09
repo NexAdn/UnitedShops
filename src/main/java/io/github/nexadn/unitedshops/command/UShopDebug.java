@@ -1,12 +1,15 @@
 package io.github.nexadn.unitedshops.command;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
+import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 import net.milkbowl.vault.economy.Economy;
 
 public class UShopDebug implements CommandExecutor {
@@ -17,7 +20,7 @@ public class UShopDebug implements CommandExecutor {
 		if( commandSender instanceof Player ) {
 			// Spieler
 			Player player = (Player) commandSender;
-			if( player.hasPermission("unitedshops.admin") ) {
+			if( player.hasPermission("unitedshops.admin") && sArgv.length >= 1 ) {
 				// Permissions gegeben
 				/*
 				 * Struktur
@@ -38,6 +41,18 @@ public class UShopDebug implements CommandExecutor {
 						eco.depositPlayer(player, val);
 					} else {
 						return false;
+					}
+				}
+				if( sArgv[0].equalsIgnoreCase("testtrade") ) {
+					if( sArgv[1].equalsIgnoreCase("itemformoney") )
+					{
+						double val = Double.parseDouble( sArgv[2] );
+						ItemStack stack = new ItemStack(Material.COBBLESTONE, 64);
+						MoneyTrade.tradeItemForMoney(player, stack, val);
+					} else {
+						double val = Double.parseDouble( sArgv[2] );
+						ItemStack stack = new ItemStack(Material.COBBLESTONE, 32);
+						MoneyTrade.tradeMoneyForItem(player, val, stack);
 					}
 				}
 				return true;
