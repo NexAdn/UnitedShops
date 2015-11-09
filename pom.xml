@@ -19,10 +19,6 @@
 			<id>bukkit-repo</id>
 			<url>http://repo.bukkit.org/content/groups/public/</url>
 		</repository>
-		<repository>
-			<id>vault-repo</id>
-			<url>http://nexus.theyeticave.net/repositories/pub_releases</url>
-		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -46,8 +42,9 @@
 		<dependency>
 			<groupId>net.milkbowl</groupId>
 			<artifactId>Vault</artifactId>
-			<scope>provided</scope>
+			<scope>system</scope>
 			<version>1.5.6</version>
+			<systemPath>/home/adrian/eclipse-java/Deps/Vault-1.5.6.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>
