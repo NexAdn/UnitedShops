@@ -3,6 +3,7 @@ package io.github.nexadn.unitedshops;
 import java.util.logging.Level;
 
 import org.bukkit.Server;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.nexadn.unitedshops.command.ShopGUIHandler;
@@ -12,11 +13,13 @@ import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 public class UnitedShops extends JavaPlugin {
 	
 	public static Server server;
+	public static FileConfiguration conf;
 	
 	@Override
 	public void onEnable()
 	{
 		UnitedShops.server = getServer();
+		UnitedShops.conf = getConfig();
 		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
