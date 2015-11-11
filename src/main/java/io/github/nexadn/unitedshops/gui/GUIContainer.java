@@ -1,5 +1,7 @@
 package io.github.nexadn.unitedshops.gui;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
@@ -9,14 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class GUIContainer {
 	private static Inventory guiCategories;
-	private static Inventory guiTradeBlocks;	// 1
-	private static Inventory guiTradeOres;		// 2
-	private static Inventory guiTradeMobs;		// 3
-	private static Inventory guiTradeNether;	// 4
-	private static Inventory guiTradeFood;		// 5
-	//private static Inventory guiTradePotions;	// 6
-	private static Inventory guiTradeRedstone;	// 7
-	private static Inventory guiTradeSpecial;	// 8
+	private static HashMap<Integer,Inventory> guiMap;		// Container for item listing inventories
 	
 	// Init the GUI
 	public static void initGUI()
