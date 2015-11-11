@@ -52,7 +52,10 @@ public class UShopDebug implements CommandExecutor {
 					} else {
 						double val = Double.parseDouble( sArgv[2] );
 						ItemStack stack = new ItemStack(Material.COBBLESTONE, 32);
-						MoneyTrade.tradeMoneyForItem(player, val, stack);
+						if(!MoneyTrade.tradeMoneyForItem(player, val, stack))
+						{
+							commandSender.sendMessage("Fehler");
+						}
 					}
 				}
 				return true;
