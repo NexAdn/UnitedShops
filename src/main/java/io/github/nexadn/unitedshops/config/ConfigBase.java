@@ -3,7 +3,9 @@ package io.github.nexadn.unitedshops.config;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.github.nexadn.unitedshops.UnitedShops;
@@ -12,21 +14,34 @@ import io.github.nexadn.unitedshops.UnitedShops;
  * @author DerHerrFuchss
  */
 public class ConfigBase {
-	// YAML Tag Container
-	/*
-	private String headtag;							// Kopftag
-	private List<String> lista;						// Keyliste für Keys erster Ebene (A-Tags)
-	private HashMap<String,List<String>> listb;		// HashMap für Tags zweiter Ebene (B-Tags)
-		// Zuordnung: <A-Tag,Tagliste>*/
+	// Object Properties
+	private YamlConfiguration conf;					// Config file
+	private String workkey;							// Main working key
 	
-	private YamlConfiguration conf;
-	
-	public ConfigBase(String headertag, File file)
+	public ConfigBase(File file)
 	{
-		conf = new YamlConfiguration();
-		conf = YamlConfiguration.loadConfiguration(file);
+		this.conf = new YamlConfiguration();
+		this.conf = YamlConfiguration.loadConfiguration(file);
+		this.workkey = "config";
 	}
 	
+	// Return the subkeys of the main configuration section
+	public Set<String> getSubKeys(boolean recursive)
+	{
+		return conf.getConfigurationSection(workkey).getKeys(recursive);
+	}
+	public ConfigurationSection getMainSection()
+	{
+		return conf.getConfigurationSection(workkey);
+	}
+	
+	// Setters
+	public void setWorkKey(String tag)
+	{
+		this.workkey = tag;
+	}
+	
+	// Getters
 	public YamlConfiguration getConf()
 	{
 		return conf;
