@@ -1,6 +1,7 @@
 package io.github.nexadn.unitedshops.gui;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -10,8 +11,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class GUIContainer {
-	private static Inventory guiCategories;
-	private static HashMap<Integer,Inventory> guiMap;		// Container for item listing inventories
+	private static Inventory guiCategories;					// Container for category menu
+	private static HashMap<Integer,ShopInventory> guiMap;	// Container for item listing inventories
 	
 	// Init the GUI
 	public static void initGUI()
@@ -23,12 +24,10 @@ public class GUIContainer {
 		for( int i=0; i<27; i++) {
 			guiCategories.setItem(i, getBlank());
 		}
-		// Verwendete Slots überschreiben
-		guiCategories.setItem(9, getItem(Material.COBBLESTONE, "Bloecke"));
-		guiCategories.setItem(10, getItem(Material.IRON_INGOT, "Erze und Bodenschaetze"));
-		guiCategories.setItem(11, getItem(Material.ROTTEN_FLESH, "Mobs"));
-		guiCategories.setItem(12, getItem(Material.NETHER_BRICK_ITEM, "Nether Items"));
-		guiCategories.setItem(13, getItem(Material.CAKE, "Nahrung"));
+		// TODO:
+		/*
+		 * Konfiguration lesen, parsen und Inventare abholen.
+		 */
 	}
 	
 	// Private getters
