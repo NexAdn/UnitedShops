@@ -24,6 +24,12 @@ public class ConfigBase {
 		this.conf = YamlConfiguration.loadConfiguration(file);
 		this.workkey = "config";
 	}
+	public ConfigBase(File file, String mainKey)
+	{
+		this.conf = new YamlConfiguration();
+		this.conf = YamlConfiguration.loadConfiguration(file);
+		this.workkey = mainKey;
+	}
 	
 	// Return the subkeys of the main configuration section
 	public Set<String> getSubKeys(boolean recursive)
