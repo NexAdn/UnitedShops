@@ -7,6 +7,7 @@ public class ConfigShopMain extends ConfigBase {
 
 	private HashMap<String,String> categoryList;		// List of categories
 		// <String inventoryId,String categoryKey>
+	// change to <Integer id, key>
 	
 	public ConfigShopMain(File file) {
 		super(file);
