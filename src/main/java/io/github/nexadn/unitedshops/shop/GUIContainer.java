@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 public class GUIContainer {
 	private static Inventory guiCategories;					// Container for category menu
 	private static HashMap<Integer,ShopInventory> guiMap;	// Container for item listing inventories
+	private static Inventory guiBuySell;					// Container for buy/sell GUI
 	
 	// Init the GUI
 	public static void initGUI()
@@ -24,6 +25,8 @@ public class GUIContainer {
 		for( int i=0; i<27; i++) {
 			guiCategories.setItem(i, getBlank());
 		}
+		
+		guiBuySell = Bukkit.createInventory(null, 9, "Shop-dhf02");
 		// TODO:
 		/*
 		 * Konfiguration lesen, parsen und Inventare abholen.
