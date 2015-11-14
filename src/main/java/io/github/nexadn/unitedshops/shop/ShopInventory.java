@@ -5,20 +5,28 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
+
+/** Container for an inventory with ShopObjects
+ * @author NexAdn
+ */
 public class ShopInventory {
 	Inventory inv;				// Inventory Holder
 	int order;					// Ordering number
 	String title;				// Inventory title
 	List<ShopObject> content;	// Inventory contents
 	
-	// Initialize the Object with null data
+	/** Initialize the Object with null data 
+	 */
 	public ShopInventory()
 	{
 		this.order = 0;
 		this.title = "null";
 	}
-	// Initialize the Inventory Object and add the contents
+	/** Initialize the Inventory Object and add the contents
+	 */
 	public void initInventory()
 	{
 		int size = content.size();
@@ -33,21 +41,38 @@ public class ShopInventory {
 		for(int i=0; i<size; i++)
 		{
 			inv.setItem(i, this.content.get(i).getItem());
+			// Stop if the maximum number of objects per inventory is reached
+			if(i==45)
+			{
+				break;
+			}
 		}
 	}
 	
-	public boolean handleTrades(int index, Player player)
+	/** Handles the trades of ShopObjects
+	 * @param index - The item index
+	 * @param player - The player
+	 * @param isSell - Whether the item ist bought (false) or sold (true)
+	 * @param amount - The amount of items
+	 * @return Is the trade successful
+	 */
+	public boolean handleTrades(int index, Player player, boolean isSell, int amount)
 	{
 		ShopObject tmp = this.content.get(index);
+		ItemStack item = tmp.getItem();
+		item.setAmount(amount);
 		double buy1 = tmp.getBuy();
-		double buy10 = buy1*10;
-		double buy64 = buy1*64;
-		
 		double sell1 = tmp.getSell();
-		double sell10 = sell1*10;
-		double sell64 = sell1*64;
 		
-		
+		if( !isSell )
+		{
+			// Buy items
+			return MoneyTrade.tradeItemForMoney(player, item, buy1*amount);
+		} else if ( isSell )
+		{
+			// Sell items
+			return MoneyTrade.tradeMoneyForItem(player, sell1*amount, item);
+		}
 		
 		return false;
 	}
