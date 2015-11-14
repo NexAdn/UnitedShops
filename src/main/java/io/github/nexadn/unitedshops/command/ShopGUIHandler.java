@@ -1,11 +1,12 @@
 package io.github.nexadn.unitedshops.command;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import io.github.nexadn.unitedshops.gui.GUIContainer;
+import io.github.nexadn.unitedshops.shop.GUIContainer;
 
 public class ShopGUIHandler implements CommandExecutor {
 
@@ -21,7 +22,8 @@ public class ShopGUIHandler implements CommandExecutor {
 				//
 				return true;
 			} else {
-				return false;
+				commandSender.sendMessage(ChatColor.RED + "Du hast die Permission unitedshops.useshop nicht!");
+				return true;
 			}
 		} else {
 			commandSender.sendMessage("Du kannst dies nur als Spieler nutzen!");
