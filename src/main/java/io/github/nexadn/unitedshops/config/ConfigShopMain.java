@@ -4,8 +4,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Set;
 
-import io.github.nexadn.unitedshops.gui.ShopInventory;
+import io.github.nexadn.unitedshops.shop.ShopInventory;
 
+/** Container for the shop config file
+ * @author NexAdn
+ *
+ */
 public class ConfigShopMain extends ConfigBase {
 	HashMap<String,ShopInventory> menus;				// Menu container
 	
