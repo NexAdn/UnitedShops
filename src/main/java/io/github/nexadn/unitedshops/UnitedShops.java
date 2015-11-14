@@ -36,17 +36,16 @@ public class UnitedShops extends JavaPlugin {
 	@Override
 	public void onDisable()
 	{
-		
+		saveConfig();
 	}
 }
 
 /*
 	TODO: 
 	- [DONE] Testbefehl hinzufügen
-	- Testbefehl Executor registrieren
+	- [DONE] Testbefehl Executor registrieren
 	- GUI vervollständigen
 	- EventHandler einstellen
-	- CommandExecutor setzen
-	- Permissions
-	- UnitedShops.class: Variablen hinzufügen
+	- [WIP/ERROR] CommandExecutor setzen
+	- [DONE] Permissions 
 */
