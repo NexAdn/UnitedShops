@@ -30,16 +30,26 @@ public class GUIContainer {
 		 */
 	}
 	
-	// Private getters
-	private static ItemStack getBlank()
+	// Item getters
+	public static ItemStack getBlank()
 	{
 		return new ItemStack(Material.THIN_GLASS,1);
 	}
 	
-	private static ItemStack getItem(Material mat, String display)
+	public static ItemStack getItem(Material mat, String display)
 	{
 		ItemStack ret = new ItemStack(mat, 1);
 		ret.getItemMeta().setDisplayName(display);
+		return ret;
+	}
+	
+	public static ItemStack getFunctionalItem(Material mat, String display, String funcLore)
+	{
+		ItemStack ret = new ItemStack(mat, 1);
+		ret.getItemMeta().setDisplayName(display);
+		List<String> lore = null;
+		lore.add(funcLore);
+		ret.getItemMeta().setLore(lore);
 		return ret;
 	}
 	
