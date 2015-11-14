@@ -1,5 +1,6 @@
 package io.github.nexadn.unitedshops;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import org.bukkit.Server;
@@ -16,11 +17,14 @@ public class UnitedShops extends JavaPlugin {
 	public static FileConfiguration conf;
 	public static ConfigShopMain shopconf;
 	
+	private File shopyml = new File("shops.yml");
+	
 	@Override
 	public void onEnable()
 	{
 		UnitedShops.server = getServer();
 		UnitedShops.conf = getConfig();
+		UnitedShops.shopconf = new ConfigShopMain(shopyml);
 		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
