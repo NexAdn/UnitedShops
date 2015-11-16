@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.shop.ShopInventory;
 
@@ -29,9 +30,9 @@ public class ConfigShopMain extends ConfigBase {
 		Set<String> kies = super.getSubKeys(false);
 		for( String s:kies )
 		{
-			this.menus.add( new ShopInventory());
 			String title = super.getMainSection().getString(s + ".title");
-			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); 
+			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem"));
+			this.menus.add( new ShopInventory(title, new ItemStack(icon, 1)) );
 		}
 	}
 	
