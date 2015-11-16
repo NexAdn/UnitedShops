@@ -16,7 +16,7 @@ import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 public class ShopInventory {
 	Inventory inv;				// Inventory Holder
 	ItemStack icon;				// Icon item
-	//int order;					// Ordering number
+	int order;					// Ordering number
 	String title;				// Inventory title
 	List<ShopObject> content;	// Inventory contents
 	
@@ -24,7 +24,7 @@ public class ShopInventory {
 	 */
 	public ShopInventory()
 	{
-		//this.order = 0;
+		this.order = 0;
 		this.title = "null";
 	}
 	/** Create the Object with title and icon
@@ -33,6 +33,7 @@ public class ShopInventory {
 	{
 		this.icon = icon;
 		this.title = title;
+		this.order = 0;
 	}
 	/** Initialize the Inventory Object and add the contents
 	 */
