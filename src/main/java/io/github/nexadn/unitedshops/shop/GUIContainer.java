@@ -1,18 +1,16 @@
 package io.github.nexadn.unitedshops.shop;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class GUIContainer {
 	private static Inventory guiCategories;					// Container for category menu
-	private static HashMap<Integer,ShopInventory> guiMap;	// Container for item listing inventories
+	private static List<ShopInventory> guiMap;				// Container for item listing inventories
 	private static Inventory guiBuySell;					// Container for buy/sell GUI
 	
 	// Init the GUI
@@ -65,8 +63,14 @@ public class GUIContainer {
 	// is-Funcs
 	public static boolean isGuiInventory(Inventory inv)
 	{
-		if(inv.equals(guiCategories) || inv.equals(guiTradeMobs) || inv.equals(guiTradeBlocks) || inv.equals(guiTradeFood) || inv.equals(guiTradeNether) || inv.equals(guiTradeOres) || inv.equals(guiTradeRedstone) || inv.equals(guiTradeSpecial)) {
+		if(inv.equals(guiCategories) ) {
 			return true;
+		}
+		for( ShopInventory i : GUIContainer.guiMap) {
+			if(inv.equals(i)) {
+				return true;
+				//break;
+			}
 		}
 		return false;
 	}
