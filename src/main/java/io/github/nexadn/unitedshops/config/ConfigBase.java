@@ -18,12 +18,20 @@ public class ConfigBase {
 	private YamlConfiguration conf;					// Config file
 	private String workkey;							// Main working key
 	
+	/** Creates a new YamlConfiguration and loads file
+	 * @param file - The file to be loaded
+	 */
 	public ConfigBase(File file)
 	{
 		this.conf = new YamlConfiguration();
 		this.conf = YamlConfiguration.loadConfiguration(file);
 		this.workkey = "config";
 	}
+	/** Creates a new YamlConfiguration and loads file
+	 * Also sets the mainkey
+	 * @param file - The file to be loaded
+	 * @param mainKey - The main key to use for work
+	 */
 	public ConfigBase(File file, String mainKey)
 	{
 		this.conf = new YamlConfiguration();

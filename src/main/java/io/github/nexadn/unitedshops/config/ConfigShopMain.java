@@ -12,7 +12,6 @@ import io.github.nexadn.unitedshops.shop.ShopInventory;
 
 /** Container for the shop config file
  * @author NexAdn
- *
  */
 public class ConfigShopMain extends ConfigBase {
 	private List<ShopInventory> menus;		// Menu container
