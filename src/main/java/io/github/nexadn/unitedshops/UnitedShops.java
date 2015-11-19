@@ -42,6 +42,7 @@ public class UnitedShops extends JavaPlugin {
 	public void onDisable()
 	{
 		saveConfig();
+		UnitedShops.shopconf.saveConf();
 	}
 }
 

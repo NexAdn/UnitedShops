@@ -1,9 +1,11 @@
 package io.github.nexadn.unitedshops.config;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,6 +19,7 @@ public class ConfigBase {
 	// Object Properties
 	private YamlConfiguration conf;					// Config file
 	private String workkey;							// Main working key
+	private File file;								// Speicherdatei
 	
 	/** Creates a new YamlConfiguration and loads file
 	 * @param file - The file to be loaded
@@ -26,6 +29,7 @@ public class ConfigBase {
 		this.conf = new YamlConfiguration();
 		this.conf = YamlConfiguration.loadConfiguration(file);
 		this.workkey = "config";
+		this.file = file;
 	}
 	/** Creates a new YamlConfiguration and loads file
 	 * Also sets the mainkey
@@ -37,6 +41,15 @@ public class ConfigBase {
 		this.conf = new YamlConfiguration();
 		this.conf = YamlConfiguration.loadConfiguration(file);
 		this.workkey = mainKey;
+	}
+	
+	public void saveConf()
+	{
+		try {
+			conf.save(this.file);
+		} catch (IOException except) {
+			UnitedShops.server.getLogger().log(Level.SEVERE, "java.IOException thrown while saving file.", except);
+		}
 	}
 	
 	// Return the subkeys of the main configuration section
