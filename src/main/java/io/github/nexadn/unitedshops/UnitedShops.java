@@ -7,6 +7,7 @@ import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.nexadn.unitedshops.command.ShopGUIHandler;
 import io.github.nexadn.unitedshops.command.UShopDebug;
 import io.github.nexadn.unitedshops.config.ConfigShopMain;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
@@ -33,8 +34,8 @@ public class UnitedShops extends JavaPlugin {
 		}
 		
 		// Commande executors
-		UnitedShops.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());										// /ushopdebug
-		//UnitedShops.server.getPluginCommand("ushop").setExecutor(new io.github.nexadn.unitedshops.command.ShopGUIHandler());	// /ushop
+		UnitedShops.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
+		UnitedShops.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());			// /ushop
 		
 	}
 	
