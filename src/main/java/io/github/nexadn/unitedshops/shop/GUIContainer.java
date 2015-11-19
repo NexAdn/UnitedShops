@@ -8,6 +8,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.nexadn.unitedshops.UnitedShops;
+
 public class GUIContainer {
 	private static Inventory guiCategories;					// Container for category menu
 	private static List<ShopInventory> guiMap;				// Container for item listing inventories
@@ -19,6 +21,10 @@ public class GUIContainer {
 		// Inventar initalisieren:
 		// 3 Reihen á 9 Slots -> 27 Slots
 		// Leere Felder mit Glasscheibe initialisieren
+		UnitedShops.shopconf.setWorkKey("shops");
+		UnitedShops.shopconf.parseConfig();
+		guiMap = UnitedShops.shopconf.getMenus();
+		
 		guiCategories = Bukkit.createInventory(null, 27, "Shop-dhf01");
 		for( int i=0; i<27; i++) {
 			guiCategories.setItem(i, getBlank());
