@@ -7,6 +7,9 @@ commands:
     description: Debug command
     permission: unitedshops.admin
     usage: "Usage: /ushopdebug [command] [Args...]"
+  ushop:
+    description: Open the AdminShop
+    usage: "Usage: /ushop"
 
 depend: [Vault]
 loadbefore: [Vault]
