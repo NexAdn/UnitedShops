@@ -16,6 +16,7 @@ import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 public class ShopInventory {
 	Inventory inv;				// Inventory Holder
 	ItemStack icon;				// Icon item
+	@Deprecated
 	int order;					// Ordering number
 	String title;				// Inventory title
 	List<ShopObject> content;	// Inventory contents
