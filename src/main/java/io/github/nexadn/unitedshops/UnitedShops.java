@@ -37,7 +37,6 @@ public class UnitedShops extends JavaPlugin {
 		// Commande executors
 		UnitedShops.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
 		UnitedShops.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());			// /ushop
-		// Zeile 38 NullPointerException ?
 		
 		GUIContainer.initGUI();
 	}
