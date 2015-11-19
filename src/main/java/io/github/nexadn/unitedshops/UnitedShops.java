@@ -19,7 +19,7 @@ public class UnitedShops extends JavaPlugin {
 	public static FileConfiguration conf;
 	public static ConfigShopMain shopconf;
 	
-	private File shopyml = new File("shops.yml");
+	private File shopyml = new File(getDataFolder(), "shops.yml");
 	
 	@Override
 	public void onEnable()
