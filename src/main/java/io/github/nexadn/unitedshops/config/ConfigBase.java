@@ -73,4 +73,6 @@ public class ConfigBase {
 	{
 		return conf;
 	}
+	
+	public String getWorkKey() { return this.workkey; }
 }
