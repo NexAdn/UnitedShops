@@ -1,5 +1,5 @@
 name: UnitedShops
-version: 0.0.2
+version: 0.0.3
 vuthor: DerHerrFuchss
 main: io.github.nexadn.unitedshops.UnitedShops
 commands:
@@ -9,6 +9,7 @@ commands:
     usage: "Usage: /ushopdebug [command] [Args...]"
   ushop:
     description: Open the AdminShop
+    permission: unitedshops.useshop
     usage: "Usage: /ushop"
 
 depend: [Vault]
