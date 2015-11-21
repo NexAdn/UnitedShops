@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Vector;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,9 +54,9 @@ public class ConfigShopMain extends ConfigBase {
 	
 	public List<ShopInventory> getMenus() 
 	{
-		List<ShopInventory> temp = null;
+		List<ShopInventory> temp = new Vector();
 		Collection<ShopInventory> inv = this.menus.values();
-		temp = (List<ShopInventory>) inv;
+		temp.addAll(inv);
 		return temp;
 	}
 }
