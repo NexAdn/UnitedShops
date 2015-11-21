@@ -61,6 +61,8 @@ public class ShopInventory {
 				break;
 			}
 		}
+		
+		this.icon.getItemMeta().setDisplayName(this.title);
 	}
 	
 	/** Handles the trades of ShopObjects
