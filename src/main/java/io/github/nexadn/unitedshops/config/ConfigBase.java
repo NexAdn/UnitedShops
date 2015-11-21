@@ -2,8 +2,6 @@ package io.github.nexadn.unitedshops.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -13,7 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import io.github.nexadn.unitedshops.UnitedShops;
 
 /** Basic class for config managers
- * @author DerHerrFuchss
+ * @author NexAdn
  */
 public class ConfigBase {
 	// Object Properties
@@ -53,9 +51,9 @@ public class ConfigBase {
 	}
 	
 	// Return the subkeys of the main configuration section
-	public Set<String> getSubKeys(boolean recursive)
+	public Set<String> getSubKeys()
 	{
-		return conf.getConfigurationSection(workkey).getKeys(recursive);
+		return conf.getConfigurationSection(workkey).getKeys(false);
 	}
 	public ConfigurationSection getMainSection()
 	{

@@ -29,13 +29,13 @@ public class ConfigShopMain extends ConfigBase {
 	// parse the Config File 
 	public void parseConfig()
 	{
-		Set<String> kies = super.getSubKeys(false);
+		Set<String> kies = super.getSubKeys();
 		for( String s:kies )
 		{
 			String title = super.getMainSection().getString(s + ".title");
 			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem"));
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1)) );
-			String sect = super.getWorkKey() + "." + s;
+			String sect = super.getWorkKey() + "." + s + "." + "items";
 			Set<String> subkies = super.getConf().getConfigurationSection(sect).getKeys(false);
 			for( String sub:subkies )
 			{
