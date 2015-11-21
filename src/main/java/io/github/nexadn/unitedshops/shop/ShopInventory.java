@@ -28,7 +28,7 @@ public class ShopInventory {
 	{
 		this.order = 0;
 		this.title = "null";
-		this.content = new Vector();
+		this.content = new Vector<ShopObject>();
 	}
 	/** Create the Object with title and icon
 	 */
@@ -37,7 +37,7 @@ public class ShopInventory {
 		this.icon = icon;
 		this.title = title;
 		this.order = 0;
-		this.content = new Vector();
+		this.content = new Vector<ShopObject>();
 	}
 	/** Initialize the Inventory Object and add the contents
 	 */
@@ -101,4 +101,11 @@ public class ShopInventory {
 	public int getOrderNumber() { return this.order; }
 	public ItemStack getIcon() { return this.icon; }
 	public Inventory getInventory() { return this.inv; }
+	public List<Inventory> getGuisBuySell() {
+		List<Inventory> gui = new Vector<Inventory>();
+		for( ShopObject o:this.content ) {
+			gui.add(o.getBuySellGui());
+		}
+		return gui;
+	}
 }
