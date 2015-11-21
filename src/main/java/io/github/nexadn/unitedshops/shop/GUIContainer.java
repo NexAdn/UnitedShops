@@ -30,7 +30,7 @@ public class GUIContainer {
 		if(guiMap.size()<=27) {
 			guiCategories = Bukkit.createInventory(null, 27, "Shop - Kategorien");
 		} else {
-			int iCount = guiMap.size()
+			int iCount = guiMap.size();
 			while(iCount%9 != 0) {
 				iCount++;
 			}
@@ -47,7 +47,7 @@ public class GUIContainer {
 		} else {
 			for(int i=0; i<27; i++)
 			{
-				guiCategories.setItem((i, guiMap.get(i).getIcon());
+				guiCategories.setItem(i, guiMap.get(i).getIcon());
 			}
 		}
 		
@@ -75,7 +75,7 @@ public class GUIContainer {
 	{
 		ItemStack ret = new ItemStack(mat, 1);
 		ret.getItemMeta().setDisplayName(display);
-		List<String> lore = new Vector();
+		List<String> lore = new Vector<String>();
 		lore.add(funcLore);
 		ret.getItemMeta().setLore(lore);
 		return ret;
