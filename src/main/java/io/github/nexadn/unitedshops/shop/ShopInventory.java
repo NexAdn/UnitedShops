@@ -1,6 +1,7 @@
 package io.github.nexadn.unitedshops.shop;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +28,7 @@ public class ShopInventory {
 	{
 		this.order = 0;
 		this.title = "null";
+		this.content = new Vector();
 	}
 	/** Create the Object with title and icon
 	 */
@@ -35,6 +37,7 @@ public class ShopInventory {
 		this.icon = icon;
 		this.title = title;
 		this.order = 0;
+		this.content = new Vector();
 	}
 	/** Initialize the Inventory Object and add the contents
 	 */
