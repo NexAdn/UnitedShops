@@ -21,10 +21,12 @@ public class ConfigShopMain extends ConfigBase {
 	
 	public ConfigShopMain(File file) {
 		super(file);
+		menus = new HashMap<String, ShopInventory>();
 	}
 	public ConfigShopMain(File file, String mainTag)
 	{
 		super(file, mainTag);
+		menus = new HashMap<String, ShopInventory>();
 	}
 	// parse the Config File 
 	public void parseConfig()
@@ -32,8 +34,8 @@ public class ConfigShopMain extends ConfigBase {
 		Set<String> kies = super.getSubKeys();
 		for( String s:kies )
 		{
-			String title = super.getMainSection().getString(s + ".title");
-			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem"));
+			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
+			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1)) );
 			String sect = super.getWorkKey() + "." + s + "." + "items";
 			Set<String> subkies = super.getConf().getConfigurationSection(sect).getKeys(false);
@@ -51,7 +53,7 @@ public class ConfigShopMain extends ConfigBase {
 	{
 		List<ShopInventory> temp = null;
 		Collection<ShopInventory> inv = this.menus.values();
-		temp.addAll(inv);
+		temp = (List<ShopInventory>) inv;
 		return temp;
 	}
 }
