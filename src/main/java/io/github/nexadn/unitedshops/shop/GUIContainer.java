@@ -11,13 +11,17 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 
+/** Static container for all GUI Inventories and their handlers
+ * @author NexAdn
+ */
 public class GUIContainer {
 	private static Inventory guiCategories;					// Container for category menu
 	private static List<ShopInventory> guiMap;				// Container for item listing inventories
 	@Deprecated
 	private static Inventory guiBuySell;					// Container for buy/sell GUI
 	
-	// Init the GUI
+	/** Initialize the GUI
+	 */
 	public static void initGUI()
 	{
 		// Inventar initalisieren:
@@ -52,18 +56,21 @@ public class GUIContainer {
 		}
 		
 		//guiBuySell = Bukkit.createInventory(null, 9, "Shop-dhf02");
-		// TODO:
-		/*
-		 * Konfiguration lesen, parsen und Inventare abholen.
-		 */
 	}
 	
-	// Item getters
+	/** Create an item (unique item for blank slots)
+	 * @return The ItemStack
+	 */
 	public static ItemStack getBlank()
 	{
 		return new ItemStack(Material.THIN_GLASS,1);
 	}
 	
+	/** Create an item with material and display name
+	 * @param mat - The Material
+	 * @param display - The DisplayName
+	 * @return The ItemStack
+	 */
 	public static ItemStack getItem(Material mat, String display)
 	{
 		ItemStack ret = new ItemStack(mat, 1);
@@ -71,6 +78,12 @@ public class GUIContainer {
 		return ret;
 	}
 	
+	/** Create a special item with Material, display name and lore
+	 * @param mat - The Material
+	 * @param display - The DisplayName
+	 * @param funcLore - The Lore
+	 * @return The ItemStack
+	 */
 	public static ItemStack getFunctionalItem(Material mat, String display, String funcLore)
 	{
 		ItemStack ret = new ItemStack(mat, 1);
@@ -81,13 +94,18 @@ public class GUIContainer {
 		return ret;
 	}
 	
-	// Public getters
+	/**
+	 * @return the Menu GUI
+	 */
 	public static Inventory getMenuGui()
 	{
 		return guiCategories;
 	}
 	
-	// is-Funcs
+	/** Check, whetzer the given Inventory is a GUI Inventory
+	 * @param inv - The inventory
+	 * @return Is the Inventory a GUI Inventory?
+	 */
 	public static boolean isGuiInventory(Inventory inv)
 	{
 		if(inv.getName().equalsIgnoreCase(guiCategories.getName()) || inv.getName().equalsIgnoreCase(guiBuySell.getName()) ) {
@@ -102,7 +120,9 @@ public class GUIContainer {
 		return false;
 	}
 	
-	// ClickEvents handlen
+	/** General handler for InventoryClickEvents in GUI Inventories
+	 * @param event - Event, that has been called
+	 */
 	public static void handleClickEvents(InventoryClickEvent event)
 	{
 		Inventory inv = event.getInventory();
@@ -114,7 +134,9 @@ public class GUIContainer {
 		return;
 	}
 	
-	// Inventory specific handlers
+	/** Handler for the Categories Inventory
+	 * @param event - Event, that has been called
+	 */
 	private static void handleEventsGuiCategories(InventoryClickEvent event)
 	{
 		ItemStack clicked = event.getCurrentItem();
@@ -123,7 +145,10 @@ public class GUIContainer {
 				// Inventar gefunden
 				event.getWhoClicked().closeInventory();
 				event.getWhoClicked().openInventory(si.getInventory());
+				break;
 			}
 		}
 	}
+	
+	
 }

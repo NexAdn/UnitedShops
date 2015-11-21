@@ -13,15 +13,19 @@ import io.github.nexadn.unitedshops.config.ConfigShopMain;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 
+/** Basic class for the plugin
+ * @author NexAdn
+ */
 public class UnitedShops extends JavaPlugin {
 	
-	public static Server server;
-	public static FileConfiguration conf;
-	public static ConfigShopMain shopconf;
+	public static Server server; /** Public variable to access the Server object */
+	public static FileConfiguration conf; /** The config.yml */
+	public static ConfigShopMain shopconf; /** The shops.yml */
 	
 	private File shopyml = new File(getDataFolder(), "shops.yml");
 	
 	@Override
+	/** Enable the plugin */
 	public void onEnable()
 	{
 		UnitedShops.server = getServer();
@@ -42,6 +46,7 @@ public class UnitedShops extends JavaPlugin {
 	}
 	
 	@Override
+	/** Disable the plugin */
 	public void onDisable()
 	{
 		saveConfig();
@@ -53,8 +58,8 @@ public class UnitedShops extends JavaPlugin {
 	TODO: 
 	- [DONE] Testbefehl hinzufügen
 	- [DONE] Testbefehl Executor registrieren
-	- GUI vervollständigen
-	- EventHandler einstellen
-	- [WIP/ERROR] CommandExecutor setzen
+	- [DONE] GUI vervollständigen
+	- [WIP] EventHandler einstellen
+	- [DONE] CommandExecutor setzen
 	- [DONE] Permissions 
 */
