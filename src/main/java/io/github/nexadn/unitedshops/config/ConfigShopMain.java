@@ -39,10 +39,10 @@ public class ConfigShopMain extends ConfigBase {
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1)) );
 			String sect = super.getWorkKey() + "." + s + "." + "items";
 			Set<String> subkies = super.getConf().getConfigurationSection(sect).getKeys(false);
-			for( String sub:subkies )
+			for( String sub:subkies ) // shops.[key].items.[key2]
 			{
 				ConfigurationSection sec = super.getConf().getConfigurationSection(sub);
-				Material mat = Material.getMaterial(sec.getString("item"));
+				Material mat = Material.getMaterial(sec.getString("item")); // shops.[key].items.[key2].item // ERROR ??? //
 				ShopObject cont = new ShopObject(mat, sec.getDouble("buy"), sec.getDouble("sell")); // Shop Contents
 				this.menus.get(s).addContent(cont);
 			}
