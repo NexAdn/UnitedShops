@@ -47,6 +47,8 @@ public class UnitedShops extends JavaPlugin {
 	{
 		saveConfig();
 	}
+	
+	public ConfigShopMain getShopConf() { return this.shopconf; }
 }
 
 /*
@@ -57,4 +59,5 @@ public class UnitedShops extends JavaPlugin {
 	- [WIP] EventHandler einstellen
 	- [DONE] CommandExecutor setzen
 	- [DONE] Permissions 
+	- Konfigurationssystem anpassen (Standard config.yml in resources einbauen -> saveDefaultconfig())
 */
