@@ -52,9 +52,14 @@ public class ShopInventory {
 			}
 		}
 		this.inv = Bukkit.createInventory(null, size, this.title);
-		for(int i=0; i<size; i++)
+		for(int i=0; i<size; ++i)
 		{
-			inv.setItem(i, this.content.get(i).getItem());
+			try {
+				inv.setItem(i, this.content.get(i).getItem());
+			}
+			catch (ArrayIndexOutOfBoundsException e) {
+				break;
+			}
 			// Stop if the maximum number of objects per inventory is reached
 			if(i==45)
 			{
