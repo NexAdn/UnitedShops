@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.github.nexadn.unitedshops.UnitedShops;
@@ -15,17 +16,17 @@ import io.github.nexadn.unitedshops.UnitedShops;
  */
 public class ConfigBase {
 	// Object Properties
-	private YamlConfiguration conf;					// Config file
+	private FileConfiguration conf;					// Config file
 	private String workkey;							// Main working key
 	private File file;								// Speicherdatei
+	private UnitedShops plugin;						// Plugin
 	
 	/** Creates a new YamlConfiguration and loads file
 	 * @param file - The file to be loaded
 	 */
-	public ConfigBase(File file)
+	public ConfigBase(UnitedShops plugin)
 	{
-		this.conf = new YamlConfiguration();
-		this.conf = YamlConfiguration.loadConfiguration(file);
+		this.conf = plugin.getConfig();
 		this.workkey = "config";
 		this.file = file;
 	}
@@ -34,10 +35,9 @@ public class ConfigBase {
 	 * @param file - The file to be loaded
 	 * @param mainKey - The main key to use for work
 	 */
-	public ConfigBase(File file, String mainKey)
+	public ConfigBase(UnitedShops plugin, String mainKey)
 	{
-		this.conf = new YamlConfiguration();
-		this.conf = YamlConfiguration.loadConfiguration(file);
+		this.conf = null;
 		this.workkey = mainKey;
 	}
 	
@@ -67,9 +67,9 @@ public class ConfigBase {
 	}
 	
 	// Getters
-	public YamlConfiguration getConf()
+	public FileConfiguration getConf()
 	{
-		return conf;
+		return this.conf;
 	}
 	
 	public String getWorkKey() { return this.workkey; }

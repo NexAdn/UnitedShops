@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.shop.ShopInventory;
 import io.github.nexadn.unitedshops.shop.ShopObject;
 
@@ -20,22 +20,21 @@ import io.github.nexadn.unitedshops.shop.ShopObject;
 public class ConfigShopMain extends ConfigBase {
 	private HashMap<String, ShopInventory> menus;		// Menu container
 	
-	public ConfigShopMain(File file) {
-		super(file);
+	public ConfigShopMain(UnitedShops plugin) {
+		super(plugin, "shops");
 		menus = new HashMap<String, ShopInventory>();
 	}
-	public ConfigShopMain(File file, String mainTag)
-	{
-		super(file, mainTag);
-		menus = new HashMap<String, ShopInventory>();
-	}
-	// parse the Config File 
+	
+	/** Parse the config file and save all data in a HashMap */ 
 	public void parseConfig()
 	{
 		Set<String> kies = super.getSubKeys();
 		for( String s:kies )
 		{
 			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
+			if( title.equals("exampleshop")) { // Don't use the example configuration
+				continue;
+			}
 			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1)) );
 			String sect = super.getWorkKey() + "." + s + "." + "items";
