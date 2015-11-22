@@ -19,16 +19,14 @@ import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 public class UnitedShops extends JavaPlugin {
 	
 	public static Server server; /** Public variable to access the Server object */
-	public static FileConfiguration conf; /** The config.yml */
-	public static ConfigShopMain shopconf; /** The shops.yml */
+	private ConfigShopMain shopconf; /** Access to the shop configuration section of config.yml */
 	
 	@Override
 	/** Enable the plugin */
 	public void onEnable()
 	{
 		UnitedShops.server = getServer();
-		UnitedShops.conf = getConfig();
-		UnitedShops.shopconf = new ConfigShopMain( new File(getDataFolder(), "shops.yml") );
+		this.shopconf = new ConfigShopMain( this );
 		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
@@ -48,7 +46,6 @@ public class UnitedShops extends JavaPlugin {
 	public void onDisable()
 	{
 		saveConfig();
-		UnitedShops.shopconf.saveConf();
 	}
 }
 
