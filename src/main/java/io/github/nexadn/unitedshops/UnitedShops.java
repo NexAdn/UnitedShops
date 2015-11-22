@@ -26,6 +26,8 @@ public class UnitedShops extends JavaPlugin {
 	{
 		UnitedShops.server = getServer();
 		this.shopconf = new ConfigShopMain( this );
+		this.getConfig();
+		this.reloadConfig();
 		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
