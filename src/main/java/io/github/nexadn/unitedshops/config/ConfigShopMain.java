@@ -54,7 +54,7 @@ public class ConfigShopMain extends ConfigBase {
 	
 	public List<ShopInventory> getMenus() 
 	{
-		List<ShopInventory> temp = new Vector();
+		List<ShopInventory> temp = new Vector<ShopInventory>();
 		Collection<ShopInventory> inv = this.menus.values();
 		temp.addAll(inv);
 		return temp;
