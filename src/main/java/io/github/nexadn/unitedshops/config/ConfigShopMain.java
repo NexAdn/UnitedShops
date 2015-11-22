@@ -1,6 +1,5 @@
 package io.github.nexadn.unitedshops.config;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.HashMap;
