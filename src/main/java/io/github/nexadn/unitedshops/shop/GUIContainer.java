@@ -33,6 +33,10 @@ public class GUIContainer {
 	 */
 	public static void initGUI()
 	{
+		if(plugin == null)
+		{
+			return;
+		}
 		plugin.getShopConf().setWorkKey("shops");
 		plugin.getShopConf().parseConfig();
 		guiMap = plugin.getShopConf().getMenus();
