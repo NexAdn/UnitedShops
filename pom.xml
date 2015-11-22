@@ -44,7 +44,7 @@
 			<artifactId>Vault</artifactId>
 			<scope>system</scope>
 			<version>1.5.6</version>
-			<systemPath>/home/adrian/eclipse-java/Deps/Vault-1.5.6.jar</systemPath>
+			<systemPath>~/eclipse-java/Deps/Vault-1.5.6.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>
