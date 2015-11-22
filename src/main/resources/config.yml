@@ -1,0 +1,20 @@
+# Sample config.yml for UnitedShops
+
+
+# Shop configuration
+shops:
+  # Example shop
+  myexampleshop:
+    # The title of the shop (displayed in menu)
+    title: ExampleTitle
+    # The item to choose as icon
+    iconitem: COBBLESTONE
+    # All contents
+    items:
+      # Example: 1 Cobblestone; 100.00$ price (buy), 1.00$ price (sell)
+      # The key can be named as you think
+      cobble:
+        # Choose the item to offer
+        item: COBBLESTONE
+        buy: 100.0
+        sell: 1.0
