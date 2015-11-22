@@ -19,14 +19,23 @@ public class GUIContainer {
 	private static List<ShopInventory> guiMap;				// Container for item listing inventories
 	@Deprecated
 	private static Inventory guiBuySell;					// Container for buy/sell GUI
+	private static UnitedShops plugin;						// Plugin class
+	
+	/** Set the Plugin class
+	 * @param plugin - The UnitedShops class
+	 */
+	public static void setPlugin(UnitedShops plugin)
+	{
+		GUIContainer.plugin = plugin;
+	}
 	
 	/** Initialize the GUI
 	 */
 	public static void initGUI()
 	{
-		UnitedShops.shopconf.setWorkKey("shops");
-		UnitedShops.shopconf.parseConfig();
-		guiMap = UnitedShops.shopconf.getMenus();
+		plugin.getShopConf().setWorkKey("shops");
+		plugin.getShopConf().parseConfig();
+		guiMap = plugin.getShopConf().getMenus();
 		for( ShopInventory i:guiMap ) { i.initInventory(); }
 		
 		if(guiMap.size()<=27) {
