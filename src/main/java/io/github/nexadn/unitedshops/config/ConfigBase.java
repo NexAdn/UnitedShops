@@ -1,9 +1,6 @@
 package io.github.nexadn.unitedshops.config;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +14,6 @@ public class ConfigBase {
 	// Object Properties
 	private FileConfiguration conf;					// Config file
 	private String workkey;							// Main working key
-	@SuppressWarnings("unused")
 	private UnitedShops plugin;						// Plugin
 	
 	/** Creates a new YamlConfiguration and loads file
