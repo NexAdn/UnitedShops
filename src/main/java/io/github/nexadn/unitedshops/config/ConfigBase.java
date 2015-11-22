@@ -35,11 +35,6 @@ public class ConfigBase {
 		this.workkey = mainKey;
 	}
 	
-	public void saveConf()
-	{
-		plugin.saveConfig();
-	}
-	
 	// Return the subkeys of the main configuration section
 	public Set<String> getSubKeys()
 	{

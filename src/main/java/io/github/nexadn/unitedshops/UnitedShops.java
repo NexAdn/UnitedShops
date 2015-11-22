@@ -47,11 +47,11 @@ public class UnitedShops extends JavaPlugin {
 		GUIContainer.setPlugin(this);
 		GUIContainer.initGUI();
 		
-		if(!new File(getDataFolder(), "config.yml").exists())
+		/*if(!new File(getDataFolder(), "config.yml").exists())
 		{
 			// Save an example config file if no config.yml exists.
 			this.saveDefaultConfig();
-		}
+		}*/
 	}
 	
 	@Override
