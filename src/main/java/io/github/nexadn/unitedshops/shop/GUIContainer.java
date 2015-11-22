@@ -24,12 +24,10 @@ public class GUIContainer {
 	 */
 	public static void initGUI()
 	{
-		// Inventar initalisieren:
-		// 3 Reihen á 9 Slots -> 27 Slots
-		// Leere Felder mit Glasscheibe initialisieren
 		UnitedShops.shopconf.setWorkKey("shops");
 		UnitedShops.shopconf.parseConfig();
 		guiMap = UnitedShops.shopconf.getMenus();
+		for( ShopInventory i:guiMap ) { i.initInventory(); }
 		
 		if(guiMap.size()<=27) {
 			guiCategories = Bukkit.createInventory(null, 27, "Shop - Kategorien");
@@ -115,6 +113,9 @@ public class GUIContainer {
 			if(inv.getName().equalsIgnoreCase(i.getInventory().getName())) {
 				return true;
 				//break;
+			}
+			for( Inventory in: i.getGuisBuySell()) {
+				if( inv.getName().equalsIgnoreCase(in.getName()) );
 			}
 		}
 		return false;
