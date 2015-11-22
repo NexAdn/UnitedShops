@@ -22,15 +22,13 @@ public class UnitedShops extends JavaPlugin {
 	public static FileConfiguration conf; /** The config.yml */
 	public static ConfigShopMain shopconf; /** The shops.yml */
 	
-	private File shopyml = new File(getDataFolder(), "shops.yml");
-	
 	@Override
 	/** Enable the plugin */
 	public void onEnable()
 	{
 		UnitedShops.server = getServer();
 		UnitedShops.conf = getConfig();
-		UnitedShops.shopconf = new ConfigShopMain(shopyml);
+		UnitedShops.shopconf = new ConfigShopMain( new File(getDataFolder(), "shops.yml") );
 		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
