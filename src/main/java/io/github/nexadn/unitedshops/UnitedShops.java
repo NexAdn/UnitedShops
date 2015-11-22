@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.logging.Level;
 
 import org.bukkit.Server;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.nexadn.unitedshops.command.ShopGUIHandler;
@@ -38,6 +37,7 @@ public class UnitedShops extends JavaPlugin {
 		UnitedShops.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
 		UnitedShops.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());			// /ushop
 		
+		GUIContainer.setPlugin(this);
 		GUIContainer.initGUI();
 		
 		if(!new File(getDataFolder(), "config.yml").exists())
