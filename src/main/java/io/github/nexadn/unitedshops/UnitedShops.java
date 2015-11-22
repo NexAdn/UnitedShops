@@ -39,6 +39,12 @@ public class UnitedShops extends JavaPlugin {
 		UnitedShops.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());			// /ushop
 		
 		GUIContainer.initGUI();
+		
+		if(!new File(getDataFolder(), "config.yml").exists())
+		{
+			// Save an example config file if no config.yml exists.
+			this.saveDefaultConfig();
+		}
 	}
 	
 	@Override
