@@ -102,7 +102,7 @@ public class GUIContainer {
 	
 	/** Check, whetzer the given Inventory is a GUI Inventory
 	 * @param inv - The inventory
-	 * @return Is the Inventory a GUI Inventory?
+	 * @return true, if the given inventory equals one or more GUI inventories, false if not.
 	 */
 	public static boolean isGuiInventory(Inventory inv)
 	{
