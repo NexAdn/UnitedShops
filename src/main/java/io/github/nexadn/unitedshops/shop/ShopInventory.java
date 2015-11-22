@@ -75,7 +75,7 @@ public class ShopInventory {
 	 * @param player - The player
 	 * @param isSell - Whether the item ist bought (false) or sold (true)
 	 * @param amount - The amount of items
-	 * @return Is the trade successful
+	 * @return true, if the trade was successful, false, if not.
 	 */
 	public boolean handleTrades(int index, Player player, boolean isSell, int amount)
 	{
