@@ -3,8 +3,11 @@ package io.github.nexadn.unitedshops;
 import java.io.File;
 import java.util.logging.Level;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageRecipient;
 
 import io.github.nexadn.unitedshops.command.ShopGUIHandler;
 import io.github.nexadn.unitedshops.command.UShopDebug;
@@ -29,15 +32,17 @@ public class UnitedShops extends JavaPlugin {
 		this.getConfig();
 		this.reloadConfig();
 		
+		// Register channel
+		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
 			// Economy nicht eingestellt...
-			UnitedShops.server.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
+			this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
 		}
 		
 		// Commande executors
-		UnitedShops.server.getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
-		UnitedShops.server.getPluginCommand("ushop").setExecutor(new ShopGUIHandler());			// /ushop
+		this.getServer().getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
+		this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop
 		
 		GUIContainer.setPlugin(this);
 		GUIContainer.initGUI();
@@ -56,6 +61,28 @@ public class UnitedShops extends JavaPlugin {
 		saveConfig();
 	}
 	
+	public void logMessage(Level loglevel, String message)
+	{
+		this.getLogger().log(loglevel, message);
+	}
+	/** Send a message to the target with the Plugin prefix
+	 * @param target - The target.
+	 * @param message - The Message
+	 */
+	public void sendMessage(CommandSender target, String message)
+	{
+		target.sendMessage("[" + this.getName() + "] " + message);
+	}
+	/** Send a message to the target with the Plugin prefix an a special color.
+	 * @param target - The target
+	 * @param message - The message.
+	 * @param color - The color.
+	 */
+	public void sendMessage(CommandSender target, String message, ChatColor color)
+	{
+		target.sendMessage(color + "[" + this.getName() + "] " + message);
+	}
+	
 	public ConfigShopMain getShopConf() { return this.shopconf; }
 }
 
@@ -67,5 +94,5 @@ public class UnitedShops extends JavaPlugin {
 	- [WIP] EventHandler einstellen
 	- [DONE] CommandExecutor setzen
 	- [DONE] Permissions 
-	- Konfigurationssystem anpassen (Standard config.yml in resources einbauen -> saveDefaultconfig())
+	- [DONE/ERR] Konfigurationssystem anpassen (Standard config.yml in resources einbauen -> saveDefaultconfig())
 */
