@@ -55,12 +55,13 @@ public class ConfigBase {
 	// Return the subkeys of the main configuration section
 	public Set<String> getSubKeys()
 	{
+		Set<String> subkeys = new HashSet<String>();
 		if(this.conf == null)
 		{
 			this.conf = this.plugin.getConfig();
 		}
-		return this.conf.getConfigurationSection(workkey).getKeys(false);
-		/*g> all = this.conf.getKeys(true);
+		//return this.conf.getConfigurationSection(workkey).getKeys(false);
+		Set<String> all = this.conf.getKeys(true);
 		for( String s:all )
 		{
 			if(s.substring(0, this.workkey.length()).equalsIgnoreCase(this.workkey))
@@ -86,7 +87,7 @@ public class ConfigBase {
 				
 			}
 		}
-		return subkeys;*/
+		return subkeys;
 	}
 	public ConfigurationSection getMainSection()
 	{
