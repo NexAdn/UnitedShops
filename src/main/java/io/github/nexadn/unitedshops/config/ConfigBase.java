@@ -58,6 +58,10 @@ public class ConfigBase {
 	{
 		Set<String> subkeys = new HashSet<String>();
 		//return conf.getConfigurationSection(workkey).getKeys(false);
+		if(this.conf == null)
+		{
+			this.conf = this.plugin.getConfig();
+		}
 		Set<String> all = this.conf.getKeys(true);
 		for( String s:all )
 		{
