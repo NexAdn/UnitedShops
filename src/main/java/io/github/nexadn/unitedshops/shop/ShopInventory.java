@@ -59,6 +59,10 @@ public class ShopInventory {
 	 */
 	public void initInventory()
 	{
+		for(ShopObject o:this.content)
+		{
+			o.init();
+		}
 		int size = content.size();
 		if(size%9!=0)
 		{

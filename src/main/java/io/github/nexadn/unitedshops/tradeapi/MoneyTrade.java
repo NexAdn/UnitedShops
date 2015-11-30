@@ -19,9 +19,7 @@ package io.github.nexadn.unitedshops.tradeapi;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
-import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 

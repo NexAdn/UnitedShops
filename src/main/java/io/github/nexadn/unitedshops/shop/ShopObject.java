@@ -49,7 +49,7 @@ public class ShopObject {
 		this.nobuy = true;
 	}
 	
-	private void init()
+	public void init()
 	{
 		this.buysellgui = Bukkit.createInventory(null, 9, this.itemstack.getItemMeta().getDisplayName());
 		for( int i=0; i<9; i++)
