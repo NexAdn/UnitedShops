@@ -16,6 +16,7 @@
  */
 package io.github.nexadn.unitedshops.config;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -55,7 +56,41 @@ public class ConfigBase {
 	// Return the subkeys of the main configuration section
 	public Set<String> getSubKeys()
 	{
-		return conf.getConfigurationSection(workkey).getKeys(false);
+		Set<String> subkeys = new HashSet<String>();
+		//return conf.getConfigurationSection(workkey).getKeys(false);
+		Set<String> all = this.conf.getKeys(true);
+		for( String s:all )
+		{
+			if(s.substring(0, this.workkey.length()).equalsIgnoreCase(this.workkey))
+			{
+				// Innerhalb des Workkey
+				/* w  o  r  k  k  e  y  .  s  u  b
+				 * 0  1  2  3  4  5  6  7  8  9  10
+				 * <----------------->
+				 * workkey.length()=7
+				 */
+				boolean childchild = false;
+				// Check if the Key is a child of a child -> break if true
+				for(int i=this.workkey.length()+1; i<s.length(); i++)
+				{
+					if(s.charAt(i) == '.')
+					{
+						childchild = true;
+						break;
+					}
+				}
+				if(childchild == true)
+				{
+					// s is a child of a child of the workkey -> ignore
+					continue;
+				} else {
+					// s is a child of the workkey, but no child of a child
+					subkeys.add(s);
+				}
+				
+			}
+		}
+		return subkeys;
 	}
 	public ConfigurationSection getMainSection()
 	{
