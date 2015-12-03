@@ -16,6 +16,7 @@
  */
 package io.github.nexadn.unitedshops.config;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
