@@ -54,7 +54,7 @@ public class ConfigBase {
 	}
 	
 	// Return the subkeys of the main configuration section
-	public Set<String> getSubKeys()
+	public Set<String> getSubKeys() throws NullPointerException
 	{
 		Set<String> subkeys = new HashSet<String>();
 		if(this.conf == null)

@@ -43,7 +43,21 @@ public class ConfigShopMain extends ConfigBase {
 	/** Parse the config file and save all data in a HashMap */ 
 	public void parseConfig()
 	{
-		Set<String> kies = super.getSubKeys();
+		Set<String> kies = null;
+		try { 
+			kies = super.getSubKeys(); 
+		}
+		catch( NullPointerException ex )
+		{
+			super.getConf().createSection("shops");
+			super.getConf().createSection("shops.exampleshop");
+			super.getConf().addDefault("shops.exampleshop.title", "Example shop");
+			super.getConf().addDefault("shops.exampleshop.iconitem", "COBBLESTONE");
+			super.getConf().createSection("shops.exampleshop.items");
+			super.getConf().createSection("shops.exampleshop.items.COBBLESTONE");
+			super.getConf().addDefault("shops.exampleshop.items.COBBLESTONE.buy", 10.0);
+			super.getConf().addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
+		}
 		for( String s:kies )
 		{
 			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
