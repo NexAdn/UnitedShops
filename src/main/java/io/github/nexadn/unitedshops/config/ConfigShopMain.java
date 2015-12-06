@@ -66,6 +66,7 @@ public class ConfigShopMain extends ConfigBase {
 			conf.createSection("shops.exampleshop.items.COBBLESTONE");
 			conf.addDefault("shops.exampleshop.items.COBBLESTONE.buy", 10.0);
 			conf.addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
+			kies = conf.getKeys(true);
 			try {
 				conf.save(new File(this.plugin.getDataFolder(), "config.yml"));
 				this.plugin.reloadConfig();
