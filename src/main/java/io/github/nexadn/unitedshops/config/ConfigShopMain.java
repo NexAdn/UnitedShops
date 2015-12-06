@@ -16,13 +16,18 @@
  */
 package io.github.nexadn.unitedshops.config;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
@@ -34,9 +39,11 @@ import io.github.nexadn.unitedshops.shop.ShopObject;
  */
 public class ConfigShopMain extends ConfigBase {
 	private HashMap<String, ShopInventory> menus;		// Menu container
+	private UnitedShops plugin;
 	
 	public ConfigShopMain(UnitedShops plugin) {
 		super(plugin, "shops");
+		this.plugin = plugin;
 		menus = new HashMap<String, ShopInventory>();
 	}
 	
@@ -49,14 +56,23 @@ public class ConfigShopMain extends ConfigBase {
 		}
 		catch( NullPointerException ex )
 		{
-			super.getConf().createSection("shops");
-			super.getConf().createSection("shops.exampleshop");
-			super.getConf().addDefault("shops.exampleshop.title", "Example shop");
-			super.getConf().addDefault("shops.exampleshop.iconitem", "COBBLESTONE");
-			super.getConf().createSection("shops.exampleshop.items");
-			super.getConf().createSection("shops.exampleshop.items.COBBLESTONE");
-			super.getConf().addDefault("shops.exampleshop.items.COBBLESTONE.buy", 10.0);
-			super.getConf().addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
+			FileConfiguration conf = super.getConf();
+			conf = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
+			conf.createSection("shops");
+			conf.createSection("shops.exampleshop");
+			conf.addDefault("shops.exampleshop.title", "Example shop");
+			conf.addDefault("shops.exampleshop.iconitem", "COBBLESTONE");
+			conf.createSection("shops.exampleshop.items");
+			conf.createSection("shops.exampleshop.items.COBBLESTONE");
+			conf.addDefault("shops.exampleshop.items.COBBLESTONE.buy", 10.0);
+			conf.addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
+			try {
+				conf.save(new File(this.plugin.getDataFolder(), "config.yml"));
+				this.plugin.reloadConfig();
+			} catch (IOException e) {
+				e.printStackTrace();
+				this.plugin.getLogger().log(Level.SEVERE, "Couldn't save config.yml");
+			}
 		}
 		for( String s:kies )
 		{
