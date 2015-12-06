@@ -46,8 +46,6 @@ public class UnitedShops extends JavaPlugin {
 		this.getConfig();
 		this.reloadConfig();
 		
-		// Register channel
-		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
 			// Economy nicht eingestellt...
