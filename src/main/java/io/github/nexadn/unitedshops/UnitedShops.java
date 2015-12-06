@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.nexadn.unitedshops.command.ShopGUIHandler;
@@ -34,6 +35,7 @@ import io.github.nexadn.unitedshops.tradeapi.EcoManager;
  */
 public class UnitedShops extends JavaPlugin {
 	
+	private static FileConfiguration configyml; /** config.yml */
 	public static Server server; /** Public variable to access the Server object */
 	private ConfigShopMain shopconf; /** Access to the shop configuration section of config.yml */
 	
@@ -43,7 +45,7 @@ public class UnitedShops extends JavaPlugin {
 	{
 		UnitedShops.server = getServer();
 		this.shopconf = new ConfigShopMain( this );
-		this.getConfig();
+		UnitedShops.configyml = this.getConfig();
 		this.reloadConfig();
 		
 		// Hook into Vault
@@ -71,6 +73,11 @@ public class UnitedShops extends JavaPlugin {
 	public void onDisable()
 	{
 		saveConfig();
+	}
+	
+	public static FileConfiguration getConf()
+	{
+		return UnitedShops.configyml;
 	}
 	
 	public void logMessage(Level loglevel, String message)

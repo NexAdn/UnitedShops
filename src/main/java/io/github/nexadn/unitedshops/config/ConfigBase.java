@@ -39,7 +39,7 @@ public class ConfigBase {
 	public ConfigBase(UnitedShops plugin)
 	{
 		this.plugin = plugin;
-		this.conf = this.plugin.getConfig();
+		this.conf = UnitedShops.getConf();
 		this.workkey = "config";
 	}
 	/** Creates a new YamlConfiguration and loads file
@@ -59,7 +59,7 @@ public class ConfigBase {
 		Set<String> subkeys = new HashSet<String>();
 		if(this.conf == null)
 		{
-			this.conf = this.plugin.getConfig();
+			this.conf = UnitedShops.getConf();
 		}
 		//return this.conf.getConfigurationSection(workkey).getKeys(false);
 		Set<String> all = this.conf.getKeys(true);
