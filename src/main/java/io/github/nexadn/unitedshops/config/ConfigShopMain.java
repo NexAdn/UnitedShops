@@ -78,7 +78,6 @@ public class ConfigShopMain extends ConfigBase {
 		for( String s:kies )
 		{
 			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
-			this.plugin.logMessage(Level.FINE, "Registering shop: " + title);
 			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1)) );
 			String sect = super.getWorkKey() + "." + s + "." + "items";
