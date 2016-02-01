@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -185,8 +186,15 @@ public class GUIContainer {
 	public static void handleEventsShopGUI( InventoryClickEvent event, int index )
 	{
 		ItemStack clicked = event.getCurrentItem();
-		ShopInventory used = guiMap.get(index); //???
-		
+		ShopInventory used = guiMap.get(index);
+		for( int i=0; i<used.getGuisBuySell().size(); i++ )
+		{
+			if( used.getShopObjects().get(i).getItem().getType().equals(clicked.getType()) ) {
+				// gewünschtes Shopobjekt
+				event.getWhoClicked().openInventory(used.getShopObjects().get(i).getBuySellGui());
+				break;
+			}
+		}
 	}
 	
 	/** Handler for the Categories Inventory
