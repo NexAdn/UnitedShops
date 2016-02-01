@@ -42,7 +42,7 @@ public class ConfigBase {
 	{
 		this.plugin = plugin;
 		//this.conf = UnitedShops.getConf();
-		this.conf = YamlConfiguration.loadConfiguration(new File("config.yml"));
+		this.conf = YamlConfiguration.loadConfiguration(new File(UnitedShops.datafolder, "config.yml"));
 		this.workkey = "config";
 	}
 	/** Creates a new YamlConfiguration and loads file
