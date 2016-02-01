@@ -123,9 +123,11 @@ public class ShopInventory {
 	public void setContent(List<ShopObject> contents) { this.content = contents; }
 	public void setIcon(Material icon) { this.icon = new ItemStack(icon, 1); }
 	
+	@Deprecated
 	public int getOrderNumber() { return this.order; }
 	public ItemStack getIcon() { return this.icon; }
 	public Inventory getInventory() { return this.inv; }
+	public List<ShopObject> getShopObjects() { return this.content; }
 	public List<Inventory> getGuisBuySell() {
 		List<Inventory> gui = new Vector<Inventory>();
 		for( ShopObject o:this.content ) {
