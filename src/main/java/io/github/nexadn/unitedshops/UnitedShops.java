@@ -16,6 +16,7 @@
  */
 package io.github.nexadn.unitedshops;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
@@ -37,7 +38,9 @@ public class UnitedShops extends JavaPlugin {
 	
 	private static FileConfiguration configyml; /** config.yml */
 	public static Server server; /** Public variable to access the Server object */
+	public static File datafolder;
 	private ConfigShopMain shopconf; /** Access to the shop configuration section of config.yml */
+	
 	
 	@Override
 	/** Enable the plugin */
@@ -47,6 +50,7 @@ public class UnitedShops extends JavaPlugin {
 		this.shopconf = new ConfigShopMain( this );
 		UnitedShops.configyml = this.getConfig();
 		this.reloadConfig();
+		datafolder = this.getDataFolder();
 		
 		// Hook into Vault
 		if ( !EcoManager.initEco() ) {
