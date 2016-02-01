@@ -160,8 +160,25 @@ public class GUIContainer {
 		if( inv.equals(guiCategories) ) {
 			handleEventsGuiCategories(event);
 		}
+		// Ergänzen!
+		// ggf. Iteration
+		if( /* Inventar Teil der Shopliste */ ) {
+			// index: Index des zu handlenden Inventars //
+			handleEventsGuiShop(event, index)
+		}
 		
 		return;
+	}
+	
+	/** Handler for all Shop Menus
+	 * @param event - Event, which has been called
+	 * @param index - List index of the Shop
+	 */
+	public static void handleEventsShopGUI( InventoryClickEvent event, int index )
+	{
+		ItemStack clicked = event.getCurrentItem();
+		ShopInventory used = guiMap.get(index); //???
+		
 	}
 	
 	/** Handler for the Categories Inventory
