@@ -16,11 +16,13 @@
  */
 package io.github.nexadn.unitedshops.config;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 
@@ -39,7 +41,8 @@ public class ConfigBase {
 	public ConfigBase(UnitedShops plugin)
 	{
 		this.plugin = plugin;
-		this.conf = UnitedShops.getConf();
+		//this.conf = UnitedShops.getConf();
+		this.conf = YamlConfiguration.loadConfiguration(new File("config.yml"));
 		this.workkey = "config";
 	}
 	/** Creates a new YamlConfiguration and loads file
