@@ -40,7 +40,7 @@ public class ShopObject {
 		this.itemstack = new ItemStack(material, 1);
 		this.pricebuy = buy;
 		this.pricesell = sell;
-		if(this.pricebuy < this.pricesell/2) {
+		if(!(this.pricebuy > this.pricesell/2)) {
 			this.pricesell = this.pricebuy/3;
 		}
 	}
