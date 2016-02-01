@@ -162,9 +162,17 @@ public class GUIContainer {
 		}
 		// Ergänzen!
 		// ggf. Iteration
-		if( /* Inventar Teil der Shopliste */ ) {
+		if( /* Inventar Teil der Shopliste */guiMap.contains(inv) ) {
 			// index: Index des zu handlenden Inventars //
-			handleEventsGuiShop(event, index)
+			for( int i=0; i<guiMap.size(); i++ )
+			{
+				if( guiMap.get(i).equals(inv) ) {
+					// GUI
+					handleEventsShopGUI( event, i );
+					// So, alles fertig...
+					break;
+				}
+			}
 		}
 		
 		return;
