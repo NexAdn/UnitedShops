@@ -1,7 +1,7 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
     Copyright (C) 2015 Adrian Schollmeyer
 
-    This program is free software: you can redistribute it and/or modify
+    UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -20,9 +20,7 @@ import java.io.File;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.nexadn.unitedshops.command.ShopGUIHandler;
@@ -34,42 +32,31 @@ import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 /** Basic class for the plugin
  * @author NexAdn
  */
-public class UnitedShops extends JavaPlugin {
-	
-	private static FileConfiguration configyml; /** config.yml */
-	public static Server server; /** Public variable to access the Server object */
-	public static File datafolder;
-	private ConfigShopMain shopconf; /** Access to the shop configuration section of config.yml */
-	
+public class UnitedShops extends JavaPlugin 
+{	
+	private static ConfigShopMain shopconf; /** Shop config of config.yml */
+	public static UnitedShops plugin = null;
 	
 	@Override
 	/** Enable the plugin */
 	public void onEnable()
 	{
-		UnitedShops.server = getServer();
-		this.shopconf = new ConfigShopMain( this );
-		UnitedShops.configyml = this.getConfig();
-		this.reloadConfig();
-		datafolder = this.getDataFolder();
+		UnitedShops.plugin = this;
 		
-		// Hook into Vault
+		UnitedShops.shopconf = new ConfigShopMain();
+		
 		if ( !EcoManager.initEco() ) {
-			// Economy nicht eingestellt...
 			this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
+			this.setEnabled(false);
+			return;
 		}
+		this.getLogger().log(Level.FINE, "Successfully initialized connection to Vault.");
 		
-		// Commande executors
+		// Command executors
 		this.getServer().getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
 		this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop
 		
-		GUIContainer.setPlugin(this);
 		GUIContainer.initGUI();
-		
-		/*if(!new File(getDataFolder(), "config.yml").exists())
-		{
-			// Save an example config file if no config.yml exists.
-			this.saveDefaultConfig();
-		}*/
 	}
 	
 	@Override
@@ -79,15 +66,6 @@ public class UnitedShops extends JavaPlugin {
 		saveConfig();
 	}
 	
-	public static FileConfiguration getConf()
-	{
-		return UnitedShops.configyml;
-	}
-	
-	public void logMessage(Level loglevel, String message)
-	{
-		this.getLogger().log(loglevel, message);
-	}
 	/** Send a message to the target with the Plugin prefix
 	 * @param target - The target.
 	 * @param message - The Message
@@ -106,16 +84,15 @@ public class UnitedShops extends JavaPlugin {
 		target.sendMessage(color + "[" + this.getName() + "] " + message);
 	}
 	
-	public ConfigShopMain getShopConf() { return this.shopconf; }
+	public ConfigShopMain getShopConf()
+	{
+		return UnitedShops.shopconf;
+	}
 }
 
 /*
 	TODO: 
-	- [DONE] Testbefehl hinzufügen
-	- [DONE] Testbefehl Executor registrieren
 	- [DONE] GUI vervollständigen
 	- [WIP] EventHandler einstellen
-	- [DONE] CommandExecutor setzen
-	- [DONE] Permissions 
 	- [DONE/ERR] Konfigurationssystem anpassen (Standard config.yml in resources einbauen -> saveDefaultconfig())
 */
