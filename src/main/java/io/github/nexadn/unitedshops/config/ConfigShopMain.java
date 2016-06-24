@@ -1,7 +1,7 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
     Copyright (C) 2015 Adrian Schollmeyer
 
-    This program is free software: you can redistribute it and/or modify
+    UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -19,15 +19,14 @@ package io.github.nexadn.unitedshops.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
@@ -39,12 +38,10 @@ import io.github.nexadn.unitedshops.shop.ShopObject;
  */
 public class ConfigShopMain extends ConfigBase {
 	private HashMap<String, ShopInventory> menus;		// Menu container
-	private UnitedShops plugin;
 	
-	public ConfigShopMain(UnitedShops plugin) {
-		super(plugin, "shops");
-		this.plugin = plugin;
-		menus = new HashMap<String, ShopInventory>();
+	public ConfigShopMain() {
+		super("shops");
+		this.menus = new HashMap<String, ShopInventory>();
 	}
 	
 	/** Parse the config file and save all data in a HashMap */ 
@@ -57,9 +54,10 @@ public class ConfigShopMain extends ConfigBase {
 		catch( NullPointerException ex )
 		{
 			FileConfiguration conf = super.getConf();
-			conf = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
+			conf = UnitedShops.plugin.getConfig();
 			conf.createSection("shops");
 			conf.createSection("shops.exampleshop");
+			conf.addDefault("shops.exampleshop.id", 0);
 			conf.addDefault("shops.exampleshop.title", "Example shop");
 			conf.addDefault("shops.exampleshop.iconitem", "COBBLESTONE");
 			conf.createSection("shops.exampleshop.items");
@@ -68,18 +66,19 @@ public class ConfigShopMain extends ConfigBase {
 			conf.addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
 			kies = conf.getKeys(true);
 			try {
-				conf.save(new File(this.plugin.getDataFolder(), "config.yml"));
-				this.plugin.reloadConfig();
+				conf.save(new File(UnitedShops.plugin.getDataFolder(), "config.yml"));
+				UnitedShops.plugin.reloadConfig();
 			} catch (IOException e) {
 				e.printStackTrace();
-				this.plugin.getLogger().log(Level.SEVERE, "Couldn't save config.yml");
+				UnitedShops.plugin.getLogger().log(Level.SEVERE, "Couldn't save config.yml");
 			}
 		}
 		for( String s:kies )
 		{
 			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
 			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
-			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1)) );
+			int id = super.getMainSection().getInt(s + ".id"); // shops.[key].id
+			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1), id) );
 			String sect = super.getWorkKey() + "." + s + "." + "items";
 			Set<String> subkies = super.getConf().getConfigurationSection(sect).getKeys(false);
 			for( String sub:subkies ) // shops.[key].items.[key2]
@@ -98,7 +97,26 @@ public class ConfigShopMain extends ConfigBase {
 	{
 		List<ShopInventory> temp = new Vector<ShopInventory>();
 		Collection<ShopInventory> inv = this.menus.values();
-		temp.addAll(inv);
+		int highest = 0;
+		for( ShopInventory i : inv )
+		{
+			if( i.getOrderNumber() > highest )
+			{
+				highest = i.getOrderNumber();
+			}
+		}
+		// Transform the Collection into a List using the given ordering numbers
+		for( int cnt = 0; cnt<=highest; cnt++ )
+		{
+			for( ShopInventory i : inv )
+			{
+				if( i.getOrderNumber() == cnt )
+				{
+					temp.add(i);
+					break;
+				}
+			}
+		}
 		return temp;
 	}
 }
