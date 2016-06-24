@@ -1,7 +1,7 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
     Copyright (C) 2015 Adrian Schollmeyer
 
-    This program is free software: you can redistribute it and/or modify
+    UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -21,7 +21,6 @@ import java.util.Vector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -36,15 +35,7 @@ public class GUIContainer {
 	private static List<ShopInventory> guiMap;				// Container for item listing inventories
 	@Deprecated
 	private static Inventory guiBuySell;					// Container for buy/sell GUI
-	private static UnitedShops plugin;						// Plugin class
-	
-	/** Set the Plugin class
-	 * @param plugin - The UnitedShops class
-	 */
-	public static void setPlugin(UnitedShops plugin)
-	{
-		GUIContainer.plugin = plugin;
-	}
+	private static UnitedShops plugin = UnitedShops.plugin;	// Plugin class
 	
 	/** Initialize the GUI
 	 */
@@ -57,33 +48,25 @@ public class GUIContainer {
 		plugin.getShopConf().setWorkKey("shops");
 		plugin.getShopConf().parseConfig();
 		guiMap = plugin.getShopConf().getMenus();
-		for( ShopInventory i:guiMap ) { i.initInventory(); }
+		for( ShopInventory i:guiMap ) 
+		{ 
+			i.initInventory(); 
+		}
 		
 		if(guiMap.size()<=27) {
 			guiCategories = Bukkit.createInventory(null, 27, "Shop - Kategorien");
 		} else {
 			int iCount = guiMap.size();
-			while(iCount%9 != 0) {
-				iCount++;
-			}
+			iCount += 9-(guiMap.size()%9);
 			guiCategories = Bukkit.createInventory(null, iCount, "Shop - Kategorien");
 		}
-		for( int i=0; i<27; i++) {
+		for( int i=0; i<guiMap.size()+(9-(guiMap.size()%9)); i++) {
 			guiCategories.setItem(i, getBlank());
 		}
-		if(guiMap.size()<=9) {
-			for(int i=9; i<18; i++)
-			{
-				guiCategories.setItem(i, guiMap.get(i).getIcon());
-			}
-		} else {
-			for(int i=0; i<27; i++)
-			{
-				guiCategories.setItem(i, guiMap.get(i).getIcon());
-			}
+		for( int i = 0; i<guiMap.size(); i++ )
+		{
+			guiCategories.setItem(i, guiMap.get(i).getIcon());
 		}
-		
-		//guiBuySell = Bukkit.createInventory(null, 9, "Shop-dhf02");
 	}
 	
 	/** Create an item (unique item for blank slots)
