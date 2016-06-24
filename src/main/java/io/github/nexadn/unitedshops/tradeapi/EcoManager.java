@@ -26,7 +26,7 @@ public class EcoManager {
 	
 	public static boolean initEco()
 	{
-		RegisteredServiceProvider<Economy> economyProvider = UnitedShops.server.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+		RegisteredServiceProvider<Economy> economyProvider = UnitedShops.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 		if( economyProvider != null ) {
 			economy = economyProvider.getProvider();
 		}
