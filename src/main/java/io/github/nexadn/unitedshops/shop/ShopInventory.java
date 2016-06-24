@@ -1,7 +1,7 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
     Copyright (C) 2015 Adrian Schollmeyer
 
-    This program is free software: you can redistribute it and/or modify
+    UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -18,6 +18,7 @@ package io.github.nexadn.unitedshops.shop;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 
 /** Container for an inventory with ShopObjects
@@ -33,7 +35,6 @@ import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 public class ShopInventory {
 	Inventory inv;				// Inventory Holder
 	ItemStack icon;				// Icon item
-	@Deprecated
 	int order;					// Ordering number
 	String title;				// Inventory title
 	List<ShopObject> content;	// Inventory contents
@@ -48,7 +49,7 @@ public class ShopInventory {
 	}
 	/** Create the Object with title and icon
 	 */
-	public ShopInventory(String title, ItemStack icon)
+	public ShopInventory(String title, ItemStack icon, int id)
 	{
 		this.icon = icon;
 		this.title = title;
@@ -64,15 +65,9 @@ public class ShopInventory {
 			o.init();
 		}
 		int size = content.size();
-		if(size%9!=0)
-		{
-			while(size%9!=0)
-			{
-				size++;
-			}
-		}
+		size += 9-(size%9);
 		this.inv = Bukkit.createInventory(null, size, this.title);
-		for(int i=0; i<size; ++i)
+		for(int i=0; i<content.size(); i++)
 		{
 			try {
 				inv.setItem(i, this.content.get(i).getItem());
@@ -123,7 +118,6 @@ public class ShopInventory {
 	public void setContent(List<ShopObject> contents) { this.content = contents; }
 	public void setIcon(Material icon) { this.icon = new ItemStack(icon, 1); }
 	
-	@Deprecated
 	public int getOrderNumber() { return this.order; }
 	public ItemStack getIcon() { return this.icon; }
 	public Inventory getInventory() { return this.inv; }

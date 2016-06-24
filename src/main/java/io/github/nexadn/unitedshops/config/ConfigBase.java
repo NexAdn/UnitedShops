@@ -1,7 +1,7 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
     Copyright (C) 2015 Adrian Schollmeyer
 
-    This program is free software: you can redistribute it and/or modify
+    UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -16,13 +16,11 @@
  */
 package io.github.nexadn.unitedshops.config;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 
@@ -33,16 +31,13 @@ public class ConfigBase {
 	// Object Properties
 	private FileConfiguration conf;					// Config file
 	private String workkey;							// Main working key
-	private UnitedShops plugin;						// Plugin
 	
 	/** Creates a new YamlConfiguration and loads file
 	 * @param file - The file to be loaded
 	 */
-	public ConfigBase(UnitedShops plugin)
+	public ConfigBase()
 	{
-		this.plugin = plugin;
-		//this.conf = UnitedShops.getConf();
-		this.conf = YamlConfiguration.loadConfiguration(new File(UnitedShops.datafolder, "config.yml"));
+		this.conf = UnitedShops.plugin.getConfig();
 		this.workkey = "config";
 	}
 	/** Creates a new YamlConfiguration and loads file
@@ -50,9 +45,9 @@ public class ConfigBase {
 	 * @param file - The file to be loaded
 	 * @param mainKey - The main key to use for work
 	 */
-	public ConfigBase(UnitedShops plugin, String mainKey)
+	public ConfigBase(String mainKey)
 	{
-		this.conf = null;
+		this.conf = UnitedShops.plugin.getConfig();
 		this.workkey = mainKey;
 	}
 	
@@ -62,7 +57,7 @@ public class ConfigBase {
 		Set<String> subkeys = new HashSet<String>();
 		if(this.conf == null)
 		{
-			this.conf = UnitedShops.getConf();
+			this.conf = UnitedShops.plugin.getConfig();
 		}
 		//return this.conf.getConfigurationSection(workkey).getKeys(false);
 		Set<String> all = this.conf.getKeys(true);
@@ -72,7 +67,7 @@ public class ConfigBase {
 			{
 				boolean childchild = false;
 				// Check if the Key is a child of a child -> break if true
-				for(int i=this.workkey.length()+1; i<s.length(); i++)
+				for(int i=this.workkey.length()-1; i<s.length(); i++)
 				{
 					if(s.charAt(i) == '.')
 					{
