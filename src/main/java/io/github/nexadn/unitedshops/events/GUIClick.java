@@ -26,7 +26,8 @@ public class GUIClick implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event)
 	{
-		if(GUIContainer.isGuiInventory(event.getInventory())) {
+		if(GUIContainer.isGuiInventory(event.getInventory())) 
+		{
 			event.setCancelled(true);
 			// Event weiterleiten
 			GUIContainer.handleClickEvents(event);

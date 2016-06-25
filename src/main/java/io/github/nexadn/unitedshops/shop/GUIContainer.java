@@ -18,6 +18,7 @@ package io.github.nexadn.unitedshops.shop;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -49,22 +50,20 @@ public class GUIContainer {
 		plugin.getShopConf().parseConfig();
 		guiMap = plugin.getShopConf().getMenus();
 		for( ShopInventory i:guiMap ) 
-		{ 
+		{
 			i.initInventory(); 
 		}
 		
-		if(guiMap.size()<=27) {
-			guiCategories = Bukkit.createInventory(null, 27, "Shop - Kategorien");
-		} else {
-			int iCount = guiMap.size();
-			iCount += 9-(guiMap.size()%9);
-			guiCategories = Bukkit.createInventory(null, iCount, "Shop - Kategorien");
-		}
+		guiCategories = Bukkit.createInventory(null, guiMap.size() + (9-(guiMap.size()%9)), "Shop - Kategorien");
+		
+		// Init with glass panes
 		for( int i=0; i<guiMap.size()+(9-(guiMap.size()%9)); i++) {
 			guiCategories.setItem(i, getBlank());
 		}
+		// Insert shop icons
 		for( int i = 0; i<guiMap.size(); i++ )
 		{
+			guiCategories.clear(i);
 			guiCategories.setItem(i, guiMap.get(i).getIcon());
 		}
 	}
@@ -119,16 +118,19 @@ public class GUIContainer {
 	 */
 	public static boolean isGuiInventory(Inventory inv)
 	{
-		if(inv.getName().equalsIgnoreCase(guiCategories.getName()) || inv.getName().equalsIgnoreCase(guiBuySell.getName()) ) {
+		if(inv.equals(guiCategories) || inv.equals(guiBuySell) ) {
 			return true;
 		}
 		for( ShopInventory i : GUIContainer.guiMap) {
-			if(inv.getName().equalsIgnoreCase(i.getInventory().getName())) {
+			if(inv.equals(i)) {
 				return true;
 				//break;
 			}
 			for( Inventory in: i.getGuisBuySell()) {
-				if( inv.getName().equalsIgnoreCase(in.getName()) );
+				if( inv.equals(in) )
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -144,17 +146,17 @@ public class GUIContainer {
 		if( inv.equals(guiCategories) ) {
 			handleEventsGuiCategories(event);
 		}
-		// Ergänzen!
-		// ggf. Iteration
-		if( /* Inventar Teil der Shopliste */guiMap.contains(inv) ) {
-			// index: Index des zu handlenden Inventars //
-			for( int i=0; i<guiMap.size(); i++ )
+		
+		for( int i=0; i<guiMap.size(); i++ )
+		{
+			if( guiMap.get(i).equals(inv) )
 			{
-				if( guiMap.get(i).equals(inv) ) {
-					// GUI
-					handleEventsShopGUI( event, i );
-					// So, alles fertig...
-					break;
+				handleEventsShopGUI( event, i );
+				break;
+			} else {
+				for( Inventory in : guiMap.get(i).getGuisBuySell() )
+				{
+					// Handle Buy/Sell
 				}
 			}
 		}
@@ -168,6 +170,7 @@ public class GUIContainer {
 	 */
 	public static void handleEventsShopGUI( InventoryClickEvent event, int index )
 	{
+		UnitedShops.plugin.getLogger().log(Level.FINE, "Shop GUI clicked. Opening Buy/Sell GUI.");
 		ItemStack clicked = event.getCurrentItem();
 		ShopInventory used = guiMap.get(index);
 		for( int i=0; i<used.getGuisBuySell().size(); i++ )
@@ -178,6 +181,7 @@ public class GUIContainer {
 				break;
 			}
 		}
+		event.getWhoClicked().openInventory(used.getGuisBuySell().get(event.getSlot()));
 	}
 	
 	/** Handler for the Categories Inventory
@@ -185,16 +189,8 @@ public class GUIContainer {
 	 */
 	private static void handleEventsGuiCategories(InventoryClickEvent event)
 	{
-		ItemStack clicked = event.getCurrentItem();
-		for( ShopInventory si:guiMap ) {
-			if(si.getIcon().equals(clicked)) {
-				// Inventar gefunden
-				event.getWhoClicked().closeInventory();
-				event.getWhoClicked().openInventory(si.getInventory());
-				break;
-			}
-		}
+		int slot = event.getSlot();
+		event.getWhoClicked().closeInventory();
+		event.getWhoClicked().openInventory(guiMap.get(slot).getInventory());
 	}
-	
-	
 }
