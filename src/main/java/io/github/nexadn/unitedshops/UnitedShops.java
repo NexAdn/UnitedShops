@@ -20,13 +20,11 @@ package io.github.nexadn.unitedshops;
 
 import java.util.logging.Level;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.nexadn.unitedshops.command.ShopGUIHandler;
 import io.github.nexadn.unitedshops.command.UShopDebug;
-import io.github.nexadn.unitedshops.config.ConfigShopMain;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 
