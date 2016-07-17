@@ -1,5 +1,7 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
-    Copyright (C) 2015 Adrian Schollmeyer
+    Copyright (C) 2015, 2016 Adrian Schollmeyer
+    
+    This file is part of UnitedShops.
 
     UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,16 +35,13 @@ import io.github.nexadn.unitedshops.tradeapi.EcoManager;
  */
 public class UnitedShops extends JavaPlugin 
 {	
-	private static ConfigShopMain shopconf; /** Shop config of config.yml */
-	public static UnitedShops plugin = null;
+	public static UnitedShops plugin;
 	
 	@Override
 	/** Enable the plugin */
 	public void onEnable()
 	{
 		UnitedShops.plugin = this;
-		
-		UnitedShops.shopconf = new ConfigShopMain();
 		
 		if ( !EcoManager.initEco() ) {
 			this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
@@ -65,6 +64,11 @@ public class UnitedShops extends JavaPlugin
 		saveConfig();
 	}
 	
+	public void log(Level loglevel, String message)
+	{
+		this.getLogger().log(loglevel, message);
+	}
+	
 	/** Send a message to the target with the Plugin prefix
 	 * @param target - The target.
 	 * @param message - The Message
@@ -73,25 +77,10 @@ public class UnitedShops extends JavaPlugin
 	{
 		target.sendMessage("[" + this.getName() + "] " + message);
 	}
-	/** Send a message to the target with the Plugin prefix an a special color.
-	 * @param target - The target
-	 * @param message - The message.
-	 * @param color - The color.
-	 */
-	public void sendMessage(CommandSender target, String message, ChatColor color)
-	{
-		target.sendMessage(color + "[" + this.getName() + "] " + message);
-	}
-	
-	public ConfigShopMain getShopConf()
-	{
-		return UnitedShops.shopconf;
-	}
 }
 
 /*
 	TODO: 
-	- [DONE] GUI vervollständigen
 	- [WIP] EventHandler einstellen
-	- [DONE/ERR] Konfigurationssystem anpassen (Standard config.yml in resources einbauen -> saveDefaultconfig())
+	- [DONE/ERR] Konfigurationssystem anpassen
 */
