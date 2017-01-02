@@ -11,8 +11,7 @@ shops:
     items:
       # Example: 1 Cobblestone; 100.00$ price (buy), 1.00$ price (sell)
       # The key can be named as you think
-      cobble:
+      COBBLESTONE:
         # Choose the item to offer
-        item: "COBBLESTONE"
         buy: 100.0
         sell: 1.0

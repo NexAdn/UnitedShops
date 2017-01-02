@@ -1,7 +1,9 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
     Copyright (C) 2015 Adrian Schollmeyer
+    
+    This file is part of UnitedShops.
 
-    This program is free software: you can redistribute it and/or modify
+    UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.

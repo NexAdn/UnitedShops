@@ -1,6 +1,8 @@
 /* UnitedShops - A Bukkit 1.8 plugin for shop menus.
     Copyright (C) 2015 Adrian Schollmeyer
 
+	This file is part of UnitedShops.
+
     UnitedShops is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -27,6 +29,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
+import io.github.nexadn.unitedshops.config.ConfigShopMain;
 
 /** Static container for all GUI Inventories and their handlers
  * @author NexAdn
@@ -36,22 +39,19 @@ public class GUIContainer {
 	private static List<ShopInventory> guiMap;				// Container for item listing inventories
 	@Deprecated
 	private static Inventory guiBuySell;					// Container for buy/sell GUI
-	private static UnitedShops plugin = UnitedShops.plugin;	// Plugin class
 	
 	/** Initialize the GUI
 	 */
 	public static void initGUI()
 	{
-		if(plugin == null)
-		{
-			return;
-		}
-		plugin.getShopConf().setWorkKey("shops");
-		plugin.getShopConf().parseConfig();
-		guiMap = plugin.getShopConf().getMenus();
+		UnitedShops.plugin.log(Level.FINE, "Intializing GUI");
+		ConfigShopMain conf = new ConfigShopMain();
+		UnitedShops.plugin.log(Level.FINER, "Started config parser.");
+		conf.parseConfig();
+		guiMap = conf.getMenus();
 		for( ShopInventory i:guiMap ) 
 		{
-			i.initInventory(); 
+			i.initInventory();
 		}
 		
 		guiCategories = Bukkit.createInventory(null, guiMap.size() + (9-(guiMap.size()%9)), "Shop - Kategorien");
@@ -156,7 +156,10 @@ public class GUIContainer {
 			} else {
 				for( Inventory in : guiMap.get(i).getGuisBuySell() )
 				{
-					// Handle Buy/Sell
+					if( inv.equals(in) )
+					{
+						// Handle Buy/Sell
+					}
 				}
 			}
 		}
@@ -177,6 +180,7 @@ public class GUIContainer {
 		{
 			if( used.getShopObjects().get(i).getItem().getType().equals(clicked.getType()) ) {
 				// gewünschtes Shopobjekt
+				event.getWhoClicked().closeInventory();
 				event.getWhoClicked().openInventory(used.getShopObjects().get(i).getBuySellGui());
 				break;
 			}

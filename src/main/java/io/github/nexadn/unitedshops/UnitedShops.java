@@ -39,7 +39,7 @@ public class UnitedShops extends JavaPlugin
 	/** Enable the plugin */
 	public void onEnable()
 	{
-		UnitedShops.plugin = this;
+		plugin = this;
 		
 		if ( !EcoManager.initEco() ) {
 			this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");

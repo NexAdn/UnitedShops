@@ -18,6 +18,7 @@ package io.github.nexadn.unitedshops.config;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -40,6 +41,7 @@ public class ConfigBase {
 		this.conf = UnitedShops.plugin.getConfig();
 		this.workkey = "config";
 	}
+	
 	/** Creates a new YamlConfiguration and loads file
 	 * Also sets the mainkey
 	 * @param file - The file to be loaded
@@ -51,18 +53,21 @@ public class ConfigBase {
 		this.workkey = mainKey;
 	}
 	
-	// Return the subkeys of the main configuration section
+	/** Return the subkeys of the main configuration section (workkey.*) */
 	public Set<String> getSubKeys() throws NullPointerException
 	{
-		Set<String> subkeys = new HashSet<String>();
 		if(this.conf == null)
 		{
 			this.conf = UnitedShops.plugin.getConfig();
 		}
 		//return this.conf.getConfigurationSection(workkey).getKeys(false);
-		Set<String> all = this.conf.getKeys(true);
-		for( String s:all )
+		Set<String> all = this.conf.getConfigurationSection(this.workkey).getKeys(false);
+		/*for( String s:all )
 		{
+			UnitedShops.plugin.log(Level.INFO, "Found Subkey: " + s);
+			if(s.equals(this.workkey)) // Ignore main key
+				continue;
+			
 			if(s.substring(0, this.workkey.length()).equalsIgnoreCase(this.workkey))
 			{
 				boolean childchild = false;
@@ -86,7 +91,12 @@ public class ConfigBase {
 				
 			}
 		}
-		return subkeys;
+		for( String s:subkeys )
+		{
+			UnitedShops.plugin.log(Level.INFO, "Set key: " + s);
+		}
+		return subkeys;*/
+		return all;
 	}
 	public ConfigurationSection getMainSection()
 	{

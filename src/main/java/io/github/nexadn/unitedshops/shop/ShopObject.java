@@ -16,10 +16,14 @@
  */
 package io.github.nexadn.unitedshops.shop;
 
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import io.github.nexadn.unitedshops.UnitedShops;
 
 public class ShopObject {
 	ItemStack itemstack;			// The ItemStack
@@ -37,10 +41,16 @@ public class ShopObject {
 	}
 	public ShopObject(Material material, double buy, double sell)
 	{
-		this.itemstack = new ItemStack(material, 1);
+		//this.itemstack = new ItemStack(material, 1);
+		Material m = Material.COBBLESTONE;
+		this.itemstack = new ItemStack(m);
+		UnitedShops.plugin.log(Level.INFO, "New ItemStack: " + this.itemstack.getType().toString());
+		if( this.itemstack == null )
+			UnitedShops.plugin.log(Level.INFO, "ItemStack is null");
 		this.pricebuy = buy;
 		this.pricesell = sell;
-		if(!(this.pricebuy > this.pricesell/2)) {
+		if( !(this.pricebuy >= this.pricesell) ) 
+		{
 			this.pricesell = this.pricebuy/3;
 		}
 	}
@@ -51,8 +61,9 @@ public class ShopObject {
 	
 	public void init()
 	{
-		this.buysellgui = Bukkit.createInventory(null, 9, this.itemstack.getItemMeta().getDisplayName());
-		for( int i=0; i<9; i++)
+		UnitedShops.plugin.log(Level.INFO, "Shop Object: " + this.itemstack.getType().toString());
+		this.buysellgui = Bukkit.createInventory(null, 9, this.itemstack.getType().toString());
+		for( int i=0; i<9; i++ )
 		{
 			ItemStack it;
 			switch(i)

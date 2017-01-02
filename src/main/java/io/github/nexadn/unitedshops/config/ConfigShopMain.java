@@ -26,6 +26,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -47,12 +48,15 @@ public class ConfigShopMain extends ConfigBase {
 	/** Parse the config file and save all data in a HashMap */ 
 	public void parseConfig()
 	{
+		UnitedShops.plugin.getLogger().log(Level.FINE, "Parsing config.yml:shops");
+		UnitedShops.plugin.reloadConfig();
 		Set<String> kies = null;
 		try { 
 			kies = super.getSubKeys(); 
 		}
 		catch( NullPointerException ex )
 		{
+			UnitedShops.plugin.getLogger().log(Level.WARNING, "Got NullPointerException at parseConfig()!");
 			FileConfiguration conf = super.getConf();
 			conf = UnitedShops.plugin.getConfig();
 			conf.createSection("shops");
@@ -66,6 +70,7 @@ public class ConfigShopMain extends ConfigBase {
 			conf.addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
 			kies = conf.getKeys(true);
 			try {
+				UnitedShops.plugin.log(Level.INFO, "No configuration file found. Creating a new one just for you :)");
 				conf.save(new File(UnitedShops.plugin.getDataFolder(), "config.yml"));
 				UnitedShops.plugin.reloadConfig();
 			} catch (IOException e) {
@@ -75,20 +80,24 @@ public class ConfigShopMain extends ConfigBase {
 		}
 		for( String s:kies )
 		{
+			// TODO: Remove if-statement (not needed anymore)
+			if( s.equalsIgnoreCase(super.getWorkKey()) )
+				continue;
 			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
 			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
 			int id = super.getMainSection().getInt(s + ".id"); // shops.[key].id
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1), id) );
 			String sect = super.getWorkKey() + "." + s + "." + "items";
-			Set<String> subkies = super.getConf().getConfigurationSection(sect).getKeys(false);
-			for( String sub:subkies ) // shops.[key].items.[key2]
+			Set<String> subkeys = super.getConf().getConfigurationSection(sect).getKeys(false);
+			for( String sub:subkeys ) // shops.[key].items.[key2]
 			{
-				String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub; // replacement for sec
-				//ConfigurationSection sec = super.getConf().getConfigurationSection(sub);
-				//Material mat = Material.getMaterial(sec.getString("item")); // shops.[key].items.[key2].item // ERROR ??? //
-				Material mat = Material.getMaterial(sub);
-				ShopObject cont = new ShopObject(mat, super.getConf().getDouble(path + ".buy"), super.getConf().getDouble("sell")); // Shop Contents
-				this.menus.get(s).addContent(cont);
+				//UnitedShops.plugin.log(Level.INFO, "Item: " + sub);
+				String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub;
+				UnitedShops.plugin.log(Level.INFO, "Path: " + path);
+				Material mat = Material.getMaterial(sub); // shops.[key].items.[key2]
+				//Material mat = Material.COBBLESTONE;
+				
+				this.menus.get(s).addContent( new ShopObject(mat, super.getConf().getDouble(path + ".buy"), super.getConf().getDouble(path + ".sell")) );
 			}
 		}
 	}
