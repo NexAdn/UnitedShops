@@ -23,13 +23,18 @@ import java.util.Vector;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.config.ConfigShopMain;
+import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 
 /** Static container for all GUI Inventories and their handlers
  * @author NexAdn
@@ -37,8 +42,6 @@ import io.github.nexadn.unitedshops.config.ConfigShopMain;
 public class GUIContainer {
 	private static Inventory guiCategories;					// Container for category menu
 	private static List<ShopInventory> guiMap;				// Container for item listing inventories
-	@Deprecated
-	private static Inventory guiBuySell;					// Container for buy/sell GUI
 	
 	/** Initialize the GUI
 	 */
@@ -51,6 +54,7 @@ public class GUIContainer {
 		guiMap = conf.getMenus();
 		for( ShopInventory i:guiMap ) 
 		{
+			UnitedShops.plugin.log(Level.INFO, "Init " + i.getOrderNumber() + "/" + i.getTitle());
 			i.initInventory();
 		}
 		
@@ -64,7 +68,11 @@ public class GUIContainer {
 		for( int i = 0; i<guiMap.size(); i++ )
 		{
 			guiCategories.clear(i);
-			guiCategories.setItem(i, guiMap.get(i).getIcon());
+			ItemStack it = guiMap.get(i).getIcon();
+			ItemMeta m = it.getItemMeta();
+			m.setDisplayName(ChatColor.AQUA + guiMap.get(i).getTitle());
+			it.setItemMeta(m);
+			guiCategories.setItem(i, it);
 		}
 	}
 	
@@ -73,7 +81,11 @@ public class GUIContainer {
 	 */
 	public static ItemStack getBlank()
 	{
-		return new ItemStack(Material.THIN_GLASS,1);
+		ItemStack i = new ItemStack(Material.THIN_GLASS,1);
+		ItemMeta m = i.getItemMeta();
+		m.setDisplayName(" ");
+		i.setItemMeta(m);
+		return i;
 	}
 	
 	/** Create an item with material and display name
@@ -97,10 +109,12 @@ public class GUIContainer {
 	public static ItemStack getFunctionalItem(Material mat, String display, String funcLore)
 	{
 		ItemStack ret = new ItemStack(mat, 1);
-		ret.getItemMeta().setDisplayName(display);
+		ItemMeta meta = ret.getItemMeta();
+		meta.setDisplayName(display);
 		List<String> lore = new Vector<String>();
 		lore.add(funcLore);
-		ret.getItemMeta().setLore(lore);
+		meta.setLore(lore);
+		ret.setItemMeta(meta);
 		return ret;
 	}
 	
@@ -112,21 +126,21 @@ public class GUIContainer {
 		return guiCategories;
 	}
 	
-	/** Check, whetzer the given Inventory is a GUI Inventory
+	/** Check, whether the given Inventory is a GUI Inventory
 	 * @param inv - The inventory
 	 * @return true, if the given inventory equals one or more GUI inventories, false if not.
 	 */
 	public static boolean isGuiInventory(Inventory inv)
 	{
-		if(inv.equals(guiCategories) || inv.equals(guiBuySell) ) {
+		if(inv.equals(guiCategories)/* || inv.equals(guiBuySell)*/ ) {
 			return true;
 		}
 		for( ShopInventory i : GUIContainer.guiMap) {
-			if(inv.equals(i)) {
+			if(inv.equals(i.getInventory())) {
 				return true;
 				//break;
 			}
-			for( Inventory in: i.getGuisBuySell()) {
+			for( Inventory in : i.getGuisBuySell()) {
 				if( inv.equals(in) )
 				{
 					return true;
@@ -142,23 +156,32 @@ public class GUIContainer {
 	public static void handleClickEvents(InventoryClickEvent event)
 	{
 		Inventory inv = event.getInventory();
-		// Push the event to its specific handler
+		
 		if( inv.equals(guiCategories) ) {
+			// Klick innerhalb Kategorienübersicht
 			handleEventsGuiCategories(event);
 		}
 		
 		for( int i=0; i<guiMap.size(); i++ )
 		{
-			if( guiMap.get(i).equals(inv) )
+			if( guiMap.get(i).getInventory().equals(inv) )
 			{
+				// Klick innerhalb Shopkategorie
 				handleEventsShopGUI( event, i );
 				break;
-			} else {
+			} else 
+			{
 				for( Inventory in : guiMap.get(i).getGuisBuySell() )
 				{
 					if( inv.equals(in) )
 					{
-						// Handle Buy/Sell
+						// Klick Kauf- und Verkaufsansicht
+						// TODO
+						for ( ShopObject o : guiMap.get(i).getShopObjects() )
+						{
+							if (o.getBuySellGui().equals(in))
+								handleBuySellGUI( event, o );
+						}
 					}
 				}
 			}
@@ -167,13 +190,66 @@ public class GUIContainer {
 		return;
 	}
 	
+	public static void handleBuySellGUI(InventoryClickEvent event, ShopObject object)
+	{
+		Player p = (Player) event.getWhoClicked();
+		boolean success = false;
+		ItemStack is = object.getItem();
+		int amount = 1;
+		switch(event.getSlot())
+		{
+		case 0: // Kauf 1
+			
+			is.setAmount(amount);
+			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy()*amount);
+			break;
+			
+		case 1: // Kauf 10
+			amount = 10;
+			is.setAmount(amount);
+			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy()*amount);
+			break;
+			
+		case 2: // Kauf 64
+			amount = 64;
+			is.setAmount(amount);
+			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy()*amount);
+			break;
+			
+		case 6: // Verkauf 1
+			amount = 1;
+			is.setAmount(amount);
+			success = MoneyTrade.tradeMoneyForItem(p, object.getSell()*amount, is);
+			break;
+			
+		case 7: // Verkauf 10
+			amount = 10;
+			is.setAmount(amount);
+			success = MoneyTrade.tradeMoneyForItem(p, object.getSell()*amount, is);
+			break;
+			
+		case 8: // Verkauf 64
+			amount = 64;
+			is.setAmount(amount);
+			success = MoneyTrade.tradeMoneyForItem(p, object.getSell()*amount, is);
+			break;
+			
+		default:
+			success = true;
+			break;
+		}
+		if (!success)
+		{
+			UnitedShops.plugin.sendMessage(p, "You don't have the resources to do this transaction!");
+		}
+	}
+	
 	/** Handler for all Shop Menus
 	 * @param event - Event, which has been called
 	 * @param index - List index of the Shop
 	 */
 	public static void handleEventsShopGUI( InventoryClickEvent event, int index )
 	{
-		UnitedShops.plugin.getLogger().log(Level.FINE, "Shop GUI clicked. Opening Buy/Sell GUI.");
 		ItemStack clicked = event.getCurrentItem();
 		ShopInventory used = guiMap.get(index);
 		for( int i=0; i<used.getGuisBuySell().size(); i++ )

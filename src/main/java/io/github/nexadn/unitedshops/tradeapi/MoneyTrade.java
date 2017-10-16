@@ -16,10 +16,13 @@
  */
 package io.github.nexadn.unitedshops.tradeapi;
 
+import java.util.logging.Level;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -39,6 +42,7 @@ public class MoneyTrade {
 			eReturn = eco.withdrawPlayer(player, want);
 			if( eReturn.transactionSuccess() ) {
 				player.getInventory().addItem(offer);
+				UnitedShops.plugin.sendMessage(player, "Trade: " + offer.toString() + "(" + offer.getAmount() + ") -> " + want);
 				return true;
 			}
 		}
@@ -47,13 +51,16 @@ public class MoneyTrade {
 	
 	public static boolean tradeMoneyForItem( Player player, double offer, ItemStack want )
 	{
+		UnitedShops.plugin.log(Level.INFO, Integer.toString(want.getAmount()));
 		EconomyResponse eReturn = null;
 		Inventory playerinv = player.getInventory();
+		// TODO: if-Abfrage beheben (true nur, wenn ItemStack exakt so groß wie gefordert anstatt Summe aller Stacks)
 		if ( playerinv.contains(want)) {
 			// Spieler hat das Zeugs
 			eReturn = eco.depositPlayer(player, offer);
 			if( eReturn.transactionSuccess() ) {
 				playerinv.remove(want);
+				UnitedShops.plugin.sendMessage(player, "Trade: " + offer + " -> " + want.toString() + "(" + want.getAmount() + ")");
 				return true;
 			}
 		} else {

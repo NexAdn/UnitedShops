@@ -16,8 +16,12 @@
  */
 package io.github.nexadn.unitedshops.events;
 
+import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
 
+import java.util.logging.Level;
+
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -26,7 +30,7 @@ public class GUIClick implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event)
 	{
-		if(GUIContainer.isGuiInventory(event.getInventory())) 
+		if(GUIContainer.isGuiInventory(event.getInventory()) && (event.getWhoClicked() instanceof Player)) 
 		{
 			event.setCancelled(true);
 			// Event weiterleiten

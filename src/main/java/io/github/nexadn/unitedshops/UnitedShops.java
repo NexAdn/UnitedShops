@@ -1,4 +1,4 @@
-/* UnitedShops - A Bukkit 1.8 plugin for shop menus.
+/* UnitedShops - A Bukkit 1.12 plugin for shop menus.
     Copyright (C) 2015, 2016 Adrian Schollmeyer
     
     This file is part of UnitedShops.
@@ -23,10 +23,10 @@ import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.github.nexadn.unitedshops.command.ShopGUIHandler;
-import io.github.nexadn.unitedshops.command.UShopDebug;
-import io.github.nexadn.unitedshops.shop.GUIContainer;
-import io.github.nexadn.unitedshops.tradeapi.EcoManager;
+import io.github.nexadn.unitedshops.command.*;
+import io.github.nexadn.unitedshops.events.*;
+import io.github.nexadn.unitedshops.shop.*;
+import io.github.nexadn.unitedshops.tradeapi.*;
 
 /** Basic class for the plugin
  * @author NexAdn
@@ -46,11 +46,14 @@ public class UnitedShops extends JavaPlugin
 			this.setEnabled(false);
 			return;
 		}
-		this.getLogger().log(Level.FINE, "Successfully initialized connection to Vault.");
+		this.getLogger().log(Level.FINE, "Economy hook successful.");
 		
 		// Command executors
 		this.getServer().getPluginCommand("ushopdebug").setExecutor(new UShopDebug());		// /ushopdebug
 		this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop
+		
+		// Event handler
+		this.getServer().getPluginManager().registerEvents(new GUIClick(), this);
 		
 		GUIContainer.initGUI();
 	}

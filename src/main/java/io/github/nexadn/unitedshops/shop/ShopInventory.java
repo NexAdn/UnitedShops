@@ -18,26 +18,23 @@ package io.github.nexadn.unitedshops.shop;
 
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 
 /** Container for an inventory with ShopObjects
  * @author NexAdn
  */
 public class ShopInventory {
-	Inventory inv;				// Inventory Holder
-	ItemStack icon;				// Icon item
-	int order;					// Ordering number
-	String title;				// Inventory title
-	List<ShopObject> content;	// Inventory contents
+	private Inventory inv;				// Inventory Holder
+	private ItemStack icon;				// Icon item
+	private int order;					// Ordering number
+	private String title;				// Inventory title
+	private List<ShopObject> content;	// Inventory contents
 	
 	/** Create the Object with null data
 	 */
@@ -118,6 +115,7 @@ public class ShopInventory {
 	public void setContent(List<ShopObject> contents) { this.content = contents; }
 	public void setIcon(Material icon) { this.icon = new ItemStack(icon, 1); }
 	
+	public String getTitle() { return this.title; }
 	public int getOrderNumber() { return this.order; }
 	public ItemStack getIcon() { return this.icon; }
 	public Inventory getInventory() { return this.inv; }

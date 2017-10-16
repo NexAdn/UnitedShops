@@ -16,14 +16,10 @@
  */
 package io.github.nexadn.unitedshops.shop;
 
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import io.github.nexadn.unitedshops.UnitedShops;
 
 public class ShopObject {
 	ItemStack itemstack;			// The ItemStack
@@ -41,12 +37,8 @@ public class ShopObject {
 	}
 	public ShopObject(Material material, double buy, double sell)
 	{
-		//this.itemstack = new ItemStack(material, 1);
-		Material m = Material.COBBLESTONE;
-		this.itemstack = new ItemStack(m);
-		UnitedShops.plugin.log(Level.INFO, "New ItemStack: " + this.itemstack.getType().toString());
-		if( this.itemstack == null )
-			UnitedShops.plugin.log(Level.INFO, "ItemStack is null");
+		this.itemstack = new ItemStack(material, 1);
+		//this.itemstack = new ItemStack(m);
 		this.pricebuy = buy;
 		this.pricesell = sell;
 		if( !(this.pricebuy >= this.pricesell) ) 
@@ -61,7 +53,6 @@ public class ShopObject {
 	
 	public void init()
 	{
-		UnitedShops.plugin.log(Level.INFO, "Shop Object: " + this.itemstack.getType().toString());
 		this.buysellgui = Bukkit.createInventory(null, 9, this.itemstack.getType().toString());
 		for( int i=0; i<9; i++ )
 		{
@@ -82,7 +73,8 @@ public class ShopObject {
 				this.buysellgui.setItem(i, it);
 				break;
 			case 3:
-				this.buysellgui.setItem(i, new ItemStack(Material.THIN_GLASS));
+				//this.buysellgui.setItem(i, new ItemStack(Material.THIN_GLASS));
+				this.buysellgui.setItem(i, GUIContainer.getBlank());
 				break;
 			case 4:
 				it = GUIContainer.getFunctionalItem(Material.BARRIER, "Zurück", "ev-iback");
@@ -90,7 +82,7 @@ public class ShopObject {
 				this.buysellgui.setItem(i, it);
 				break;
 			case 5:
-				this.buysellgui.setItem(i, new ItemStack(Material.THIN_GLASS));
+				this.buysellgui.setItem(i, GUIContainer.getBlank());
 				break;
 			case 6:
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 1", "ev-s-1");

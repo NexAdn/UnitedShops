@@ -8,13 +8,13 @@
   <packaging>jar</packaging>
 
   <name>UnitedShops</name>
-  <url></url>
+  <url>https://github.com/NexAdn/UnitedShops</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <!-- Versions -->
-    <minecraft.version>1.9</minecraft.version>
+    <minecraft.version>1.12.1</minecraft.version>
     <bukkit.rev>R0.1-SNAPSHOT</bukkit.rev>
     
     <vaultapi.version>1.6</vaultapi.version>
@@ -27,14 +27,14 @@
   	</repository>
   	<repository>
   		<id>vault-repo</id>
-  		<url>http://nexus.theyeticave.net/content/repositories/pub_releases/</url>
+  		<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
   	</repository>
   </repositories>
 
   <dependencies>
   	<dependency>
-  		<groupId>org.bukkit</groupId>
-  		<artifactId>bukkit</artifactId>
+  		<groupId>org.spigotmc</groupId>
+  		<artifactId>spigot-api</artifactId>
   		<version>${minecraft.version}-${bukkit.rev}</version>
   		<scope>provided</scope>
   	</dependency>
@@ -59,4 +59,9 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <scm>
+  	<url>https://github.com/NexAdn/UnitedShops</url>
+  	<connection>git://github.com/NexAdn/UnitedShops.git</connection>
+  	<developerConnection>ssh://git@github.com/NexAdn/UnitedShops.git</developerConnection>
+  </scm>
 </project>

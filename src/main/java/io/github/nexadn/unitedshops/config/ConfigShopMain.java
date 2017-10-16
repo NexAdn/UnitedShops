@@ -80,10 +80,8 @@ public class ConfigShopMain extends ConfigBase {
 		}
 		for( String s:kies )
 		{
-			// TODO: Remove if-statement (not needed anymore)
-			if( s.equalsIgnoreCase(super.getWorkKey()) )
-				continue;
 			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
+			UnitedShops.plugin.log(Level.INFO, "Add shop: " + title);
 			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
 			int id = super.getMainSection().getInt(s + ".id"); // shops.[key].id
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1), id) );
@@ -91,12 +89,8 @@ public class ConfigShopMain extends ConfigBase {
 			Set<String> subkeys = super.getConf().getConfigurationSection(sect).getKeys(false);
 			for( String sub:subkeys ) // shops.[key].items.[key2]
 			{
-				//UnitedShops.plugin.log(Level.INFO, "Item: " + sub);
-				String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub;
-				UnitedShops.plugin.log(Level.INFO, "Path: " + path);
-				Material mat = Material.getMaterial(sub); // shops.[key].items.[key2]
-				//Material mat = Material.COBBLESTONE;
-				
+				String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub; // shops.[key].items.[key2]
+				Material mat = Material.getMaterial(sub);
 				this.menus.get(s).addContent( new ShopObject(mat, super.getConf().getDouble(path + ".buy"), super.getConf().getDouble(path + ".sell")) );
 			}
 		}
