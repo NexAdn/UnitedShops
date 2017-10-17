@@ -16,6 +16,7 @@
  */
 package io.github.nexadn.unitedshops.tradeapi;
 
+import java.awt.Color;
 import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
@@ -42,7 +43,7 @@ public class MoneyTrade {
 			eReturn = eco.withdrawPlayer(player, want);
 			if( eReturn.transactionSuccess() ) {
 				player.getInventory().addItem(offer);
-				UnitedShops.plugin.sendMessage(player, "Trade: " + offer.toString() + "(" + offer.getAmount() + ") -> " + want);
+				UnitedShops.plugin.sendMessage(player, "Trade: " + offer.toString() + " -> $" + want);
 				return true;
 			}
 		}
@@ -55,16 +56,49 @@ public class MoneyTrade {
 		EconomyResponse eReturn = null;
 		Inventory playerinv = player.getInventory();
 		// TODO: if-Abfrage beheben (true nur, wenn ItemStack exakt so groß wie gefordert anstatt Summe aller Stacks)
-		if ( playerinv.contains(want)) {
+		if ( playerinv.containsAtLeast(want, want.getAmount())) {
 			// Spieler hat das Zeugs
 			eReturn = eco.depositPlayer(player, offer);
 			if( eReturn.transactionSuccess() ) {
-				playerinv.remove(want);
-				UnitedShops.plugin.sendMessage(player, "Trade: " + offer + " -> " + want.toString() + "(" + want.getAmount() + ")");
+				if (!removeItems(playerinv, want))
+				{
+					eco.withdrawPlayer(player, offer);
+					UnitedShops.plugin.sendMessage(player, Color.RED + "Transaction failed");
+					return false;
+				}
+				UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.toString());
 				return true;
 			}
-		} else {
+		} else 
+		{
 			return false;
+		}
+		return false;
+	}
+	
+	public static boolean removeItems( Inventory inventory, ItemStack items )
+	{
+		int remaining = items.getAmount();
+		for (int i=0; i<inventory.getSize(); ++i)
+		{
+			if (inventory.getItem(i).getType().equals(items.getType()))
+			{
+				ItemStack is = inventory.getItem(i);
+				if (is.getAmount() > remaining)
+				{
+					is.setAmount(is.getAmount() - remaining);
+					inventory.setItem(i, is);
+					return true;
+				} else
+				{
+					items.setAmount(remaining - is.getAmount());
+					inventory.setItem(i,null);
+					if (is.getAmount() == 0)
+					{
+						return true;
+					}
+				}
+			}
 		}
 		return false;
 	}
