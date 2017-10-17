@@ -16,9 +16,10 @@
  */
 package io.github.nexadn.unitedshops.tradeapi;
 
-import java.awt.Color;
 import java.util.logging.Level;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -63,7 +64,7 @@ public class MoneyTrade {
 				if (!removeItems(playerinv, want))
 				{
 					eco.withdrawPlayer(player, offer);
-					UnitedShops.plugin.sendMessage(player, Color.RED + "Transaction failed");
+					UnitedShops.plugin.sendMessage(player, ChatColor.RED + "Transaction failed");
 					return false;
 				}
 				UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.toString());
@@ -79,9 +80,10 @@ public class MoneyTrade {
 	public static boolean removeItems( Inventory inventory, ItemStack items )
 	{
 		int remaining = items.getAmount();
+		UnitedShops.plugin.log(Level.INFO, Integer.toString(remaining));
 		for (int i=0; i<inventory.getSize(); ++i)
 		{
-			if (inventory.getItem(i).getType().equals(items.getType()))
+			if (inventory.getItem(i) != null && inventory.getItem(i).getType().equals(items.getType()))
 			{
 				ItemStack is = inventory.getItem(i);
 				if (is.getAmount() > remaining)
@@ -91,7 +93,7 @@ public class MoneyTrade {
 					return true;
 				} else
 				{
-					items.setAmount(remaining - is.getAmount());
+					remaining -= is.getAmount();
 					inventory.setItem(i,null);
 					if (is.getAmount() == 0)
 					{

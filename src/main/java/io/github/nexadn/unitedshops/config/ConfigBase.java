@@ -16,10 +16,7 @@
  */
 package io.github.nexadn.unitedshops.config;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 

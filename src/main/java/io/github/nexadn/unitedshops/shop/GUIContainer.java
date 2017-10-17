@@ -47,14 +47,14 @@ public class GUIContainer {
 	 */
 	public static void initGUI()
 	{
-		UnitedShops.plugin.log(Level.FINE, "Intializing GUI");
+		UnitedShops.plugin.log(Level.INFO, "Intializing GUI");
 		ConfigShopMain conf = new ConfigShopMain();
-		UnitedShops.plugin.log(Level.FINER, "Started config parser.");
+		UnitedShops.plugin.log(Level.FINE, "Started config parser.");
 		conf.parseConfig();
 		guiMap = conf.getMenus();
 		for( ShopInventory i:guiMap ) 
 		{
-			UnitedShops.plugin.log(Level.INFO, "Init " + i.getOrderNumber() + "/" + i.getTitle());
+			UnitedShops.plugin.log(Level.FINER, "Init " + i.getOrderNumber() + "/" + i.getTitle());
 			i.initInventory();
 		}
 		

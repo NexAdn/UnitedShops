@@ -16,10 +16,16 @@
  */
 package io.github.nexadn.unitedshops.shop;
 
+import java.util.List;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import io.github.nexadn.unitedshops.UnitedShops;
 
 public class ShopObject {
 	ItemStack itemstack;			// The ItemStack
@@ -57,53 +63,85 @@ public class ShopObject {
 		for( int i=0; i<9; i++ )
 		{
 			ItemStack it;
+			ItemMeta im;
+			List<String> il;
 			switch(i)
 			{
-			case 0:
-				this.buysellgui.setItem(i, GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 1", "ev-b-1"));
+			case 0: // Kauf 1
+				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 1", "ev-b-1");
+				im = it.getItemMeta();
+				il = im.getLore();
+				il.add("Preis: " + this.pricebuy*1);
+				im.setLore(il);
+				it.setItemMeta(im);
+				it.setAmount(1);
+				this.buysellgui.setItem(i, it);
 				break;
-			case 1:
+			case 1: // Kauf 10
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 10", "ev-b-10");
+				im = it.getItemMeta();
+				il = im.getLore();
+				il.add("Preis: " + this.pricebuy*10);
+				im.setLore(il);
+				it.setItemMeta(im);
 				it.setAmount(10);
 				this.buysellgui.setItem(i, it);
 				break;
-			case 2:
+			case 2: // Kauf 64
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 64", "ev-b-64");
+				im = it.getItemMeta();
+				il = im.getLore();
+				il.add("Preis: " + this.pricebuy*10);
+				im.setLore(il);
+				it.setItemMeta(im);
 				it.setAmount(64);
 				this.buysellgui.setItem(i, it);
 				break;
-			case 3:
+			case 3: // Blank
 				//this.buysellgui.setItem(i, new ItemStack(Material.THIN_GLASS));
 				this.buysellgui.setItem(i, GUIContainer.getBlank());
 				break;
-			case 4:
+			case 4: // Zurück
 				it = GUIContainer.getFunctionalItem(Material.BARRIER, "Zurück", "ev-iback");
 				it.setAmount(1);
 				this.buysellgui.setItem(i, it);
 				break;
-			case 5:
+			case 5: // Blank
 				this.buysellgui.setItem(i, GUIContainer.getBlank());
 				break;
-			case 6:
+			case 6: // Verkauf 1
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 1", "ev-s-1");
+				im = it.getItemMeta();
+				il = im.getLore();
+				il.add("Preis: " + this.pricesell*1);
+				im.setLore(il);
+				it.setItemMeta(im);
 				it.setAmount(1);
 				this.buysellgui.setItem(i, it);
 				break;
-			case 7:
+			case 7: // Verkauf 10
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 10", "ev-s-10");
+				im = it.getItemMeta();
+				il = im.getLore();
+				il.add("Preis: " + this.pricesell*10);
+				im.setLore(il);
+				it.setItemMeta(im);
 				it.setAmount(10);
 				this.buysellgui.setItem(i, it);
 				break;
-			case 8:
+			case 8: // Verkauf 64
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 64", "ev-s-64");
+				im = it.getItemMeta();
+				il = im.getLore();
+				il.add("Preis: " + this.pricesell*64);
+				im.setLore(il);
+				it.setItemMeta(im);
 				it.setAmount(64);
 				this.buysellgui.setItem(i, it);
-				break;
 			}
 		}
 	}
 	
-	// getters/setters
 	public ItemStack getItem() { return this.itemstack; }
 	public double getBuy() { return this.pricebuy; }
 	public double getSell() { return this.pricesell; }

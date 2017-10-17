@@ -50,7 +50,7 @@ public class ShopInventory {
 	{
 		this.icon = icon;
 		this.title = title;
-		this.order = 0;
+		this.order = id;
 		this.content = new Vector<ShopObject>();
 	}
 	/** Initialize the Inventory Object and add the contents

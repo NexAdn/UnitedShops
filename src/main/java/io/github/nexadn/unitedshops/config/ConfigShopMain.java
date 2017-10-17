@@ -48,15 +48,16 @@ public class ConfigShopMain extends ConfigBase {
 	/** Parse the config file and save all data in a HashMap */ 
 	public void parseConfig()
 	{
-		UnitedShops.plugin.getLogger().log(Level.FINE, "Parsing config.yml:shops");
+		UnitedShops.plugin.log(Level.FINE, "Loading config");
 		UnitedShops.plugin.reloadConfig();
-		Set<String> kies = null;
+		Set<String> keys = null;
 		try { 
-			kies = super.getSubKeys(); 
+			keys = super.getSubKeys(); 
 		}
 		catch( NullPointerException ex )
 		{
-			UnitedShops.plugin.getLogger().log(Level.WARNING, "Got NullPointerException at parseConfig()!");
+			UnitedShops.plugin.getLogger().log(Level.WARNING, "Got NullPointerException in parseConfig()!");
+			ex.printStackTrace();
 			FileConfiguration conf = super.getConf();
 			conf = UnitedShops.plugin.getConfig();
 			conf.createSection("shops");
@@ -68,9 +69,9 @@ public class ConfigShopMain extends ConfigBase {
 			conf.createSection("shops.exampleshop.items.COBBLESTONE");
 			conf.addDefault("shops.exampleshop.items.COBBLESTONE.buy", 10.0);
 			conf.addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
-			kies = conf.getKeys(true);
+			keys = conf.getKeys(true);
 			try {
-				UnitedShops.plugin.log(Level.INFO, "No configuration file found. Creating a new one just for you :)");
+				UnitedShops.plugin.log(Level.WARNING, "No configuration file found. Creating a new one just for you.");
 				conf.save(new File(UnitedShops.plugin.getDataFolder(), "config.yml"));
 				UnitedShops.plugin.reloadConfig();
 			} catch (IOException e) {
@@ -78,17 +79,22 @@ public class ConfigShopMain extends ConfigBase {
 				UnitedShops.plugin.getLogger().log(Level.SEVERE, "Couldn't save config.yml");
 			}
 		}
-		for( String s:kies )
+		
+		for( String s:keys )
 		{
 			String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
-			UnitedShops.plugin.log(Level.INFO, "Add shop: " + title);
+			UnitedShops.plugin.log(Level.FINE, "Add shop: " + title);
 			Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
 			int id = super.getMainSection().getInt(s + ".id"); // shops.[key].id
+			UnitedShops.plugin.log(Level.FINER, "key: " + s);
+			UnitedShops.plugin.log(Level.FINER, "id: " + id);
 			this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1), id) );
+			
 			String sect = super.getWorkKey() + "." + s + "." + "items";
 			Set<String> subkeys = super.getConf().getConfigurationSection(sect).getKeys(false);
 			for( String sub:subkeys ) // shops.[key].items.[key2]
 			{
+				UnitedShops.plugin.log(Level.FINEST, "Item: " + sub);
 				String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub; // shops.[key].items.[key2]
 				Material mat = Material.getMaterial(sub);
 				this.menus.get(s).addContent( new ShopObject(mat, super.getConf().getDouble(path + ".buy"), super.getConf().getDouble(path + ".sell")) );
@@ -108,6 +114,7 @@ public class ConfigShopMain extends ConfigBase {
 				highest = i.getOrderNumber();
 			}
 		}
+		
 		// Transform the Collection into a List using the given ordering numbers
 		for( int cnt = 0; cnt<=highest; cnt++ )
 		{

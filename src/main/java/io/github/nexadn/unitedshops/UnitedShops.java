@@ -79,9 +79,3 @@ public class UnitedShops extends JavaPlugin
 		target.sendMessage("[" + this.getName() + "] " + message);
 	}
 }
-
-/*
-	TODO: 
-	- [WIP] EventHandler einstellen
-	- [DONE/ERR] Konfigurationssystem anpassen
-*/
