@@ -12,13 +12,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import io.github.nexadn.unitedshops.UnitedShops;
 
 public class ShopObject {
-	ItemStack itemstack;			// The ItemStack
-	Inventory buysellgui;			// GUI zum Kauf/Verkauf
-	double pricebuy;				// price to buy an item
-	double pricesell;				// price to sell an item
-	boolean nobuy = false;			// for placeholder objects: true
+	ItemStack itemstack;
+	Inventory buysellgui;
+	double pricebuy;
+	double pricesell;
+	boolean nobuy = false;
 	
-	// Constructors
 	public ShopObject(Material material, double buy)
 	{
 		this.itemstack = new ItemStack(material, 1);
@@ -28,7 +27,6 @@ public class ShopObject {
 	public ShopObject(Material material, double buy, double sell)
 	{
 		this.itemstack = new ItemStack(material, 1);
-		//this.itemstack = new ItemStack(m);
 		this.pricebuy = buy;
 		this.pricesell = sell;
 		if( !(this.pricebuy >= this.pricesell) ) 
@@ -82,7 +80,6 @@ public class ShopObject {
 				this.buysellgui.setItem(i, it);
 				break;
 			case 3: // Blank
-				//this.buysellgui.setItem(i, new ItemStack(Material.THIN_GLASS));
 				this.buysellgui.setItem(i, GUIContainer.getBlank());
 				break;
 			case 4: // Zurück

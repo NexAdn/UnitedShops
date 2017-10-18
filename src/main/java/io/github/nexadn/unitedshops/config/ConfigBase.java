@@ -11,72 +11,28 @@ import io.github.nexadn.unitedshops.UnitedShops;
  */
 public class ConfigBase {
 	// Object Properties
-	private FileConfiguration conf;					// Config file
-	private String workkey;							// Main working key
+	private FileConfiguration conf;
+	private String workkey;
 	
-	/** Creates a new YamlConfiguration and loads file
-	 * @param file - The file to be loaded
-	 */
 	public ConfigBase()
 	{
 		this.conf = UnitedShops.plugin.getConfig();
 		this.workkey = "config";
 	}
 	
-	/** Creates a new YamlConfiguration and loads file
-	 * Also sets the mainkey
-	 * @param file - The file to be loaded
-	 * @param mainKey - The main key to use for work
-	 */
 	public ConfigBase(String mainKey)
 	{
 		this.conf = UnitedShops.plugin.getConfig();
 		this.workkey = mainKey;
 	}
 	
-	/** Return the subkeys of the main configuration section (workkey.*) */
 	public Set<String> getSubKeys() throws NullPointerException
 	{
 		if(this.conf == null)
 		{
 			this.conf = UnitedShops.plugin.getConfig();
 		}
-		//return this.conf.getConfigurationSection(workkey).getKeys(false);
 		Set<String> all = this.conf.getConfigurationSection(this.workkey).getKeys(false);
-		/*for( String s:all )
-		{
-			UnitedShops.plugin.log(Level.INFO, "Found Subkey: " + s);
-			if(s.equals(this.workkey)) // Ignore main key
-				continue;
-			
-			if(s.substring(0, this.workkey.length()).equalsIgnoreCase(this.workkey))
-			{
-				boolean childchild = false;
-				// Check if the Key is a child of a child -> break if true
-				for(int i=this.workkey.length()-1; i<s.length(); i++)
-				{
-					if(s.charAt(i) == '.')
-					{
-						childchild = true;
-						break;
-					}
-				}
-				if(childchild == true)
-				{
-					// s is a child of a child of the workkey -> ignore
-					continue;
-				} else {
-					// s is a child of the workkey, but no child of a child
-					subkeys.add(s);
-				}
-				
-			}
-		}
-		for( String s:subkeys )
-		{
-			UnitedShops.plugin.log(Level.INFO, "Set key: " + s);
-		}
-		return subkeys;*/
 		return all;
 	}
 	public ConfigurationSection getMainSection()
@@ -84,13 +40,11 @@ public class ConfigBase {
 		return conf.getConfigurationSection(workkey);
 	}
 	
-	// Setters
 	public void setWorkKey(String tag)
 	{
 		this.workkey = tag;
 	}
 	
-	// Getters
 	public FileConfiguration getConf()
 	{
 		return this.conf;

@@ -1,9 +1,6 @@
 package io.github.nexadn.unitedshops.events;
 
-import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
-
-import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

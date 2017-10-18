@@ -10,26 +10,21 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 
-/** Container for an inventory with ShopObjects
- * @author NexAdn
- */
 public class ShopInventory {
-	private Inventory inv;				// Inventory Holder
-	private ItemStack icon;				// Icon item
-	private int order;					// Ordering number
-	private String title;				// Inventory title
-	private List<ShopObject> content;	// Inventory contents
+	private Inventory inv;
+	private ItemStack icon;
+	private int order;
+	private String title;
+	private List<ShopObject> content;
 	
-	/** Create the Object with null data
-	 */
+	
 	public ShopInventory()
 	{
 		this.order = 0;
 		this.title = "null";
 		this.content = new Vector<ShopObject>();
 	}
-	/** Create the Object with title and icon
-	 */
+	
 	public ShopInventory(String title, ItemStack icon, int id)
 	{
 		this.icon = icon;
@@ -37,8 +32,7 @@ public class ShopInventory {
 		this.order = id;
 		this.content = new Vector<ShopObject>();
 	}
-	/** Initialize the Inventory Object and add the contents
-	 */
+	
 	public void initInventory()
 	{
 		for(ShopObject o:this.content)
@@ -66,13 +60,6 @@ public class ShopInventory {
 		this.icon.getItemMeta().setDisplayName(this.title);
 	}
 	
-	/** Handles the trades of ShopObjects
-	 * @param index - The item index
-	 * @param player - The player
-	 * @param isSell - Whether the item ist bought (false) or sold (true)
-	 * @param amount - The amount of items
-	 * @return true, if the trade was successful, false, if not.
-	 */
 	public boolean handleTrades(int index, Player player, boolean isSell, int amount)
 	{
 		ShopObject tmp = this.content.get(index);

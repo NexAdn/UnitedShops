@@ -16,7 +16,6 @@ public class ShopGUIHandler implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] sArgv) {
 		if(commandSender instanceof Player) {
-			// Nur für Spieler
 			Player player = (Player)commandSender;
 			if(player.hasPermission("unitedshops.useshop")) {
 				player.openInventory(GUIContainer.getMenuGui()); // Menü GUI öffnen
@@ -30,7 +29,6 @@ public class ShopGUIHandler implements CommandExecutor {
 			commandSender.sendMessage("Du kannst dies nur als Spieler nutzen!");
 			return true;
 		}
-		// return false;
 	}
 }
 

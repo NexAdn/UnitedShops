@@ -18,9 +18,6 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.shop.ShopInventory;
 import io.github.nexadn.unitedshops.shop.ShopObject;
 
-/** Container for the shop config file
- * @author NexAdn
- */
 public class ConfigShopMain extends ConfigBase {
 	private HashMap<String, ShopInventory> menus;		// Menu container
 	
@@ -29,7 +26,6 @@ public class ConfigShopMain extends ConfigBase {
 		this.menus = new HashMap<String, ShopInventory>();
 	}
 	
-	/** Parse the config file and save all data in a HashMap */ 
 	public void parseConfig()
 	{
 		UnitedShops.plugin.log(Level.FINE, "Loading config");

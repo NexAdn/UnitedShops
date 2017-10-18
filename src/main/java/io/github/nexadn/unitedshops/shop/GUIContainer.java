@@ -18,15 +18,10 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.config.ConfigShopMain;
 import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 
-/** Static container for all GUI Inventories and their handlers
- * @author NexAdn
- */
 public class GUIContainer {
 	private static Inventory guiCategories;					// Container for category menu
 	private static List<ShopInventory> guiMap;				// Container for item listing inventories
 	
-	/** Initialize the GUI
-	 */
 	public static void initGUI()
 	{
 		UnitedShops.plugin.log(Level.INFO, "Intializing GUI");
@@ -58,9 +53,6 @@ public class GUIContainer {
 		}
 	}
 	
-	/** Create an item (unique item for blank slots)
-	 * @return The ItemStack
-	 */
 	public static ItemStack getBlank()
 	{
 		ItemStack i = new ItemStack(Material.THIN_GLASS,1);
@@ -70,11 +62,6 @@ public class GUIContainer {
 		return i;
 	}
 	
-	/** Create an item with material and display name
-	 * @param mat - The Material
-	 * @param display - The DisplayName
-	 * @return The ItemStack
-	 */
 	public static ItemStack getItem(Material mat, String display)
 	{
 		ItemStack ret = new ItemStack(mat, 1);
@@ -82,12 +69,6 @@ public class GUIContainer {
 		return ret;
 	}
 	
-	/** Create a special item with Material, display name and lore
-	 * @param mat - The Material
-	 * @param display - The DisplayName
-	 * @param funcLore - The Lore
-	 * @return The ItemStack
-	 */
 	public static ItemStack getFunctionalItem(Material mat, String display, String funcLore)
 	{
 		ItemStack ret = new ItemStack(mat, 1);
@@ -100,18 +81,11 @@ public class GUIContainer {
 		return ret;
 	}
 	
-	/**
-	 * @return the Menu GUI
-	 */
 	public static Inventory getMenuGui()
 	{
 		return guiCategories;
 	}
 	
-	/** Check, whether the given Inventory is a GUI Inventory
-	 * @param inv - The inventory
-	 * @return true, if the given inventory equals one or more GUI inventories, false if not.
-	 */
 	public static boolean isGuiInventory(Inventory inv)
 	{
 		if(inv.equals(guiCategories)/* || inv.equals(guiBuySell)*/ ) {
@@ -132,9 +106,6 @@ public class GUIContainer {
 		return false;
 	}
 	
-	/** General handler for InventoryClickEvents in GUI Inventories
-	 * @param event - Event, that has been called
-	 */
 	public static void handleClickEvents(InventoryClickEvent event)
 	{
 		Inventory inv = event.getInventory();
@@ -226,10 +197,6 @@ public class GUIContainer {
 		}
 	}
 	
-	/** Handler for all Shop Menus
-	 * @param event - Event, which has been called
-	 * @param index - List index of the Shop
-	 */
 	public static void handleEventsShopGUI( InventoryClickEvent event, int index )
 	{
 		ItemStack clicked = event.getCurrentItem();
@@ -246,9 +213,6 @@ public class GUIContainer {
 		event.getWhoClicked().openInventory(used.getGuisBuySell().get(event.getSlot()));
 	}
 	
-	/** Handler for the Categories Inventory
-	 * @param event - Event, that has been called
-	 */
 	private static void handleEventsGuiCategories(InventoryClickEvent event)
 	{
 		int slot = event.getSlot();

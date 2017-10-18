@@ -10,9 +10,6 @@ import io.github.nexadn.unitedshops.events.*;
 import io.github.nexadn.unitedshops.shop.*;
 import io.github.nexadn.unitedshops.tradeapi.*;
 
-/** Basic class for the plugin
- * @author NexAdn
- */
 public class UnitedShops extends JavaPlugin 
 {	
 	public static UnitedShops plugin;
@@ -40,7 +37,6 @@ public class UnitedShops extends JavaPlugin
 	}
 	
 	@Override
-	/** Disable the plugin */
 	public void onDisable()
 	{
 		saveConfig();
@@ -51,10 +47,6 @@ public class UnitedShops extends JavaPlugin
 		this.getLogger().log(loglevel, message);
 	}
 	
-	/** Send a message to the target with the Plugin prefix
-	 * @param target - The target.
-	 * @param message - The Message
-	 */
 	public void sendMessage(CommandSender target, String message)
 	{
 		target.sendMessage("[" + this.getName() + "] " + message);

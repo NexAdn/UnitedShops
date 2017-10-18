@@ -21,10 +21,8 @@ public class MoneyTrade {
 		EconomyResponse eReturn = null;
 		double bal = eco.getBalance(player);
 		if(want > bal) {
-			// Weniger Geld als verlangt
 			return false;
 		} else {
-			// Genug Geld, Trade ausführen
 			eReturn = eco.withdrawPlayer(player, want);
 			if( eReturn.transactionSuccess() ) {
 				player.getInventory().addItem(offer);
@@ -40,9 +38,7 @@ public class MoneyTrade {
 		UnitedShops.plugin.log(Level.INFO, Integer.toString(want.getAmount()));
 		EconomyResponse eReturn = null;
 		Inventory playerinv = player.getInventory();
-		// TODO: if-Abfrage beheben (true nur, wenn ItemStack exakt so groß wie gefordert anstatt Summe aller Stacks)
 		if ( playerinv.containsAtLeast(want, want.getAmount())) {
-			// Spieler hat das Zeugs
 			eReturn = eco.depositPlayer(player, offer);
 			if( eReturn.transactionSuccess() ) {
 				if (!removeItems(playerinv, want))
