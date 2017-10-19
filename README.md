@@ -13,7 +13,7 @@ Localization will be added in further updates in the config.yml or other YAML co
 A detailed documentation of the config.yml is in progress, but a basic example config.yml is located at src/main/resources/config.yml
 
 ## Licensing
-UnitedShops is licensed under the terms of the GNU General Public License Version 2 or later.
+UnitedShops is licensed under the terms of the GNU General Public License Version 3 or later.
 A copy of the GPL can be found in LICENSE.md.
 
 # Installation
