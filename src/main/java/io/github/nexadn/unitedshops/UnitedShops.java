@@ -1,5 +1,6 @@
 package io.github.nexadn.unitedshops;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
@@ -20,12 +21,32 @@ public class UnitedShops extends JavaPlugin
 	{
 		plugin = this;
 		
+		this.getLogger().log(Level.FINE, "Establishing economy hook...");
 		if ( !EcoManager.initEco() ) {
 			this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
 			this.setEnabled(false);
 			return;
 		}
 		this.getLogger().log(Level.FINE, "Economy hook successful.");
+		
+		// config.yml
+		try {
+			if (!getDataFolder().exists())
+			{
+				getDataFolder().mkdirs();
+			}
+			File configyml = new File(getDataFolder(), "config.yml");
+			if (!configyml.exists())
+			{
+				this.getLogger().log(Level.INFO, "config.yml not found, creating a new one just for you!");
+				this.saveResource("config.yml", true);
+			}
+		} catch (Exception e)
+		{
+			this.getLogger().log(Level.INFO, e.getMessage());
+			e.printStackTrace();
+			this.setEnabled(false);
+		}
 		
 		// Command executors
 		this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop

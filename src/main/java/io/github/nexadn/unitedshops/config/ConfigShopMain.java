@@ -38,26 +38,6 @@ public class ConfigShopMain extends ConfigBase {
 		{
 			UnitedShops.plugin.getLogger().log(Level.WARNING, "Got NullPointerException in parseConfig()!");
 			ex.printStackTrace();
-			FileConfiguration conf = super.getConf();
-			conf = UnitedShops.plugin.getConfig();
-			conf.createSection("shops");
-			conf.createSection("shops.exampleshop");
-			conf.addDefault("shops.exampleshop.id", 0);
-			conf.addDefault("shops.exampleshop.title", "Example shop");
-			conf.addDefault("shops.exampleshop.iconitem", "COBBLESTONE");
-			conf.createSection("shops.exampleshop.items");
-			conf.createSection("shops.exampleshop.items.COBBLESTONE");
-			conf.addDefault("shops.exampleshop.items.COBBLESTONE.buy", 10.0);
-			conf.addDefault("shops.exampleshop.items.COBBLESTONE.sell", 1.0);
-			keys = conf.getKeys(true);
-			try {
-				UnitedShops.plugin.log(Level.WARNING, "No configuration file found. Creating a new one just for you.");
-				conf.save(new File(UnitedShops.plugin.getDataFolder(), "config.yml"));
-				UnitedShops.plugin.reloadConfig();
-			} catch (IOException e) {
-				e.printStackTrace();
-				UnitedShops.plugin.getLogger().log(Level.SEVERE, "Couldn't save config.yml");
-			}
 		}
 		
 		for( String s:keys )
