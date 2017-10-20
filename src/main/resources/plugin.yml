@@ -3,10 +3,6 @@ version: 1.0.0
 author: NexAdn
 main: io.github.nexadn.unitedshops.UnitedShops
 commands:
-  ushopdebug:
-    description: Debugging command
-    permission: unitedshops.admin
-    usage: "Usage: /ushopdebug [command] [Args...]"
   ushop:
     description: Open the AdminShop
     permission: unitedshops.useshop
