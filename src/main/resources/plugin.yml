@@ -11,6 +11,10 @@ commands:
     description: Open the AdminShop
     permission: unitedshops.useshop
     usage: "Usage: /ushop"
+  usell:
+    description: Open the automatic sale dialog
+    permission: unitedshops.autosell
+    usage: "Usage: /usell"
 
 depend:
 - Vault 
