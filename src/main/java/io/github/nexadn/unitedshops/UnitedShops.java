@@ -3,6 +3,7 @@ package io.github.nexadn.unitedshops;
 import java.util.*;
 import java.util.logging.Level;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,12 +19,15 @@ public class UnitedShops extends JavaPlugin
 	
 	public static UnitedShops plugin;
 	
+	private Metrics metrics;
+	
 	@Override
 	/** Enable the plugin */
 	public void onEnable()
 	{
 		plugin = this;
 		this.autoSaleInventories = new HashMap<OfflinePlayer, AutoSellManager>();
+		this.metrics = new Metrics(this);
 		
 		if ( !EcoManager.initEco() ) {
 			this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
