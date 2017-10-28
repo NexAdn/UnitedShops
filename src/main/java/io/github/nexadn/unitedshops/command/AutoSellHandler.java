@@ -1,29 +1,28 @@
 package io.github.nexadn.unitedshops.command;
 
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import java.util.logging.Level;
 
-import io.github.nexadn.unitedshops.shop.GUIContainer;
+import org.bukkit.*;
+import org.bukkit.command.*;
+import org.bukkit.entity.*;
 
-public class ShopGUIHandler implements CommandExecutor {
+import io.github.nexadn.unitedshops.UnitedShops;
 
-	public ShopGUIHandler() {
+public class AutoSellHandler implements CommandExecutor {
+
+	public AutoSellHandler() {
 		
 	}
 	
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] sArgv) {
 		if(commandSender instanceof Player) {
-			Player player = (Player) commandSender;
-			if(player.hasPermission("unitedshops.useshop")) {
-				player.openInventory(GUIContainer.getMenuGui()); // Menü GUI öffnen
-				//
+			OfflinePlayer player = (OfflinePlayer) commandSender;
+			if(player.getPlayer().hasPermission("unitedshops.autosell")) {
+				UnitedShops.plugin.log(Level.INFO, "Starting autosell");
+				UnitedShops.plugin.getAutoSellManager(player).startAutoSell();
 				return true;
 			} else {
-				commandSender.sendMessage(ChatColor.RED + "Du hast die Permission unitedshops.useshop nicht!");
+				commandSender.sendMessage(ChatColor.RED + "Du hast die Permission unitedshops.autosell nicht!");
 				return true;
 			}
 		} else {
@@ -33,7 +32,7 @@ public class ShopGUIHandler implements CommandExecutor {
 	}
 }
 
-/*  Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+/*  Copyright (C) 2017 Adrian Schollmeyer
 
 This file is part of UnitedShops.
 

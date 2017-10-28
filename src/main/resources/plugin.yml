@@ -3,14 +3,14 @@ version: 1.0.0
 author: NexAdn
 main: io.github.nexadn.unitedshops.UnitedShops
 commands:
-  ushopdebug:
-    description: Debugging command
-    permission: unitedshops.admin
-    usage: "Usage: /ushopdebug [command] [Args...]"
   ushop:
     description: Open the AdminShop
     permission: unitedshops.useshop
     usage: "Usage: /ushop"
+  usell:
+    description: Open the automatic sale dialog
+    permission: unitedshops.autosell
+    usage: "Usage: /usell"
 
 depend:
 - Vault 

@@ -1,8 +1,11 @@
 package io.github.nexadn.unitedshops;
 
 import java.io.File;
+import java.util.*;
 import java.util.logging.Level;
 
+import org.bstats.bukkit.Metrics;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,13 +16,19 @@ import io.github.nexadn.unitedshops.tradeapi.*;
 
 public class UnitedShops extends JavaPlugin 
 {	
+	private HashMap<OfflinePlayer, AutoSellManager> autoSaleInventories;
+	
 	public static UnitedShops plugin;
+	
+	private Metrics metrics;
 	
 	@Override
 	/** Enable the plugin */
 	public void onEnable()
 	{
 		plugin = this;
+		this.autoSaleInventories = new HashMap<OfflinePlayer, AutoSellManager>();
+		this.metrics = new Metrics(this);
 		
 		this.getLogger().log(Level.FINE, "Establishing economy hook...");
 		if ( !EcoManager.initEco() ) {
@@ -50,9 +59,11 @@ public class UnitedShops extends JavaPlugin
 		
 		// Command executors
 		this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler());		// /ushop
+		this.getServer().getPluginCommand("usell").setExecutor(new AutoSellHandler());		// /usell
 		
 		// Event handler
 		this.getServer().getPluginManager().registerEvents(new GUIClick(), this);
+		this.getServer().getPluginManager().registerEvents(new OnInventoryClose(), this);
 		
 		GUIContainer.initGUI();
 	}
@@ -71,6 +82,21 @@ public class UnitedShops extends JavaPlugin
 	public void sendMessage(CommandSender target, String message)
 	{
 		target.sendMessage("[" + this.getName() + "] " + message);
+	}
+	
+	public AutoSellManager getAutoSellManager (OfflinePlayer player)
+	{
+		if ((!this.autoSaleInventories.containsKey(player)) || this.autoSaleInventories.get(player) == null)
+		{
+			this.autoSaleInventories.put(player, new AutoSellManager(player));
+		}
+		return this.autoSaleInventories.get(player);
+	}
+	
+	public boolean hasAutoSellManager (OfflinePlayer player)
+	{
+		return this.autoSaleInventories.containsKey(player);
+		
 	}
 }
 

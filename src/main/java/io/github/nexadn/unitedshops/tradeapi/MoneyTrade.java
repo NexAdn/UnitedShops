@@ -3,7 +3,6 @@ package io.github.nexadn.unitedshops.tradeapi;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +15,8 @@ public class MoneyTrade {
 	
 	private static Economy eco = EcoManager.getEconomy();
 	
+	/** Buy items
+	 */
 	public static boolean tradeItemForMoney( Player player, ItemStack offer, double want )
 	{
 		EconomyResponse eReturn = null;
@@ -33,15 +34,17 @@ public class MoneyTrade {
 		return false;
 	}
 	
-	public static boolean tradeMoneyForItem( Player player, double offer, ItemStack want )
+	/** Sell items
+	 */
+	public static boolean tradeMoneyForItem (Player player, double offer, ItemStack want)
 	{
 		UnitedShops.plugin.log(Level.INFO, Integer.toString(want.getAmount()));
 		EconomyResponse eReturn = null;
-		Inventory playerinv = player.getInventory();
-		if ( playerinv.containsAtLeast(want, want.getAmount())) {
+		Inventory transactionInv = player.getInventory();
+		if (transactionInv.containsAtLeast(want, want.getAmount())) {
 			eReturn = eco.depositPlayer(player, offer);
 			if( eReturn.transactionSuccess() ) {
-				if (!removeItems(playerinv, want))
+				if (!removeItems(transactionInv, want))
 				{
 					eco.withdrawPlayer(player, offer);
 					UnitedShops.plugin.sendMessage(player, ChatColor.RED + "Transaction failed");
@@ -61,6 +64,7 @@ public class MoneyTrade {
 	{
 		int remaining = items.getAmount();
 		UnitedShops.plugin.log(Level.INFO, Integer.toString(remaining));
+		UnitedShops.plugin.log(Level.INFO, items.toString());
 		for (int i=0; i<inventory.getSize(); ++i)
 		{
 			if (inventory.getItem(i) != null && inventory.getItem(i).getType().equals(items.getType()))
@@ -70,13 +74,15 @@ public class MoneyTrade {
 				{
 					is.setAmount(is.getAmount() - remaining);
 					inventory.setItem(i, is);
+					UnitedShops.plugin.log(Level.INFO, "Clear 2");
 					return true;
 				} else
 				{
 					remaining -= is.getAmount();
 					inventory.setItem(i,null);
-					if (is.getAmount() == 0)
+					if (remaining == 0)
 					{
+						UnitedShops.plugin.log(Level.INFO, "Clear 1");
 						return true;
 					}
 				}

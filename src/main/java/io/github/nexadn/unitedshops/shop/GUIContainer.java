@@ -86,6 +86,11 @@ public class GUIContainer {
 		return guiCategories;
 	}
 	
+	public static List<ShopInventory> getGuiMap()
+	{
+		return guiMap;
+	}
+	
 	public static boolean isGuiInventory(Inventory inv)
 	{
 		if(inv.equals(guiCategories)/* || inv.equals(guiBuySell)*/ ) {
