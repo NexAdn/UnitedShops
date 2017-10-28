@@ -45,6 +45,7 @@ public class AutoSellManager {
 						if (so.getItem().getType().equals(s.getType()))
 						{
 							this.player.getPlayer().getInventory().addItem(new ItemStack(s.getType(), s.getAmount()));
+							MoneyTrade.removeItems(this.inventory, s);
 							if (MoneyTrade.tradeMoneyForItem(this.player.getPlayer(), so.getSell()*s.getAmount(), s))
 							{
 								UnitedShops.plugin.log(Level.INFO, "Successful trade");

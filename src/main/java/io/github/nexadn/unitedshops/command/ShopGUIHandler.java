@@ -1,6 +1,7 @@
 package io.github.nexadn.unitedshops.command;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +17,7 @@ public class ShopGUIHandler implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] sArgv) {
 		if(commandSender instanceof Player) {
-			Player player = (Player)commandSender;
+			Player player = (Player) commandSender;
 			if(player.hasPermission("unitedshops.useshop")) {
 				player.openInventory(GUIContainer.getMenuGui()); // Menü GUI öffnen
 				//
