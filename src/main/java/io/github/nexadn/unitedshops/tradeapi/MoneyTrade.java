@@ -76,15 +76,11 @@ public class MoneyTrade {
 					inventory.setItem(i, is);
 					UnitedShops.plugin.log(Level.INFO, "Clear 2");
 					return true;
-				} else if (is.getAmount() == remaining)
-				{
-					inventory.setItem(i, null);
-					return true;
 				} else
 				{
 					remaining -= is.getAmount();
 					inventory.setItem(i,null);
-					if (is.getAmount() == 0)
+					if (remaining == 0)
 					{
 						UnitedShops.plugin.log(Level.INFO, "Clear 1");
 						return true;
