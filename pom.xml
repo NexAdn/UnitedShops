@@ -63,5 +63,5 @@
   	<connection>git://github.com/NexAdn/UnitedShops.git</connection>
   	<developerConnection>ssh://git@github.com/NexAdn/UnitedShops.git</developerConnection>
   </scm>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </project>
