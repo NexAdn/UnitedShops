@@ -18,7 +18,6 @@ public class AutoSellHandler implements CommandExecutor {
 		if(commandSender instanceof Player) {
 			OfflinePlayer player = (OfflinePlayer) commandSender;
 			if(player.getPlayer().hasPermission("unitedshops.autosell")) {
-				UnitedShops.plugin.log(Level.INFO, "Starting autosell");
 				UnitedShops.plugin.getAutoSellManager(player).startAutoSell();
 				return true;
 			} else {

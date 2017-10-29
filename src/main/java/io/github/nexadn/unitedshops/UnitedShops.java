@@ -20,6 +20,7 @@ public class UnitedShops extends JavaPlugin
 	
 	public static UnitedShops plugin;
 	
+	@SuppressWarnings("unused")
 	private Metrics metrics;
 	
 	@Override
