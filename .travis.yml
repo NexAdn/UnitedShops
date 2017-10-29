@@ -1,9 +1,10 @@
 language: java
-
 deploy:
-    provider: releases
-    api_key: "7bda3b7ee352da229352c704f1153e189fb861e"
-    file: "target/UnitedShops-1.1.1.jar"
-    skip_cleanup: true
-    on:
-        tags: true
+  provider: releases
+  file: target/UnitedShops-1.1.1.jar
+  skip_cleanup: true
+  on:
+    tags: true
+env:
+  global:
+    secure: j+fGKINVeOfJ/hHHntoPpLM6lSge3pSz00bFyn1dGMfW2yX5xzPpZ6o6L8stzLRljcgJNprkXZQAvOdzFStmdu3lcTQY6ZT/gYLMQw3QpCbruspaL80kN0RhJth68w71OvqhV+fvC9SakuTL//IMDlex8gacQXKnS1pyWeHhlff62WqeD9C5UNRIcuWuGyxTWqLX+0UsE6lUwy7uC5t/E3i92C1MDn7MAXJaJ+ac0XLf4qu5Xb1xu/ivvU5BlVEsxlORrgafE1g0lX0hc3w+2i+turQ7jPwEdyHzplY4hy1/lwx6RF/vBBCaejfpXyN+xhnBzOrX48LZQ2tI0iDu7/U6cWJx6Q0n8MAaQAwIEmPodjjj2jhNgeB+/ZqhT1Jywg1awZAL6ugppDMMH/GMGmaPL/NDtWpwgVGA86wYPYtzbaLUfQ3+570zQMnhb2TDaDLDQfMxEy2Dm+fH2TLT9e3AKqNO+pm6JCKsceA1Bp+C3pu7T+I4nC9X6ib3qxJrprPijhXCPYUrSVzq8yD7oiZ0/23gVa4vExNEFuV27YIAyn8r3Fz6MFsLsow8PWBK6YvBVAxF+VQK9fvRs8381KBA709QbZ10geKYl0ZLx1kkGRZIlj/2Oym7qvWjB0wiQx5gWnnedFSXAzz5zYIaQvcPJB+hsDomBcz1ZoVCvqI=
