@@ -1,7 +1,5 @@
 package io.github.nexadn.unitedshops.shop;
 
-import java.util.logging.Level;
-
 import org.bukkit.*;
 import org.bukkit.inventory.*;
 
@@ -48,13 +46,11 @@ public class AutoSellManager {
 							MoneyTrade.removeItems(this.inventory, s);
 							if (MoneyTrade.tradeMoneyForItem(this.player.getPlayer(), so.getSell()*s.getAmount(), s))
 							{
-								UnitedShops.plugin.log(Level.INFO, "Successful trade");
 								nextitem = true;
 								break;
 							} else
 							{
 								UnitedShops.plugin.sendMessage(this.player.getPlayer(), "Failed to sell item " + s.getType().toString());
-								UnitedShops.plugin.log(Level.INFO, "Failed to sell item " + s.getType().toString());
 							}
 						}
 					}

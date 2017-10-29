@@ -38,7 +38,6 @@ public class MoneyTrade {
 	 */
 	public static boolean tradeMoneyForItem (Player player, double offer, ItemStack want)
 	{
-		UnitedShops.plugin.log(Level.INFO, Integer.toString(want.getAmount()));
 		EconomyResponse eReturn = null;
 		Inventory transactionInv = player.getInventory();
 		if (transactionInv.containsAtLeast(want, want.getAmount())) {
@@ -63,8 +62,6 @@ public class MoneyTrade {
 	public static boolean removeItems( Inventory inventory, ItemStack items )
 	{
 		int remaining = items.getAmount();
-		UnitedShops.plugin.log(Level.INFO, Integer.toString(remaining));
-		UnitedShops.plugin.log(Level.INFO, items.toString());
 		for (int i=0; i<inventory.getSize(); ++i)
 		{
 			if (inventory.getItem(i) != null && inventory.getItem(i).getType().equals(items.getType()))
@@ -74,7 +71,6 @@ public class MoneyTrade {
 				{
 					is.setAmount(is.getAmount() - remaining);
 					inventory.setItem(i, is);
-					UnitedShops.plugin.log(Level.INFO, "Clear 2");
 					return true;
 				} else
 				{
@@ -82,7 +78,6 @@ public class MoneyTrade {
 					inventory.setItem(i,null);
 					if (remaining == 0)
 					{
-						UnitedShops.plugin.log(Level.INFO, "Clear 1");
 						return true;
 					}
 				}

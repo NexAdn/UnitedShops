@@ -22,7 +22,6 @@ public class OnInventoryClose implements Listener {
 			AutoSellManager m = UnitedShops.plugin.getAutoSellManager(op);
 			if (event.getInventory().equals(m.getInventory()))
 			{
-				UnitedShops.plugin.log(Level.INFO, "Autosell event");
 				m.fetchInventory();
 			}
 		}
