@@ -5,5 +5,6 @@ import org.bukkit.inventory.ItemStack;
 
 public interface PagerItem {
 	void call (InventoryClickEvent e);
-	ItemStack getIcon();
+
+	ItemStack getIcon ();
 }
