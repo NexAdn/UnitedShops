@@ -15,8 +15,10 @@
     <!-- Versions -->
     <minecraft.version>1.12.1</minecraft.version>
     <bukkit.rev>R0.1-SNAPSHOT</bukkit.rev>
-    
     <vaultapi.version>1.6</vaultapi.version>
+    
+    <junit.version>4.11</junit.version>
+    <powermock.version>1.7.3</powermock.version>
   </properties>
   
   <repositories>
@@ -64,8 +66,26 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.powermock</groupId>
+    	<artifactId>powermock-module-junit4</artifactId>
+    	<version>${powermock.version}</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.powermock</groupId>
+    	<artifactId>powermock-api-mockito</artifactId>
+    	<version>${powermock.version}</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.powermock</groupId>
+    	<artifactId>powermock-api-easymock</artifactId>
+    	<version>${powermock.version}</version>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
   <scm>
