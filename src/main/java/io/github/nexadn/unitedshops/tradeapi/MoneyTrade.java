@@ -1,7 +1,5 @@
 package io.github.nexadn.unitedshops.tradeapi;
 
-import java.util.logging.Level;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

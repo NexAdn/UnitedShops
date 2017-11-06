@@ -1,7 +1,5 @@
 package io.github.nexadn.unitedshops.command;
 
-import java.util.logging.Level;
-
 import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;

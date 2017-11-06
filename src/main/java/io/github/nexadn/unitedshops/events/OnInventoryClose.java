@@ -1,7 +1,5 @@
 package io.github.nexadn.unitedshops.events;
 
-import java.util.logging.Level;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
