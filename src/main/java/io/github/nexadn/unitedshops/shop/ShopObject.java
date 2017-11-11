@@ -4,13 +4,17 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ShopObject {
+import io.github.nexadn.unitedshops.ui.PagerItem;
+
+public class ShopObject implements PagerItem {
 	ItemStack	itemstack;
 	Inventory	buysellgui;
+	Inventory	parentShop;
 	double		pricebuy;
 	double		pricesell;
 	boolean		nobuy	= false;
@@ -57,21 +61,21 @@ public class ShopObject {
 				it.setAmount(1);
 				this.buysellgui.setItem(i, it);
 				break;
-			case 1: // Kauf 10
-				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 10", "ev-b-10");
+			case 1: // Kauf 16
+				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 16", "ev-b-16");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricebuy * 10);
+				il.add("Preis: " + this.pricebuy * 16);
 				im.setLore(il);
 				it.setItemMeta(im);
-				it.setAmount(10);
+				it.setAmount(16);
 				this.buysellgui.setItem(i, it);
 				break;
 			case 2: // Kauf 64
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 64", "ev-b-64");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricebuy * 10);
+				il.add("Preis: " + this.pricebuy * 64);
 				im.setLore(il);
 				it.setItemMeta(im);
 				it.setAmount(64);
@@ -98,14 +102,14 @@ public class ShopObject {
 				it.setAmount(1);
 				this.buysellgui.setItem(i, it);
 				break;
-			case 7: // Verkauf 10
-				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 10", "ev-s-10");
+			case 7: // Verkauf 16
+				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 16", "ev-s-16");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricesell * 10);
+				il.add("Preis: " + this.pricesell * 16);
 				im.setLore(il);
 				it.setItemMeta(im);
-				it.setAmount(10);
+				it.setAmount(16);
 				this.buysellgui.setItem(i, it);
 				break;
 			case 8: // Verkauf 64
@@ -120,7 +124,7 @@ public class ShopObject {
 			}
 		}
 	}
-
+	
 	public ItemStack getItem ()
 	{
 		return this.itemstack;
@@ -144,6 +148,26 @@ public class ShopObject {
 	public Inventory getBuySellGui ()
 	{
 		return this.buysellgui;
+	}
+	
+	public Inventory getParent ()
+	{
+		return this.parentShop;
+	}
+
+	public void call (InventoryClickEvent e)
+	{
+		e.getWhoClicked().openInventory(this.buysellgui);
+	}
+
+	public ItemStack getIcon ()
+	{
+		return new ItemStack(this.itemstack.getType());
+	}
+	
+	public void setParent (Inventory inventory)
+	{
+		this.parentShop = inventory;
 	}
 }
 

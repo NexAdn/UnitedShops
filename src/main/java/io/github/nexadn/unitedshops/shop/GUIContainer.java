@@ -37,6 +37,9 @@ public final class GUIContainer {
 		}
 
 		guiPager = new Pager(guiMap, menuButtons, "Shop - Kategorien", 2);
+		
+		for (ShopInventory i : guiMap)
+			i.setParent(guiPager.getFirstInventory());
 	}
 
 	public static ItemStack getBlank ()
@@ -109,19 +112,10 @@ public final class GUIContainer {
 	public static void handleClickEvents (InventoryClickEvent event)
 	{
 		Inventory inv = event.getInventory();
-
-		if (inv.equals(guiCategories))
-		{
-			// Klick innerhalb Kategorienübersicht
-			handleEventsGuiCategories(event);
-		}
-
 		for (int i = 0; i < guiMap.size(); i++)
 		{
 			if (guiMap.get(i).getInventory().equals(inv))
 			{
-				// Klick innerhalb Shopkategorie
-				handleEventsShopGUI(event, i);
 				break;
 			} else
 			{
@@ -152,13 +146,12 @@ public final class GUIContainer {
 		int amount = 1;
 		switch (event.getSlot()) {
 		case 0: // Kauf 1
-
 			is.setAmount(amount);
 			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
 			break;
 
-		case 1: // Kauf 10
-			amount = 10;
+		case 1: // Kauf 16
+			amount = 16;
 			is.setAmount(amount);
 			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
 			break;
@@ -168,6 +161,11 @@ public final class GUIContainer {
 			is.setAmount(amount);
 			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
 			break;
+			
+		case 4: // Zurück
+			event.getWhoClicked().openInventory(object.getParent());
+			success = true;
+			break;
 
 		case 6: // Verkauf 1
 			amount = 1;
@@ -175,8 +173,8 @@ public final class GUIContainer {
 			success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
 			break;
 
-		case 7: // Verkauf 10
-			amount = 10;
+		case 7: // Verkauf 16
+			amount = 16;
 			is.setAmount(amount);
 			success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
 			break;
@@ -212,13 +210,6 @@ public final class GUIContainer {
 			}
 		}
 		event.getWhoClicked().openInventory(used.getGuisBuySell().get(event.getSlot()));
-	}
-
-	private static void handleEventsGuiCategories (InventoryClickEvent event)
-	{
-		int slot = event.getSlot();
-		event.getWhoClicked().closeInventory();
-		event.getWhoClicked().openInventory(guiMap.get(slot).getInventory());
 	}
 }
 

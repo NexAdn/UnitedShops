@@ -1,7 +1,8 @@
 package io.github.nexadn.unitedshops.shop;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +13,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
+import io.github.nexadn.unitedshops.ui.Pager;
 import io.github.nexadn.unitedshops.ui.PagerItem;
 
 public class ShopInventory implements PagerItem {
@@ -21,13 +24,15 @@ public class ShopInventory implements PagerItem {
 	private int					order;
 	private String				title;
 	private List<ShopObject>	content;
+	private Pager				pager;
+	private final int			menuButtons = Pager.MenuButton.PREV | Pager.MenuButton.NEXT | Pager.MenuButton.CLOSE | Pager.MenuButton.UP;
 
 	public ShopInventory()
 	{
 		this.order = 0;
 		this.title = "null";
 		this.icon = new ItemStack(Material.BARRIER);
-		this.content = new Vector<ShopObject>();
+		this.content = new ArrayList<ShopObject>();
 	}
 
 	public ShopInventory(String title, ItemStack icon, int id)
@@ -35,7 +40,7 @@ public class ShopInventory implements PagerItem {
 		this.icon = icon;
 		this.title = title;
 		this.order = id;
-		this.content = new Vector<ShopObject>();
+		this.content = new ArrayList<ShopObject>();
 	}
 
 	public void initInventory ()
@@ -44,23 +49,10 @@ public class ShopInventory implements PagerItem {
 		{
 			o.init();
 		}
-		int size = content.size();
-		size += 9 - (size % 9);
-		this.inv = Bukkit.createInventory(null, size, this.title);
-		for (int i = 0; i < content.size(); i++)
+		this.pager = new Pager(this.content, this.menuButtons, this.title);
+		for (ShopObject o : this.content)
 		{
-			try
-			{
-				inv.setItem(i, this.content.get(i).getItem());
-			} catch (ArrayIndexOutOfBoundsException e)
-			{
-				break;
-			}
-			// Stop if the maximum number of objects per inventory is reached
-			if (i == 45)
-			{
-				break;
-			}
+			o.setParent(this.pager.getFirstInventory());
 		}
 
 		ItemMeta im = this.icon.getItemMeta();
@@ -92,6 +84,11 @@ public class ShopInventory implements PagerItem {
 	public void setTitle (String title)
 	{
 		this.title = title;
+	}
+	
+	public void setParent (Inventory parent)
+	{
+		this.pager.setParent(parent);
 	}
 
 	public void addContent (ShopObject object)
@@ -126,7 +123,7 @@ public class ShopInventory implements PagerItem {
 
 	public Inventory getInventory ()
 	{
-		return this.inv;
+		return this.pager.getFirstInventory();
 	}
 
 	public List<ShopObject> getShopObjects ()
@@ -136,7 +133,7 @@ public class ShopInventory implements PagerItem {
 
 	public List<Inventory> getGuisBuySell ()
 	{
-		List<Inventory> gui = new Vector<Inventory>();
+		List<Inventory> gui = new ArrayList<Inventory>();
 		for (ShopObject o : this.content)
 		{
 			gui.add(o.getBuySellGui());
@@ -146,7 +143,11 @@ public class ShopInventory implements PagerItem {
 
 	public void call (InventoryClickEvent e)
 	{
-		e.getWhoClicked().openInventory(this.inv);
+		if (this.pager.getFirstInventory() == null)
+		{
+			UnitedShops.plugin.log(Level.SEVERE, "Gotcha!");
+		}
+		e.getWhoClicked().openInventory(this.pager.getFirstInventory());
 	}
 }
 

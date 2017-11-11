@@ -25,6 +25,11 @@ public class Pager implements Listener {
 	/** Slots reserved for menu Buttons (add 9 per row, only increment if needed) */
 	private final int					menuRowSlots	= 9;
 
+	/** Create and initialize a pager object
+	 * @param pagerItems The pager's content
+	 * @param menuButtons Flags to enable certain menu button functions
+	 * @param title Inventory title
+	 */
 	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title)
 	{
 		this.items = pagerItems;
@@ -36,6 +41,12 @@ public class Pager implements Listener {
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
 	}
 
+	/** Create and initialize a pager object
+	 * @param pagerItems The pager's content
+	 * @param menuButtons Flags to enable certain menu button functions
+	 * @param title Inventory title
+	 * @param parent The parent inventory (opened when clicking menu button "UP")
+	 */
 	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title, Inventory parent)
 	{
 		this.items = pagerItems;
@@ -47,6 +58,12 @@ public class Pager implements Listener {
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
 	}
 
+	/** Create and initialize a pager object
+	 * @param pagerItems The pager's content
+	 * @param menuButtons Flags to enable certain menu button functions
+	 * @param title Inventory title
+	 * @param rowsPerPage Rows of content items per page
+	 */
 	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title, int rowsPerPage)
 	{
 		this.items = pagerItems;
@@ -57,7 +74,14 @@ public class Pager implements Listener {
 		this.init();
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
 	}
-
+	
+	/** Create and initialize a pager object
+	 * @param pagerItems The pager's content
+	 * @param menuButtons Flags to enable certain menu button functions
+	 * @param title Inventory title
+	 * @param rowsPerPage Rows of content items per page
+	 * @param parent The parent inventory (opened when clicking menu button "UP")
+	 */
 	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title, int rowsPerPage, Inventory parent)
 	{
 		this.items = pagerItems;
@@ -67,6 +91,11 @@ public class Pager implements Listener {
 		this.title = title;
 		this.init();
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
+	}
+	
+	public void setParent (Inventory parent)
+	{
+		this.parent = parent;
 	}
 
 	public int getInventoryCount ()
