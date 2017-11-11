@@ -2,29 +2,34 @@ package io.github.nexadn.unitedshops.shop;
 
 import java.util.List;
 import java.util.Vector;
+
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
+import io.github.nexadn.unitedshops.ui.PagerItem;
 
-public class ShopInventory {
-	private Inventory inv;
-	private ItemStack icon;
-	private int order;
-	private String title;
-	private List<ShopObject> content;
-	
-	
+public class ShopInventory implements PagerItem {
+	private Inventory			inv;
+	private ItemStack			icon;
+	private int					order;
+	private String				title;
+	private List<ShopObject>	content;
+
 	public ShopInventory()
 	{
 		this.order = 0;
 		this.title = "null";
+		this.icon = new ItemStack(Material.BARRIER);
 		this.content = new Vector<ShopObject>();
 	}
-	
+
 	public ShopInventory(String title, ItemStack icon, int id)
 	{
 		this.icon = icon;
@@ -32,88 +37,134 @@ public class ShopInventory {
 		this.order = id;
 		this.content = new Vector<ShopObject>();
 	}
-	
-	public void initInventory()
+
+	public void initInventory ()
 	{
-		for(ShopObject o:this.content)
+		for (ShopObject o : this.content)
 		{
 			o.init();
 		}
 		int size = content.size();
-		size += 9-(size%9);
+		size += 9 - (size % 9);
 		this.inv = Bukkit.createInventory(null, size, this.title);
-		for(int i=0; i<content.size(); i++)
+		for (int i = 0; i < content.size(); i++)
 		{
-			try {
+			try
+			{
 				inv.setItem(i, this.content.get(i).getItem());
-			}
-			catch (ArrayIndexOutOfBoundsException e) {
+			} catch (ArrayIndexOutOfBoundsException e)
+			{
 				break;
 			}
 			// Stop if the maximum number of objects per inventory is reached
-			if(i==45)
+			if (i == 45)
 			{
 				break;
 			}
 		}
-		
-		this.icon.getItemMeta().setDisplayName(this.title);
+
+		ItemMeta im = this.icon.getItemMeta();
+		im.setDisplayName(ChatColor.AQUA + this.title);
+		this.icon.setItemMeta(im);
 	}
-	
-	public boolean handleTrades(int index, Player player, boolean isSell, int amount)
+
+	public boolean handleTrades (int index, Player player, boolean isSell, int amount)
 	{
 		ShopObject tmp = this.content.get(index);
 		ItemStack item = tmp.getItem();
 		item.setAmount(amount);
 		double buy1 = tmp.getBuy();
 		double sell1 = tmp.getSell();
-		
-		if( !isSell )
+
+		if (!isSell)
 		{
 			// Buy items
-			return MoneyTrade.tradeItemForMoney(player, item, buy1*amount);
-		} else if ( isSell )
+			return MoneyTrade.tradeItemForMoney(player, item, buy1 * amount);
+		} else if (isSell)
 		{
 			// Sell items
-			return MoneyTrade.tradeMoneyForItem(player, sell1*amount, item);
+			return MoneyTrade.tradeMoneyForItem(player, sell1 * amount, item);
 		}
-		
+
 		return false;
 	}
-	
-	public void setTitle(String title) { this.title = title; }
-	public void addContent(ShopObject object) { this.content.add(object); }
-	public void setContent(List<ShopObject> contents) { this.content = contents; }
-	public void setIcon(Material icon) { this.icon = new ItemStack(icon, 1); }
-	
-	public String getTitle() { return this.title; }
-	public int getOrderNumber() { return this.order; }
-	public ItemStack getIcon() { return this.icon; }
-	public Inventory getInventory() { return this.inv; }
-	public List<ShopObject> getShopObjects() { return this.content; }
-	public List<Inventory> getGuisBuySell() {
+
+	public void setTitle (String title)
+	{
+		this.title = title;
+	}
+
+	public void addContent (ShopObject object)
+	{
+		this.content.add(object);
+	}
+
+	public void setContent (List<ShopObject> contents)
+	{
+		this.content = contents;
+	}
+
+	public void setIcon (Material icon)
+	{
+		this.icon = new ItemStack(icon, 1);
+	}
+
+	public String getTitle ()
+	{
+		return this.title;
+	}
+
+	public int getOrderNumber ()
+	{
+		return this.order;
+	}
+
+	public ItemStack getIcon ()
+	{
+		return this.icon;
+	}
+
+	public Inventory getInventory ()
+	{
+		return this.inv;
+	}
+
+	public List<ShopObject> getShopObjects ()
+	{
+		return this.content;
+	}
+
+	public List<Inventory> getGuisBuySell ()
+	{
 		List<Inventory> gui = new Vector<Inventory>();
-		for( ShopObject o:this.content ) {
+		for (ShopObject o : this.content)
+		{
 			gui.add(o.getBuySellGui());
 		}
 		return gui;
 	}
+
+	public void call (InventoryClickEvent e)
+	{
+		e.getWhoClicked().openInventory(this.inv);
+	}
 }
 
-/*  Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
-
-This file is part of UnitedShops.
-
-UnitedShops is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+ * 
+ * This file is part of UnitedShops.
+ * 
+ * UnitedShops is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
