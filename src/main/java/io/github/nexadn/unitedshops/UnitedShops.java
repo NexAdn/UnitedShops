@@ -1,7 +1,7 @@
 package io.github.nexadn.unitedshops;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
@@ -14,29 +14,28 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import io.github.nexadn.unitedshops.command.*;
 import io.github.nexadn.unitedshops.events.*;
 import io.github.nexadn.unitedshops.shop.*;
-import io.github.nexadn.unitedshops.tradeapi.*;
+import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 
 public class UnitedShops extends JavaPlugin {
-	private boolean unitTest = false;
-	
+	private boolean									unitTest	= false;
+
 	private HashMap<OfflinePlayer, AutoSellManager>	autoSaleInventories;
 
 	public static UnitedShops						plugin;
 
 	@SuppressWarnings ("unused")
-	private Metrics metrics;
+	private Metrics									metrics;
 
 	public UnitedShops()
 	{
-		
 	}
-	
+
 	/** Unit Test constructor */
 	public UnitedShops(JavaPluginLoader mockPluginLoader, PluginDescriptionFile pluginDescriptionFile, File pluginDir,
 			File file)
 	{
 		super(mockPluginLoader, pluginDescriptionFile, pluginDir, file);
-		this.unitTest = true;
+		log(Level.SEVERE, "Running in Unit testing mode!");
 	}
 
 	@Override
@@ -86,6 +85,14 @@ public class UnitedShops extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new OnInventoryClose(), this);
 
 		GUIContainer.initGUI();
+
+		if (this.unitTest)
+			UnitedShops.plugin.log(Level.SEVERE, "Running in unit testing mode!");
+	}
+
+	public void onUnitTest ()
+	{
+		this.unitTest = true;
 	}
 
 	@Override
@@ -117,6 +124,11 @@ public class UnitedShops extends JavaPlugin {
 	{
 		return this.autoSaleInventories.containsKey(player);
 
+	}
+
+	public boolean isUnitTest ()
+	{
+		return this.unitTest;
 	}
 }
 
