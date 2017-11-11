@@ -5,24 +5,26 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 
-public class EcoManager {
+public final class EcoManager {
 	private static Economy economy;
 
-	public static boolean initEco () {
-		RegisteredServiceProvider<Economy> economyProvider = UnitedShops.plugin.getServer ().getServicesManager ()
-				.getRegistration (net.milkbowl.vault.economy.Economy.class);
+	public static boolean initEco ()
+	{
+		RegisteredServiceProvider<Economy> economyProvider = UnitedShops.plugin.getServer().getServicesManager()
+				.getRegistration(net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null)
 		{
-			economy = economyProvider.getProvider ();
+			economy = economyProvider.getProvider();
 		}
 
 		return (economy != null);
 	}
 
-	public static Economy getEconomy () {
+	public static Economy getEconomy ()
+	{
 		while (economy == null)
 		{
-			initEco ();
+			initEco();
 		}
 		return economy;
 	}
