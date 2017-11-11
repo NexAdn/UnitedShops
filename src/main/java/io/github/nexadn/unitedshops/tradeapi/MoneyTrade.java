@@ -1,7 +1,5 @@
 package io.github.nexadn.unitedshops.tradeapi;
 
-import java.util.logging.Level;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -11,21 +9,25 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
-public class MoneyTrade {
-	
+public final class MoneyTrade {
+
 	private static Economy eco = EcoManager.getEconomy();
-	
-	/** Buy items
+
+	/**
+	 * Buy items
 	 */
-	public static boolean tradeItemForMoney( Player player, ItemStack offer, double want )
+	public static boolean tradeItemForMoney (Player player, ItemStack offer, double want)
 	{
 		EconomyResponse eReturn = null;
 		double bal = eco.getBalance(player);
-		if(want > bal) {
+		if (want > bal)
+		{
 			return false;
-		} else {
+		} else
+		{
 			eReturn = eco.withdrawPlayer(player, want);
-			if( eReturn.transactionSuccess() ) {
+			if (eReturn.transactionSuccess())
+			{
 				player.getInventory().addItem(offer);
 				UnitedShops.plugin.sendMessage(player, "Trade: " + offer.toString() + " -> $" + want);
 				return true;
@@ -33,16 +35,19 @@ public class MoneyTrade {
 		}
 		return false;
 	}
-	
-	/** Sell items
+
+	/**
+	 * Sell items
 	 */
 	public static boolean tradeMoneyForItem (Player player, double offer, ItemStack want)
 	{
 		EconomyResponse eReturn = null;
 		Inventory transactionInv = player.getInventory();
-		if (transactionInv.containsAtLeast(want, want.getAmount())) {
+		if (transactionInv.containsAtLeast(want, want.getAmount()))
+		{
 			eReturn = eco.depositPlayer(player, offer);
-			if( eReturn.transactionSuccess() ) {
+			if (eReturn.transactionSuccess())
+			{
 				if (!removeItems(transactionInv, want))
 				{
 					eco.withdrawPlayer(player, offer);
@@ -52,17 +57,17 @@ public class MoneyTrade {
 				UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.toString());
 				return true;
 			}
-		} else 
+		} else
 		{
 			return false;
 		}
 		return false;
 	}
-	
-	public static boolean removeItems( Inventory inventory, ItemStack items )
+
+	public static boolean removeItems (Inventory inventory, ItemStack items)
 	{
 		int remaining = items.getAmount();
-		for (int i=0; i<inventory.getSize(); ++i)
+		for (int i = 0; i < inventory.getSize(); ++i)
 		{
 			if (inventory.getItem(i) != null && inventory.getItem(i).getType().equals(items.getType()))
 			{
@@ -75,7 +80,7 @@ public class MoneyTrade {
 				} else
 				{
 					remaining -= is.getAmount();
-					inventory.setItem(i,null);
+					inventory.setItem(i, null);
 					if (remaining == 0)
 					{
 						return true;
@@ -87,20 +92,21 @@ public class MoneyTrade {
 	}
 }
 
-/*  Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
-
-This file is part of UnitedShops.
-
-UnitedShops is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+ * 
+ * This file is part of UnitedShops.
+ * 
+ * UnitedShops is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */

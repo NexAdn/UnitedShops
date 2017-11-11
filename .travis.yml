@@ -1,7 +1,7 @@
 language: java
 deploy:
   provider: releases
-  file: target/UnitedShops-1.1.1.jar
+  file: target/UnitedShops-1.2.0.jar
   skip_cleanup: true
   on:
     tags: true
