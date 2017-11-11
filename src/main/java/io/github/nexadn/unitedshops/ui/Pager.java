@@ -5,24 +5,27 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
+import io.github.nexadn.unitedshops.shop.GUIContainer;
 
 public class Pager implements Listener {
-	private List<PagerItem>	items;
-	private List<Inventory>	uiInventorys;
-	private String			title;
-	private Inventory		parent;
-	private int				menuButtonSettings;
-	private int				rowsPerPage;
+	private List<? extends PagerItem>	items;
+	private List<Inventory>				uiInventorys;
+	private String						title;
+	private Inventory					parent;
+	private int							menuButtonSettings;
+	private int							rowsPerPage;
 	/** Slots reserved for menu Buttons (add 9 per row, only increment if needed) */
-	private final int		menuRowSlots	= 9;
+	private final int					menuRowSlots	= 9;
 
-	public Pager(List<PagerItem> pagerItems, int menuButtons, String title)
+	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title)
 	{
 		this.items = pagerItems;
 		this.menuButtonSettings = menuButtons;
@@ -33,7 +36,7 @@ public class Pager implements Listener {
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
 	}
 
-	public Pager(List<PagerItem> pagerItems, int menuButtons, String title, Inventory parent)
+	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title, Inventory parent)
 	{
 		this.items = pagerItems;
 		this.menuButtonSettings = menuButtons;
@@ -44,7 +47,7 @@ public class Pager implements Listener {
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
 	}
 
-	public Pager(List<PagerItem> pagerItems, int menuButtons, String title, int rowsPerPage)
+	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title, int rowsPerPage)
 	{
 		this.items = pagerItems;
 		this.menuButtonSettings = menuButtons;
@@ -55,7 +58,7 @@ public class Pager implements Listener {
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
 	}
 
-	public Pager(List<PagerItem> pagerItems, int menuButtons, String title, int rowsPerPage, Inventory parent)
+	public Pager(List<? extends PagerItem> pagerItems, int menuButtons, String title, int rowsPerPage, Inventory parent)
 	{
 		this.items = pagerItems;
 		this.menuButtonSettings = menuButtons;
@@ -64,30 +67,63 @@ public class Pager implements Listener {
 		this.title = title;
 		this.init();
 		UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
+	}
+
+	public int getInventoryCount ()
+	{
+		return calculateInventoryCount(this.items.size(), this.rowsPerPage);
+	}
+
+	public static int calculateInventoryCount (int items, int rowsPerPage)
+	{
+		return (int) Math.ceil( ((double) items / (9 * (double) rowsPerPage)));
+	}
+
+	public int getRowsPerPage ()
+	{
+		return this.rowsPerPage;
 	}
 
 	public void init ()
 	{
 		try
 		{
-			int inventoryCount = (int) (Math.floor(this.items.size() / 9 * this.rowsPerPage) + 1);
+			int inventoryCount = this.getInventoryCount();
 			if (this.uiInventorys == null)
 				this.uiInventorys = new ArrayList<Inventory>();
 			this.uiInventorys.clear();
+
 			for (int i = 0; i < inventoryCount; ++i)
 			{
-				this.uiInventorys
-						.add(Bukkit.createInventory(null, 9 * this.rowsPerPage + this.menuRowSlots, this.title));
+				this.uiInventorys.add(Bukkit.createInventory(null, 9 * this.rowsPerPage + this.menuRowSlots,
+						this.title + " (" + Integer.toString(i + 1) + "/" + inventoryCount + ")"));
+				List<ItemStack> bar = MenuButton.createIconBar(this.menuButtonSettings);
+				for (int j = 0; j < this.menuRowSlots; ++j)
+				{
+					this.uiInventorys.get(i).setItem(j + (this.rowsPerPage * 9), bar.get(j));
+				}
 			}
+
 			for (int i = 0; i < this.items.size(); ++i)
 			{
-				int page = Math.floorDiv(i * this.rowsPerPage, 9);
-				this.uiInventorys.get(page).setItem(i - page * 9 * this.rowsPerPage, this.items.get(i).getIcon());
+				int page = Math.floorDiv(i, 9 * this.rowsPerPage);
+				this.uiInventorys.get(page).setItem(i - (page * 9 * this.rowsPerPage), this.items.get(i).getIcon());
 			}
 		} catch (ArithmeticException e)
 		{
 			UnitedShops.plugin.log(Level.SEVERE, "Division by zero!");
 			e.printStackTrace();
+		}
+	}
+
+	public Inventory getFirstInventory ()
+	{
+		if (this.uiInventorys.size() > 0)
+		{
+			return this.uiInventorys.get(0);
+		} else
+		{
+			return null;
 		}
 	}
 
@@ -111,23 +147,24 @@ public class Pager implements Listener {
 					// menu buttons
 					int col = event.getSlot() % 9;
 					int button = 1 << col;
-					if ( (button & MenuButton.PREV) > 0)
+					if ( (button & MenuButton.PREV & this.menuButtonSettings) > 0)
 					{
 						// Previous
-						event.getWhoClicked()
-								.openInventory(this.uiInventorys.get(this.uiInventorys.lastIndexOf(i) - 1));
-					} else if ( (button & MenuButton.UP) > 0)
+						if (this.uiInventorys.lastIndexOf(event.getInventory()) > 0)
+							event.getWhoClicked()
+									.openInventory(this.uiInventorys.get(this.uiInventorys.lastIndexOf(i) - 1));
+					} else if ( (button & MenuButton.UP & this.menuButtonSettings) > 0)
 					{
 						// Up
 						if (this.parent != null)
 						{
 							event.getWhoClicked().openInventory(this.parent);
 						}
-					} else if ( (button & MenuButton.CLOSE) > 0)
+					} else if ( (button & MenuButton.CLOSE & this.menuButtonSettings) > 0)
 					{
 						// Close
 						event.getWhoClicked().closeInventory();
-					} else if ( (button & MenuButton.NEXT) > 0)
+					} else if ( (button & MenuButton.NEXT & this.menuButtonSettings) > 0)
 					{
 						// Next
 						int nextindex = this.uiInventorys.lastIndexOf(i) + 1;
@@ -158,18 +195,63 @@ public class Pager implements Listener {
 		this.menuButtonSettings = menuButtonSettings;
 		init();
 	}
-	
-	public List<Inventory> getInventorys()
+
+	public List<Inventory> getInventorys ()
 	{
 		return this.uiInventorys;
 	}
 
 	/** Flags for the menuButton */
-	public class MenuButton {
+	public static class MenuButton {
 		// 1 << Spalte → Flag
 		final public static int	PREV	= 0x01;		// 0
 		final public static int	UP		= 0x08;		// 3
 		final public static int	CLOSE	= 0x20;		// 5
 		final public static int	NEXT	= 0x0100;	// 8
+
+		public static List<ItemStack> createIconBar (int flags)
+		{
+			List<ItemStack> bar = new ArrayList<ItemStack>();
+			for (int i = 0; i < 9; ++i)
+			{
+				bar.add(i, GUIContainer.getBlank());
+			}
+			if ( (PREV & flags) > 0)
+			{
+				bar.set(0, GUIContainer.getFunctionalItem(Material.PAPER, "<-", "Zurückblättern"));
+			}
+			if ( (UP & flags) > 0)
+			{
+				bar.set(3, GUIContainer.getFunctionalItem(Material.PAPER, "Nach oben", "Zum übergeordneten Menü"));
+			}
+			if ( (CLOSE & flags) > 0)
+			{
+				bar.set(5, GUIContainer.getFunctionalItem(Material.BARRIER, "Schließen", "---------"));
+			}
+			if ( (NEXT & flags) > 0)
+			{
+				bar.set(8, GUIContainer.getFunctionalItem(Material.PAPER, "->", "Weiterblättern"));
+			}
+			return bar;
+		}
 	}
 }
+
+/*
+ * Copyright (C) 2017 Adrian Schollmeyer
+ * 
+ * This file is part of UnitedShops.
+ * 
+ * UnitedShops is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
