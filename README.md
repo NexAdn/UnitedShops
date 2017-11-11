@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/NexAdn/unitedshops.svg?branch=master)](https://travis-ci.org/NexAdn/unitedshops)
+
 # UnitedShops
 UnitedShops is a Spigot plugin for Minecraft 1.12.1 or later.
 It enables you to use an Admin Shop system with a GUI which can be called using `/ushop`.
