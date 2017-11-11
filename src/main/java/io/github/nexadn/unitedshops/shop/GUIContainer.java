@@ -194,23 +194,6 @@ public final class GUIContainer {
 			UnitedShops.plugin.sendMessage(p, "You don't have the resources to do this transaction!");
 		}
 	}
-
-	public static void handleEventsShopGUI (InventoryClickEvent event, int index)
-	{
-		ItemStack clicked = event.getCurrentItem();
-		ShopInventory used = guiMap.get(index);
-		for (int i = 0; i < used.getGuisBuySell().size(); i++)
-		{
-			if (used.getShopObjects().get(i).getItem().getType().equals(clicked.getType()))
-			{
-				// gewünschtes Shopobjekt
-				event.getWhoClicked().closeInventory();
-				event.getWhoClicked().openInventory(used.getShopObjects().get(i).getBuySellGui());
-				break;
-			}
-		}
-		event.getWhoClicked().openInventory(used.getGuisBuySell().get(event.getSlot()));
-	}
 }
 
 /*
