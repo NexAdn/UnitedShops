@@ -1,5 +1,7 @@
 package io.github.nexadn.unitedshops;
 
+import static org.mockito.Mockito.when;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Collection;
@@ -13,54 +15,34 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.bukkit.*;
+import org.bukkit.advancement.*;
+import org.bukkit.boss.*;
+import org.bukkit.command.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.inventory.*;
+import org.bukkit.permissions.*;
+import org.bukkit.plugin.*;
 import org.bukkit.BanList.Type;
-import org.bukkit.Warning.WarningState;
-import org.bukkit.advancement.Advancement;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
-import org.bukkit.command.CommandException;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.help.HelpMap;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemFactory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.EventExecutor;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginLoader;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.plugin.UnknownDependencyException;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.CachedServerIcon;
+import org.bukkit.Warning.WarningState;
+
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 
 public class TestServer implements Server {
 
 	private PluginManager	pluginManager;
 	private ServicesManager	servicesManager;
+	private ItemFactory		itemFactory;
 
 	public TestServer()
 	{
@@ -305,6 +287,8 @@ public class TestServer implements Server {
 				return null;
 			}
 		};
+		this.itemFactory = PowerMockito.mock(ItemFactory.class);
+		when(this.itemFactory.getItemMeta((Material) Mockito.any())).thenReturn(PowerMockito.mock(ItemMeta.class));
 		Bukkit.setServer(this);
 	}
 
@@ -1063,7 +1047,7 @@ public class TestServer implements Server {
 	public ItemFactory getItemFactory ()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return this.itemFactory;
 	}
 
 	public ScoreboardManager getScoreboardManager ()
@@ -1145,4 +1129,47 @@ public class TestServer implements Server {
 		return null;
 	}
 
+	public BanList getBanList (Type type)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Messenger getMessenger ()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Inventory createInventory (InventoryHolder owner, InventoryType type)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Inventory createInventory (InventoryHolder owner, InventoryType type, String title)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
+
+/*
+ * Copyright (C) 2017 Adrian Schollmeyer
+ * 
+ * This file is part of UnitedShops.
+ * 
+ * UnitedShops is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
