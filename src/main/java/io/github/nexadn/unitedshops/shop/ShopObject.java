@@ -1,7 +1,6 @@
 package io.github.nexadn.unitedshops.shop;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,51 +8,50 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.github.nexadn.unitedshops.UnitedShops;
-
 public class ShopObject {
-	ItemStack itemstack;
-	Inventory buysellgui;
-	double pricebuy;
-	double pricesell;
-	boolean nobuy = false;
-	
+	ItemStack	itemstack;
+	Inventory	buysellgui;
+	double		pricebuy;
+	double		pricesell;
+	boolean		nobuy	= false;
+
 	public ShopObject(Material material, double buy)
 	{
 		this.itemstack = new ItemStack(material, 1);
 		this.pricebuy = buy;
-		this.pricesell = buy/3;
+		this.pricesell = buy / 3;
 	}
+
 	public ShopObject(Material material, double buy, double sell)
 	{
 		this.itemstack = new ItemStack(material, 1);
 		this.pricebuy = buy;
 		this.pricesell = sell;
-		if( !(this.pricebuy >= this.pricesell) ) 
+		if (! (this.pricebuy >= this.pricesell))
 		{
-			this.pricesell = this.pricebuy/3;
+			this.pricesell = this.pricebuy / 3;
 		}
 	}
+
 	public ShopObject()
 	{
 		this.nobuy = true;
 	}
-	
-	public void init()
+
+	public void init ()
 	{
 		this.buysellgui = Bukkit.createInventory(null, 9, this.itemstack.getType().toString());
-		for( int i=0; i<9; i++ )
+		for (int i = 0; i < 9; i++)
 		{
 			ItemStack it;
 			ItemMeta im;
 			List<String> il;
-			switch(i)
-			{
+			switch (i) {
 			case 0: // Kauf 1
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 1", "ev-b-1");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricebuy*1);
+				il.add("Preis: " + this.pricebuy * 1);
 				im.setLore(il);
 				it.setItemMeta(im);
 				it.setAmount(1);
@@ -63,7 +61,7 @@ public class ShopObject {
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 10", "ev-b-10");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricebuy*10);
+				il.add("Preis: " + this.pricebuy * 10);
 				im.setLore(il);
 				it.setItemMeta(im);
 				it.setAmount(10);
@@ -73,7 +71,7 @@ public class ShopObject {
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Kaufe 64", "ev-b-64");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricebuy*10);
+				il.add("Preis: " + this.pricebuy * 10);
 				im.setLore(il);
 				it.setItemMeta(im);
 				it.setAmount(64);
@@ -94,7 +92,7 @@ public class ShopObject {
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 1", "ev-s-1");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricesell*1);
+				il.add("Preis: " + this.pricesell * 1);
 				im.setLore(il);
 				it.setItemMeta(im);
 				it.setAmount(1);
@@ -104,7 +102,7 @@ public class ShopObject {
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 10", "ev-s-10");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricesell*10);
+				il.add("Preis: " + this.pricesell * 10);
 				im.setLore(il);
 				it.setItemMeta(im);
 				it.setAmount(10);
@@ -114,7 +112,7 @@ public class ShopObject {
 				it = GUIContainer.getFunctionalItem(this.itemstack.getType(), "Verkaufe 64", "ev-s-64");
 				im = it.getItemMeta();
 				il = im.getLore();
-				il.add("Preis: " + this.pricesell*64);
+				il.add("Preis: " + this.pricesell * 64);
 				im.setLore(il);
 				it.setItemMeta(im);
 				it.setAmount(64);
@@ -122,28 +120,48 @@ public class ShopObject {
 			}
 		}
 	}
-	
-	public ItemStack getItem() { return this.itemstack; }
-	public double getBuy() { return this.pricebuy; }
-	public double getSell() { return this.pricesell; }
-	public boolean notBuyable() { return this.nobuy; }
-	public Inventory getBuySellGui() { return this.buysellgui; }
+
+	public ItemStack getItem ()
+	{
+		return this.itemstack;
+	}
+
+	public double getBuy ()
+	{
+		return this.pricebuy;
+	}
+
+	public double getSell ()
+	{
+		return this.pricesell;
+	}
+
+	public boolean notBuyable ()
+	{
+		return this.nobuy;
+	}
+
+	public Inventory getBuySellGui ()
+	{
+		return this.buysellgui;
+	}
 }
 
-/*  Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
-
-This file is part of UnitedShops.
-
-UnitedShops is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+ * 
+ * This file is part of UnitedShops.
+ * 
+ * UnitedShops is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
