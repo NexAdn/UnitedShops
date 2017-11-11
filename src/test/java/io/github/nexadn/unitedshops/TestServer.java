@@ -679,12 +679,6 @@ public class TestServer implements Server {
 		return null;
 	}
 
-	public BanList getBanList (Type type)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Set<OfflinePlayer> getOperators ()
 	{
 		// TODO Auto-generated method stub
@@ -721,25 +715,7 @@ public class TestServer implements Server {
 		return null;
 	}
 
-	public Messenger getMessenger ()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public HelpMap getHelpMap ()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Inventory createInventory (InventoryHolder owner, InventoryType type)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Inventory createInventory (InventoryHolder owner, InventoryType type, String title)
 	{
 		// TODO Auto-generated method stub
 		return null;
