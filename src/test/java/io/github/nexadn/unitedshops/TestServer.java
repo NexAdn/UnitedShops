@@ -15,8 +15,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.bukkit.*;
-import org.bukkit.advancement.*;
-import org.bukkit.boss.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
@@ -25,7 +23,6 @@ import org.bukkit.permissions.*;
 import org.bukkit.plugin.*;
 import org.bukkit.BanList.Type;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.bukkit.help.HelpMap;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -966,11 +963,11 @@ public class TestServer implements Server {
 		};
 	}
 
-	public Merchant createMerchant (String title)
+	/*public Merchant createMerchant (String title)
 	{
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	public int getMonsterSpawnLimit ()
 	{
@@ -1062,7 +1059,7 @@ public class TestServer implements Server {
 		return 0;
 	}
 
-	public ChunkData createChunkData (World world)
+	/*public ChunkData createChunkData (World world)
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -1072,7 +1069,7 @@ public class TestServer implements Server {
 	{
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	public Entity getEntity (UUID uuid)
 	{
@@ -1080,17 +1077,17 @@ public class TestServer implements Server {
 		return null;
 	}
 
-	public Advancement getAdvancement (NamespacedKey key)
+	/*public Advancement getAdvancement (NamespacedKey key)
 	{
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
-	public Iterator<Advancement> advancementIterator ()
+	/*public Iterator<Advancement> advancementIterator ()
 	{
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	@SuppressWarnings ("deprecation")
 	public UnsafeValues getUnsafe ()

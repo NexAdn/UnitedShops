@@ -13,7 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <!-- Versions -->
-    <minecraft.version>1.12.1</minecraft.version>
+    <minecraft.version>1.8</minecraft.version>
     <bukkit.rev>R0.1-SNAPSHOT</bukkit.rev>
     <vaultapi.version>1.6</vaultapi.version>
     
