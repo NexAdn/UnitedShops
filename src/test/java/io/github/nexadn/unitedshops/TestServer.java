@@ -35,6 +35,8 @@ import org.bukkit.Warning.WarningState;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
+import com.avaje.ebean.config.ServerConfig;
+
 public class TestServer implements Server {
 
 	private PluginManager	pluginManager;
@@ -1124,6 +1126,24 @@ public class TestServer implements Server {
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Player[] _INVALID_getOnlinePlayers ()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void configureDbConfig (ServerConfig config)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean useExactLoginLocation ()
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
