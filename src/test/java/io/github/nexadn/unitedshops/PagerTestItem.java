@@ -1,27 +1,34 @@
-package io.github.nexadn.unitedshops.events;
+package io.github.nexadn.unitedshops;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
-import io.github.nexadn.unitedshops.shop.GUIContainer;
+import io.github.nexadn.unitedshops.ui.PagerItem;
 
-public class GUIClick implements Listener {
-	@EventHandler
-	public void onInventoryClick (InventoryClickEvent event)
+public class PagerTestItem implements PagerItem {
+
+	private int i;
+
+	public PagerTestItem(int i)
 	{
-		if (GUIContainer.isGuiInventory(event.getInventory()) && (event.getWhoClicked() instanceof Player))
-		{
-			event.setCancelled(true);
-			// Event weiterleiten
-			GUIContainer.handleClickEvents(event);
-		}
+		this.i = i;
 	}
+
+	public void call (InventoryClickEvent e)
+	{
+		System.out.println(this.i);
+	}
+
+	public ItemStack getIcon ()
+	{
+		return new ItemStack(Material.COBBLESTONE);
+	}
+
 }
 
 /*
- * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+ * Copyright (C) 2017 Adrian Schollmeyer
  * 
  * This file is part of UnitedShops.
  * 
