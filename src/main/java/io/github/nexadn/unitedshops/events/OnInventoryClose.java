@@ -10,20 +10,20 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.shop.AutoSellManager;
 
 public class OnInventoryClose implements Listener {
-	@EventHandler
-	public void onInventoryClick (InventoryCloseEvent event)
-	{
-		Player ep = (Player) event.getPlayer();
-		OfflinePlayer op = (OfflinePlayer) ep;
-		if (UnitedShops.plugin.hasAutoSellManager(op))
-		{
-			AutoSellManager m = UnitedShops.plugin.getAutoSellManager(op);
-			if (event.getInventory().equals(m.getInventory()))
-			{
-				m.fetchInventory();
-			}
-		}
-	}
+    @EventHandler
+    public void onInventoryClick (InventoryCloseEvent event)
+    {
+        Player ep = (Player) event.getPlayer();
+        OfflinePlayer op = (OfflinePlayer) ep;
+        if (UnitedShops.plugin.hasAutoSellManager(op))
+        {
+            AutoSellManager m = UnitedShops.plugin.getAutoSellManager(op);
+            if (event.getInventory().equals(m.getInventory()))
+            {
+                m.fetchInventory();
+            }
+        }
+    }
 }
 
 /*

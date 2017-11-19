@@ -8,16 +8,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
 
 public class GUIClick implements Listener {
-	@EventHandler
-	public void onInventoryClick (InventoryClickEvent event)
-	{
-		if (GUIContainer.isGuiInventory(event.getInventory()) && (event.getWhoClicked() instanceof Player))
-		{
-			event.setCancelled(true);
-			// Event weiterleiten
-			GUIContainer.handleClickEvents(event);
-		}
-	}
+    @EventHandler
+    public void onInventoryClick (InventoryClickEvent event)
+    {
+        if (GUIContainer.isGuiInventory(event.getInventory()) && (event.getWhoClicked() instanceof Player))
+        {
+            event.setCancelled(true);
+            // Event weiterleiten
+            GUIContainer.handleClickEvents(event);
+        }
+    }
 }
 
 /*

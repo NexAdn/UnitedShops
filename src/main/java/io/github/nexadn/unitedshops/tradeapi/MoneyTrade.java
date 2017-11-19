@@ -11,85 +11,86 @@ import net.milkbowl.vault.economy.EconomyResponse;
 
 public final class MoneyTrade {
 
-	private static Economy eco = EcoManager.getEconomy();
+    private static Economy eco = EcoManager.getEconomy();
 
-	/**
-	 * Buy items
-	 */
-	public static boolean tradeItemForMoney (Player player, ItemStack offer, double want)
-	{
-		EconomyResponse eReturn = null;
-		double bal = eco.getBalance(player);
-		if (want > bal)
-		{
-			return false;
-		} else
-		{
-			eReturn = eco.withdrawPlayer(player, want);
-			if (eReturn.transactionSuccess())
-			{
-				player.getInventory().addItem(offer);
-				UnitedShops.plugin.sendMessage(player, "Trade: " + offer.toString() + " -> $" + want);
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Buy items
+     */
+    public static boolean tradeItemForMoney (Player player, ItemStack offer, double want)
+    {
+        EconomyResponse eReturn = null;
+        double bal = eco.getBalance(player);
+        if (want > bal)
+        {
+            return false;
+        } else
+        {
+            eReturn = eco.withdrawPlayer(player, want);
+            if (eReturn.transactionSuccess())
+            {
+                player.getInventory().addItem(offer);
+                UnitedShops.plugin.sendMessage(player, "Trade: " + offer.toString() + " -> $" + want);
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Sell items
-	 */
-	public static boolean tradeMoneyForItem (Player player, double offer, ItemStack want)
-	{
-		EconomyResponse eReturn = null;
-		Inventory transactionInv = player.getInventory();
-		if (transactionInv.containsAtLeast(want, want.getAmount()))
-		{
-			eReturn = eco.depositPlayer(player, offer);
-			if (eReturn.transactionSuccess())
-			{
-				if (!removeItems(transactionInv, want))
-				{
-					eco.withdrawPlayer(player, offer);
-					UnitedShops.plugin.sendMessage(player, ChatColor.RED + "Transaction failed");
-					return false;
-				}
-				UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.toString());
-				return true;
-			}
-		} else
-		{
-			return false;
-		}
-		return false;
-	}
+    /**
+     * Sell items
+     */
+    public static boolean tradeMoneyForItem (Player player, double offer, ItemStack want)
+    {
+        EconomyResponse eReturn = null;
+        Inventory transactionInv = player.getInventory();
+        if (transactionInv.containsAtLeast(want, want.getAmount()))
+        {
+            eReturn = eco.depositPlayer(player, offer);
+            if (eReturn.transactionSuccess())
+            {
+                if (!removeItems(transactionInv, want))
+                {
+                    eco.withdrawPlayer(player, offer);
+                    UnitedShops.plugin.sendMessage(player,
+                            ChatColor.RED + UnitedShops.plugin.getMessage("transactionFailed"));
+                    return false;
+                }
+                UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.toString());
+                return true;
+            }
+        } else
+        {
+            return false;
+        }
+        return false;
+    }
 
-	public static boolean removeItems (Inventory inventory, ItemStack items)
-	{
-		int remaining = items.getAmount();
-		for (int i = 0; i < inventory.getSize(); ++i)
-		{
-			if (inventory.getItem(i) != null && inventory.getItem(i).getType().equals(items.getType()))
-			{
-				ItemStack is = inventory.getItem(i);
-				if (is.getAmount() > remaining)
-				{
-					is.setAmount(is.getAmount() - remaining);
-					inventory.setItem(i, is);
-					return true;
-				} else
-				{
-					remaining -= is.getAmount();
-					inventory.setItem(i, null);
-					if (remaining == 0)
-					{
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+    public static boolean removeItems (Inventory inventory, ItemStack items)
+    {
+        int remaining = items.getAmount();
+        for (int i = 0; i < inventory.getSize(); ++i)
+        {
+            if (inventory.getItem(i) != null && inventory.getItem(i).getType().equals(items.getType()))
+            {
+                ItemStack is = inventory.getItem(i);
+                if (is.getAmount() > remaining)
+                {
+                    is.setAmount(is.getAmount() - remaining);
+                    inventory.setItem(i, is);
+                    return true;
+                } else
+                {
+                    remaining -= is.getAmount();
+                    inventory.setItem(i, null);
+                    if (remaining == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
 
 /*
