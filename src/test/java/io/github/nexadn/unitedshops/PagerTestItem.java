@@ -8,22 +8,22 @@ import io.github.nexadn.unitedshops.ui.PagerItem;
 
 public class PagerTestItem implements PagerItem {
 
-	private int i;
+    private int i;
 
-	public PagerTestItem(int i)
-	{
-		this.i = i;
-	}
+    public PagerTestItem(int i)
+    {
+        this.i = i;
+    }
 
-	public void call (InventoryClickEvent e)
-	{
-		System.out.println(this.i);
-	}
+    public void call (InventoryClickEvent e)
+    {
+        System.out.println(this.i);
+    }
 
-	public ItemStack getIcon ()
-	{
-		return new ItemStack(Material.COBBLESTONE);
-	}
+    public ItemStack getIcon ()
+    {
+        return new ItemStack(Material.COBBLESTONE);
+    }
 
 }
 
