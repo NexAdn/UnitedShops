@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,136 +18,137 @@ import io.github.nexadn.unitedshops.ui.Pager;
 import io.github.nexadn.unitedshops.ui.PagerItem;
 
 public class ShopInventory implements PagerItem {
-	private Inventory			inv;
-	private ItemStack			icon;
-	private int					order;
-	private String				title;
-	private List<ShopObject>	content;
-	private Pager				pager;
-	private final int			menuButtons = Pager.MenuButton.PREV | Pager.MenuButton.NEXT | Pager.MenuButton.CLOSE | Pager.MenuButton.UP;
+    private Inventory        inv;
+    private ItemStack        icon;
+    private int              order;
+    private String           title;
+    private List<ShopObject> content;
+    private Pager            pager;
+    private final int        menuButtons = Pager.MenuButton.PREV | Pager.MenuButton.NEXT | Pager.MenuButton.CLOSE
+            | Pager.MenuButton.UP;
 
-	public ShopInventory()
-	{
-		this.order = 0;
-		this.title = "null";
-		this.icon = new ItemStack(Material.BARRIER);
-		this.content = new ArrayList<ShopObject>();
-	}
+    public ShopInventory()
+    {
+        this.order = 0;
+        this.title = "null";
+        this.icon = new ItemStack(Material.BARRIER);
+        this.content = new ArrayList<ShopObject>();
+    }
 
-	public ShopInventory(String title, ItemStack icon, int id)
-	{
-		this.icon = icon;
-		this.title = title;
-		this.order = id;
-		this.content = new ArrayList<ShopObject>();
-	}
+    public ShopInventory(String title, ItemStack icon, int id)
+    {
+        this.icon = icon;
+        this.title = title;
+        this.order = id;
+        this.content = new ArrayList<ShopObject>();
+    }
 
-	public void initInventory ()
-	{
-		for (ShopObject o : this.content)
-		{
-			o.init();
-		}
-		this.pager = new Pager(this.content, this.menuButtons, this.title);
-		for (ShopObject o : this.content)
-		{
-			o.setParent(this.pager.getFirstInventory());
-		}
+    public void initInventory ()
+    {
+        for (ShopObject o : this.content)
+        {
+            o.init();
+        }
+        this.pager = new Pager(this.content, this.menuButtons, this.title);
+        for (ShopObject o : this.content)
+        {
+            o.setParent(this.pager.getFirstInventory());
+        }
 
-		ItemMeta im = this.icon.getItemMeta();
-		im.setDisplayName(ChatColor.AQUA + this.title);
-		this.icon.setItemMeta(im);
-	}
+        ItemMeta im = this.icon.getItemMeta();
+        im.setDisplayName(ChatColor.AQUA + this.title);
+        this.icon.setItemMeta(im);
+    }
 
-	public boolean handleTrades (int index, Player player, boolean isSell, int amount)
-	{
-		ShopObject tmp = this.content.get(index);
-		ItemStack item = tmp.getItem();
-		item.setAmount(amount);
-		double buy1 = tmp.getBuy();
-		double sell1 = tmp.getSell();
+    public boolean handleTrades (int index, Player player, boolean isSell, int amount)
+    {
+        ShopObject tmp = this.content.get(index);
+        ItemStack item = tmp.getItem();
+        item.setAmount(amount);
+        double buy1 = tmp.getBuy();
+        double sell1 = tmp.getSell();
 
-		if (!isSell)
-		{
-			// Buy items
-			return MoneyTrade.tradeItemForMoney(player, item, buy1 * amount);
-		} else if (isSell)
-		{
-			// Sell items
-			return MoneyTrade.tradeMoneyForItem(player, sell1 * amount, item);
-		}
+        if (!isSell)
+        {
+            // Buy items
+            return MoneyTrade.tradeItemForMoney(player, item, buy1 * amount);
+        } else if (isSell)
+        {
+            // Sell items
+            return MoneyTrade.tradeMoneyForItem(player, sell1 * amount, item);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public void setTitle (String title)
-	{
-		this.title = title;
-	}
-	
-	public void setParent (Inventory parent)
-	{
-		this.pager.setParent(parent);
-	}
+    public void setTitle (String title)
+    {
+        this.title = title;
+    }
 
-	public void addContent (ShopObject object)
-	{
-		this.content.add(object);
-	}
+    public void setParent (Inventory parent)
+    {
+        this.pager.setParent(parent);
+    }
 
-	public void setContent (List<ShopObject> contents)
-	{
-		this.content = contents;
-	}
+    public void addContent (ShopObject object)
+    {
+        this.content.add(object);
+    }
 
-	public void setIcon (Material icon)
-	{
-		this.icon = new ItemStack(icon, 1);
-	}
+    public void setContent (List<ShopObject> contents)
+    {
+        this.content = contents;
+    }
 
-	public String getTitle ()
-	{
-		return this.title;
-	}
+    public void setIcon (Material icon)
+    {
+        this.icon = new ItemStack(icon, 1);
+    }
 
-	public int getOrderNumber ()
-	{
-		return this.order;
-	}
+    public String getTitle ()
+    {
+        return this.title;
+    }
 
-	public ItemStack getIcon ()
-	{
-		return this.icon;
-	}
+    public int getOrderNumber ()
+    {
+        return this.order;
+    }
 
-	public Inventory getInventory ()
-	{
-		return this.pager.getFirstInventory();
-	}
+    public ItemStack getIcon ()
+    {
+        return this.icon;
+    }
 
-	public List<ShopObject> getShopObjects ()
-	{
-		return this.content;
-	}
+    public Inventory getInventory ()
+    {
+        return this.pager.getFirstInventory();
+    }
 
-	public List<Inventory> getGuisBuySell ()
-	{
-		List<Inventory> gui = new ArrayList<Inventory>();
-		for (ShopObject o : this.content)
-		{
-			gui.add(o.getBuySellGui());
-		}
-		return gui;
-	}
+    public List<ShopObject> getShopObjects ()
+    {
+        return this.content;
+    }
 
-	public void call (InventoryClickEvent e)
-	{
-		if (this.pager.getFirstInventory() == null)
-		{
-			UnitedShops.plugin.log(Level.SEVERE, "Gotcha!");
-		}
-		e.getWhoClicked().openInventory(this.pager.getFirstInventory());
-	}
+    public List<Inventory> getGuisBuySell ()
+    {
+        List<Inventory> gui = new ArrayList<Inventory>();
+        for (ShopObject o : this.content)
+        {
+            gui.add(o.getBuySellGui());
+        }
+        return gui;
+    }
+
+    public void call (InventoryClickEvent e)
+    {
+        if (this.pager.getFirstInventory() == null)
+        {
+            UnitedShops.plugin.log(Level.SEVERE, "Gotcha!");
+        }
+        e.getWhoClicked().openInventory(this.pager.getFirstInventory());
+    }
 }
 
 /*

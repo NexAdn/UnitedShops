@@ -31,76 +31,76 @@ import io.github.nexadn.unitedshops.ui.PagerItem;
 @PrepareForTest ({ JavaPluginLoader.class, PluginDescriptionFile.class })
 public class PagerTest {
 
-	public static Inventory	mockInventory;
-	public static Pager		testPager;
-	public static Player	mockPlayer;
+    public static Inventory mockInventory;
+    public static Pager     testPager;
+    public static Player    mockPlayer;
 
-	@Test
-	public void testPager ()
-	{
-		TestUtil.init();
+    @Test
+    public void testPager ()
+    {
+        TestUtil.init();
 
-		List<PagerItem> menuItems = new ArrayList<PagerItem>();
-		for (int i = 0; i < 19; ++i)
-		{
-			menuItems.add(PowerMockito.spy(new PagerTestItem(i)));
-		}
+        List<PagerItem> menuItems = new ArrayList<PagerItem>();
+        for (int i = 0; i < 19; ++i)
+        {
+            menuItems.add(PowerMockito.spy(new PagerTestItem(i)));
+        }
 
-		int menuButtonFlags = Pager.MenuButton.PREV | Pager.MenuButton.CLOSE | Pager.MenuButton.NEXT
-				| Pager.MenuButton.UP;
-		testPager = PowerMockito.spy(new Pager(menuItems, menuButtonFlags, "Pager Test", 1));
-		assertEquals(3, testPager.getInventoryCount());
-		assertEquals(3, Pager.calculateInventoryCount(19, 1));
-		assertEquals(1, Pager.calculateInventoryCount(3, 1));
-		assertEquals(1, Pager.calculateInventoryCount(9, 1));
-		assertEquals(2, Pager.calculateInventoryCount(10, 1));
-		assertEquals(4, Pager.calculateInventoryCount(35, 1));
-		assertEquals(5, Pager.calculateInventoryCount(37, 1));
+        int menuButtonFlags = Pager.MenuButton.PREV | Pager.MenuButton.CLOSE | Pager.MenuButton.NEXT
+                | Pager.MenuButton.UP;
+        testPager = PowerMockito.spy(new Pager(menuItems, menuButtonFlags, "Pager Test", 1));
+        assertEquals(3, testPager.getInventoryCount());
+        assertEquals(3, Pager.calculateInventoryCount(19, 1));
+        assertEquals(1, Pager.calculateInventoryCount(3, 1));
+        assertEquals(1, Pager.calculateInventoryCount(9, 1));
+        assertEquals(2, Pager.calculateInventoryCount(10, 1));
+        assertEquals(4, Pager.calculateInventoryCount(35, 1));
+        assertEquals(5, Pager.calculateInventoryCount(37, 1));
 
-		mockInventory = PowerMockito.spy(Bukkit.createInventory(null, 9, "Mock Inventory"));
+        mockInventory = PowerMockito.spy(Bukkit.createInventory(null, 9, "Mock Inventory"));
 
-		mockPlayer = PowerMockito.mock(Player.class);
-		InventoryView mockView = PowerMockito.spy(new InventoryView() {
+        mockPlayer = PowerMockito.mock(Player.class);
+        InventoryView mockView = PowerMockito.spy(new InventoryView() {
 
-			@Override
-			public InventoryType getType ()
-			{
-				return InventoryType.CHEST;
-			}
+            @Override
+            public InventoryType getType ()
+            {
+                return InventoryType.CHEST;
+            }
 
-			@Override
-			public Inventory getTopInventory ()
-			{
-				return testPager.getInventorys().get(1);
-			}
+            @Override
+            public Inventory getTopInventory ()
+            {
+                return testPager.getInventorys().get(1);
+            }
 
-			@Override
-			public HumanEntity getPlayer ()
-			{
-				return mockPlayer;
-			}
+            @Override
+            public HumanEntity getPlayer ()
+            {
+                return mockPlayer;
+            }
 
-			@Override
-			public Inventory getBottomInventory ()
-			{
-				return PagerTest.mockInventory;
-			}
-		});
+            @Override
+            public Inventory getBottomInventory ()
+            {
+                return PagerTest.mockInventory;
+            }
+        });
 
-		InventoryClickEvent mockEventNormal = PowerMockito.spy(
-				new InventoryClickEvent(mockView, SlotType.CONTAINER, 4, ClickType.LEFT, InventoryAction.PICKUP_ONE));
-		InventoryClickEvent mockEventMenuButton = PowerMockito.spy(
-				new InventoryClickEvent(mockView, SlotType.CONTAINER, 9, ClickType.LEFT, InventoryAction.PICKUP_ONE));
+        InventoryClickEvent mockEventNormal = PowerMockito.spy(
+                new InventoryClickEvent(mockView, SlotType.CONTAINER, 4, ClickType.LEFT, InventoryAction.PICKUP_ONE));
+        InventoryClickEvent mockEventMenuButton = PowerMockito.spy(
+                new InventoryClickEvent(mockView, SlotType.CONTAINER, 9, ClickType.LEFT, InventoryAction.PICKUP_ONE));
 
-		testPager.onInventoryClick(mockEventNormal);
-		testPager.onInventoryClick(mockEventMenuButton);
+        testPager.onInventoryClick(mockEventNormal);
+        testPager.onInventoryClick(mockEventMenuButton);
 
-		verify(testPager).onInventoryClick(mockEventNormal);
-		verify(menuItems.get(13)).call(mockEventNormal);
+        verify(testPager).onInventoryClick(mockEventNormal);
+        verify(menuItems.get(13)).call(mockEventNormal);
 
-		verify(testPager).onInventoryClick(mockEventMenuButton);
-		verify(mockPlayer).openInventory(testPager.getInventorys().get(0));
-	}
+        verify(testPager).onInventoryClick(mockEventMenuButton);
+        verify(mockPlayer).openInventory(testPager.getInventorys().get(0));
+    }
 }
 
 /*

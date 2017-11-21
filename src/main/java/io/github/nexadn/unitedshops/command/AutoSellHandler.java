@@ -9,31 +9,31 @@ import io.github.nexadn.unitedshops.UnitedShops;
 
 public class AutoSellHandler implements CommandExecutor {
 
-	public AutoSellHandler()
-	{
+    public AutoSellHandler()
+    {
 
-	}
+    }
 
-	public boolean onCommand (CommandSender commandSender, Command command, String label, String[] sArgv)
-	{
-		if (commandSender instanceof Player)
-		{
-			OfflinePlayer player = (OfflinePlayer) commandSender;
-			if (player.getPlayer().hasPermission("unitedshops.autosell"))
-			{
-				UnitedShops.plugin.getAutoSellManager(player).startAutoSell();
-				return true;
-			} else
-			{
-				commandSender.sendMessage(ChatColor.RED + "Du hast die Permission unitedshops.autosell nicht!");
-				return true;
-			}
-		} else
-		{
-			commandSender.sendMessage("Du kannst dies nur als Spieler nutzen!");
-			return true;
-		}
-	}
+    public boolean onCommand (CommandSender commandSender, Command command, String label, String[] sArgv)
+    {
+        if (commandSender instanceof Player)
+        {
+            OfflinePlayer player = (OfflinePlayer) commandSender;
+            if (player.getPlayer().hasPermission("unitedshops.autosell"))
+            {
+                UnitedShops.plugin.getAutoSellManager(player).startAutoSell();
+                return true;
+            } else
+            {
+                commandSender.sendMessage(ChatColor.RED + UnitedShops.plugin.getMessage("missingPermission"));
+                return true;
+            }
+        } else
+        {
+            commandSender.sendMessage(UnitedShops.plugin.getMessage("playerOnly"));
+            return true;
+        }
+    }
 }
 
 /*

@@ -1,0 +1,12 @@
+messages:
+  shopCategoriesTitle: "Shop - Categories"
+  transactionMissingResoucres: "You are missing the required resources for this transaction!"
+  autosellTitle: "Autosell: "
+  buyAmount: "Buy "
+  back: "Back"
+  sellAmount: "Sell "
+  price: "Price: "
+  transactionFailed: "Transaction failed!"
+  missingPermission: "You are missing the required permissions!"
+  playerOnly: "You can only use that as a player!"
+  

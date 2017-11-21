@@ -10,65 +10,65 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 
 public class AutoSellManager {
-	private Inventory		inventory;
-	private OfflinePlayer	player;
+    private Inventory     inventory;
+    private OfflinePlayer player;
 
-	public AutoSellManager(OfflinePlayer p)
-	{
-		this.player = p;
-		this.inventory = Bukkit.createInventory(null, 18, "Automatischer Verkauf: " + p.getName());
-		this.inventory.clear();
-	}
+    public AutoSellManager(OfflinePlayer p)
+    {
+        this.player = p;
+        this.inventory = Bukkit.createInventory(null, 18, UnitedShops.plugin.getMessage("autosellTitle") + p.getName());
+        this.inventory.clear();
+    }
 
-	public void startAutoSell ()
-	{
-		if (this.player.isOnline())
-		{
-			Player p = this.player.getPlayer();
-			p.openInventory(this.inventory);
-		}
-	}
+    public void startAutoSell ()
+    {
+        if (this.player.isOnline())
+        {
+            Player p = this.player.getPlayer();
+            p.openInventory(this.inventory);
+        }
+    }
 
-	public void fetchInventory ()
-	{
-		boolean nextitem = false;
-		for (ItemStack s : this.inventory.getContents())
-		{
-			nextitem = false;
-			if (s != null)
-			{
-				for (ShopInventory si : GUIContainer.getGuiMap())
-				{
-					for (ShopObject so : si.getShopObjects())
-					{
-						if (so.getItem().getType().equals(s.getType()))
-						{
-							this.player.getPlayer().getInventory().addItem(new ItemStack(s.getType(), s.getAmount()));
-							MoneyTrade.removeItems(this.inventory, s);
-							if (MoneyTrade.tradeMoneyForItem(this.player.getPlayer(), so.getSell() * s.getAmount(), s))
-							{
-								nextitem = true;
-								break;
-							} else
-							{
-								UnitedShops.plugin.sendMessage(this.player.getPlayer(),
-										"Failed to sell item " + s.getType().toString());
-							}
-						}
-					}
-					if (nextitem)
-					{
-						break;
-					}
-				}
-			}
-		}
-	}
+    public void fetchInventory ()
+    {
+        boolean nextitem = false;
+        for (ItemStack s : this.inventory.getContents())
+        {
+            nextitem = false;
+            if (s != null)
+            {
+                for (ShopInventory si : GUIContainer.getGuiMap())
+                {
+                    for (ShopObject so : si.getShopObjects())
+                    {
+                        if (so.getItem().getType().equals(s.getType()))
+                        {
+                            this.player.getPlayer().getInventory().addItem(new ItemStack(s.getType(), s.getAmount()));
+                            MoneyTrade.removeItems(this.inventory, s);
+                            if (MoneyTrade.tradeMoneyForItem(this.player.getPlayer(), so.getSell() * s.getAmount(), s))
+                            {
+                                nextitem = true;
+                                break;
+                            } else
+                            {
+                                UnitedShops.plugin.sendMessage(this.player.getPlayer(),
+                                        "Failed to sell item " + s.getType().toString());
+                            }
+                        }
+                    }
+                    if (nextitem)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
-	public Inventory getInventory ()
-	{
-		return this.inventory;
-	}
+    public Inventory getInventory ()
+    {
+        return this.inventory;
+    }
 }
 
 /*

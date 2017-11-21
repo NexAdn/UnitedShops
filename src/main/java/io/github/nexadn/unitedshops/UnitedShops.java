@@ -12,124 +12,142 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import io.github.nexadn.unitedshops.command.*;
+import io.github.nexadn.unitedshops.config.ConfigMessages;
 import io.github.nexadn.unitedshops.events.*;
 import io.github.nexadn.unitedshops.shop.*;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 
 public class UnitedShops extends JavaPlugin {
-	private boolean									unitTest	= false;
+    private boolean                                 unitTest = false;
 
-	private HashMap<OfflinePlayer, AutoSellManager>	autoSaleInventories;
+    private HashMap<OfflinePlayer, AutoSellManager> autoSaleInventories;
+    private HashMap<String, String>                 messages;
 
-	public static UnitedShops						plugin;
+    public static UnitedShops                       plugin;
 
-	@SuppressWarnings ("unused")
-	private Metrics									metrics;
+    @SuppressWarnings ("unused")
+    private Metrics                                 metrics;
 
-	public UnitedShops()
-	{
-	}
+    public UnitedShops()
+    {
+    }
 
-	/** Unit Test constructor */
-	public UnitedShops(JavaPluginLoader mockPluginLoader, PluginDescriptionFile pluginDescriptionFile, File pluginDir,
-			File file)
-	{
-		super(mockPluginLoader, pluginDescriptionFile, pluginDir, file);
-		log(Level.SEVERE, "Running in Unit testing mode!");
-	}
+    /** Unit Test constructor */
+    public UnitedShops(JavaPluginLoader mockPluginLoader, PluginDescriptionFile pluginDescriptionFile, File pluginDir,
+            File file)
+    {
+        super(mockPluginLoader, pluginDescriptionFile, pluginDir, file);
+        log(Level.SEVERE, "Running in Unit testing mode!");
+    }
 
-	@Override
-	/** Enable the plugin */
-	public void onEnable ()
-	{
-		plugin = this;
-		this.autoSaleInventories = new HashMap<OfflinePlayer, AutoSellManager>();
-		if (!this.unitTest)
-			this.metrics = new Metrics(this);
+    @Override
+    /** Enable the plugin */
+    public void onEnable ()
+    {
+        plugin = this;
+        this.autoSaleInventories = new HashMap<OfflinePlayer, AutoSellManager>();
 
-		this.getLogger().log(Level.FINE, "Establishing economy hook...");
-		if (!EcoManager.initEco())
-		{
-			this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
-			this.setEnabled(false);
-			return;
-		}
-		this.getLogger().log(Level.FINE, "Economy hook successful.");
+        if (!this.unitTest)
+            this.metrics = new Metrics(this);
 
-		// config.yml
-		try
-		{
-			if (!getDataFolder().exists())
-			{
-				getDataFolder().mkdirs();
-			}
-			File configyml = new File(getDataFolder(), "config.yml");
-			if (!configyml.exists())
-			{
-				this.getLogger().log(Level.INFO, "config.yml not found, creating a new one just for you!");
-				this.saveResource("config.yml", true);
-			}
-		} catch (Exception e)
-		{
-			this.getLogger().log(Level.INFO, e.getMessage());
-			e.printStackTrace();
-			this.setEnabled(false);
-		}
+        this.getLogger().log(Level.FINE, "Establishing economy hook...");
+        if (!EcoManager.initEco())
+        {
+            this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
+            this.setEnabled(false);
+            return;
+        }
+        this.getLogger().log(Level.FINE, "Economy hook successful.");
 
-		// Command executors
-		this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler()); // /ushop
-		this.getServer().getPluginCommand("usell").setExecutor(new AutoSellHandler()); // /usell
+        // config.yml
+        try
+        {
+            if (!getDataFolder().exists())
+            {
+                getDataFolder().mkdirs();
+            }
+            File configyml = new File(getDataFolder(), "config.yml");
+            if (!configyml.exists())
+            {
+                this.getLogger().log(Level.INFO, "config.yml not found, creating a new one just for you!");
+                this.saveResource("config.yml", true);
+            }
+            File messagesyml = new File(getDataFolder(), "messages.yml");
+            if (!messagesyml.exists())
+            {
+                this.getLogger().log(Level.INFO, "messages.yml not found, creating a new one just for you!");
+                this.saveResource("messages.yml", true);
+            }
+        } catch (Exception e)
+        {
+            this.getLogger().log(Level.INFO, e.getMessage());
+            e.printStackTrace();
+            this.setEnabled(false);
+        }
 
-		// Event handler
-		this.getServer().getPluginManager().registerEvents(new GUIClick(), this);
-		this.getServer().getPluginManager().registerEvents(new OnInventoryClose(), this);
+        ConfigMessages configMessages = new ConfigMessages(new File(getDataFolder(), "messages.yml"));
+        configMessages.parseConfig();
+        this.messages = configMessages.getMessages();
 
-		GUIContainer.initGUI();
+        // Command executors
+        this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler()); // /ushop
+        this.getServer().getPluginCommand("usell").setExecutor(new AutoSellHandler()); // /usell
 
-		if (this.unitTest)
-			UnitedShops.plugin.log(Level.SEVERE, "Running in unit testing mode!");
-	}
+        // Event handler
+        this.getServer().getPluginManager().registerEvents(new GUIClick(), this);
+        this.getServer().getPluginManager().registerEvents(new OnInventoryClose(), this);
 
-	public void onUnitTest ()
-	{
-		this.unitTest = true;
-	}
+        GUIContainer.initGUI();
 
-	@Override
-	public void onDisable ()
-	{
-		saveConfig();
-	}
+        if (this.unitTest)
+            UnitedShops.plugin.log(Level.SEVERE, "Running in unit testing mode!");
+    }
 
-	public void log (Level loglevel, String message)
-	{
-		this.getLogger().log(loglevel, message);
-	}
+    public void onUnitTest ()
+    {
+        this.unitTest = true;
+    }
 
-	public void sendMessage (CommandSender target, String message)
-	{
-		target.sendMessage("[" + this.getName() + "] " + message);
-	}
+    @Override
+    public void onDisable ()
+    {
+        saveConfig();
+    }
 
-	public AutoSellManager getAutoSellManager (OfflinePlayer player)
-	{
-		if ( (!this.autoSaleInventories.containsKey(player)) || this.autoSaleInventories.get(player) == null)
-		{
-			this.autoSaleInventories.put(player, new AutoSellManager(player));
-		}
-		return this.autoSaleInventories.get(player);
-	}
+    public void log (Level loglevel, String message)
+    {
+        this.getLogger().log(loglevel, message);
+    }
 
-	public boolean hasAutoSellManager (OfflinePlayer player)
-	{
-		return this.autoSaleInventories.containsKey(player);
+    public void sendMessage (CommandSender target, String message)
+    {
+        target.sendMessage("[" + this.getName() + "] " + message);
+    }
 
-	}
+    public AutoSellManager getAutoSellManager (OfflinePlayer player)
+    {
+        if ( (!this.autoSaleInventories.containsKey(player)) || this.autoSaleInventories.get(player) == null)
+        {
+            this.autoSaleInventories.put(player, new AutoSellManager(player));
+        }
+        return this.autoSaleInventories.get(player);
+    }
 
-	public boolean isUnitTest ()
-	{
-		return this.unitTest;
-	}
+    public boolean hasAutoSellManager (OfflinePlayer player)
+    {
+        return this.autoSaleInventories.containsKey(player);
+
+    }
+
+    public boolean isUnitTest ()
+    {
+        return this.unitTest;
+    }
+
+    public String getMessage (String key)
+    {
+        return this.messages.get(key);
+    }
 }
 
 /*

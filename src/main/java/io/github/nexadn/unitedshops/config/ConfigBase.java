@@ -1,9 +1,11 @@
 package io.github.nexadn.unitedshops.config;
 
+import java.io.File;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 
@@ -12,52 +14,66 @@ import io.github.nexadn.unitedshops.UnitedShops;
  * 
  * @author NexAdn
  */
-public class ConfigBase {
-	// Object Properties
-	private FileConfiguration	conf;
-	private String				workkey;
+public abstract class ConfigBase {
+    // Object Properties
+    private FileConfiguration conf;
+    private String            workkey;
 
-	public ConfigBase()
-	{
-		this.conf = UnitedShops.plugin.getConfig();
-		this.workkey = "config";
-	}
+    public ConfigBase()
+    {
+        this.conf = UnitedShops.plugin.getConfig();
+        this.workkey = "config";
+    }
 
-	public ConfigBase(String mainKey)
-	{
-		this.conf = UnitedShops.plugin.getConfig();
-		this.workkey = mainKey;
-	}
+    public ConfigBase(String mainKey)
+    {
+        this.conf = UnitedShops.plugin.getConfig();
+        this.workkey = mainKey;
+    }
 
-	public Set<String> getSubKeys () throws NullPointerException
-	{
-		if (this.conf == null)
-		{
-			this.conf = UnitedShops.plugin.getConfig();
-		}
-		Set<String> all = this.conf.getConfigurationSection(this.workkey).getKeys(false);
-		return all;
-	}
+    public ConfigBase(File configFile)
+    {
+        this.conf = YamlConfiguration.loadConfiguration(configFile);
+        this.workkey = "config";
+    }
 
-	public ConfigurationSection getMainSection ()
-	{
-		return conf.getConfigurationSection(workkey);
-	}
+    public ConfigBase(File configFile, String mainKey)
+    {
+        this.conf = YamlConfiguration.loadConfiguration(configFile);
+        this.workkey = mainKey;
+    }
 
-	public void setWorkKey (String tag)
-	{
-		this.workkey = tag;
-	}
+    public Set<String> getSubKeys () throws NullPointerException
+    {
+        if (this.conf == null)
+        {
+            this.conf = UnitedShops.plugin.getConfig();
+        }
+        Set<String> all = this.conf.getConfigurationSection(this.workkey).getKeys(false);
+        return all;
+    }
 
-	public FileConfiguration getConf ()
-	{
-		return this.conf;
-	}
+    public ConfigurationSection getMainSection ()
+    {
+        return conf.getConfigurationSection(workkey);
+    }
 
-	public String getWorkKey ()
-	{
-		return this.workkey;
-	}
+    public void setWorkKey (String tag)
+    {
+        this.workkey = tag;
+    }
+
+    public FileConfiguration getConf ()
+    {
+        return this.conf;
+    }
+
+    public String getWorkKey ()
+    {
+        return this.workkey;
+    }
+
+    abstract public void parseConfig ();
 }
 
 /*

@@ -17,183 +17,183 @@ import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 import io.github.nexadn.unitedshops.ui.Pager;
 
 public final class GUIContainer {
-	private static Inventory			guiCategories;
-	private static List<ShopInventory>	guiMap;
-	private static Pager				guiPager;
-	private static final int			menuButtons	= Pager.MenuButton.PREV | Pager.MenuButton.NEXT
-			| Pager.MenuButton.CLOSE;
+    private static Inventory           guiCategories;
+    private static List<ShopInventory> guiMap;
+    private static Pager               guiPager;
+    private static final int           menuButtons = Pager.MenuButton.PREV | Pager.MenuButton.NEXT
+            | Pager.MenuButton.CLOSE;
 
-	public static void initGUI ()
-	{
-		UnitedShops.plugin.log(Level.INFO, "Intializing GUI");
-		ConfigShopMain conf = new ConfigShopMain();
-		UnitedShops.plugin.log(Level.FINE, "Started config parser.");
-		conf.parseConfig();
-		guiMap = conf.getMenus();
-		for (ShopInventory i : guiMap)
-		{
-			UnitedShops.plugin.log(Level.FINER, "Init " + i.getOrderNumber() + "/" + i.getTitle());
-			i.initInventory();
-		}
+    public static void initGUI ()
+    {
+        UnitedShops.plugin.log(Level.INFO, "Initializing GUI");
+        ConfigShopMain conf = new ConfigShopMain();
+        UnitedShops.plugin.log(Level.FINE, "Started config parser.");
+        conf.parseConfig();
+        guiMap = conf.getMenus();
+        for (ShopInventory i : guiMap)
+        {
+            UnitedShops.plugin.log(Level.FINER, "Init " + i.getOrderNumber() + "/" + i.getTitle());
+            i.initInventory();
+        }
 
-		guiPager = new Pager(guiMap, menuButtons, "Shop - Kategorien", 2);
-		
-		for (ShopInventory i : guiMap)
-			i.setParent(guiPager.getFirstInventory());
-	}
+        guiPager = new Pager(guiMap, menuButtons, UnitedShops.plugin.getMessage("shopCategoriesTitle"), 2);
 
-	public static ItemStack getBlank ()
-	{
-		ItemStack i = new ItemStack(Material.THIN_GLASS, 1);
-		ItemMeta m = i.getItemMeta();
-		m.setDisplayName(" ");
-		i.setItemMeta(m);
-		return i;
-	}
+        for (ShopInventory i : guiMap)
+            i.setParent(guiPager.getFirstInventory());
+    }
 
-	public static ItemStack getItem (Material mat, String display)
-	{
-		ItemStack ret = new ItemStack(mat, 1);
-		ret.getItemMeta().setDisplayName(display);
-		return ret;
-	}
+    public static ItemStack getBlank ()
+    {
+        ItemStack i = new ItemStack(Material.THIN_GLASS, 1);
+        ItemMeta m = i.getItemMeta();
+        m.setDisplayName(" ");
+        i.setItemMeta(m);
+        return i;
+    }
 
-	public static ItemStack getFunctionalItem (Material mat, String display, String... funcLore)
-	{
-		ItemStack ret = new ItemStack(mat, 1);
-		if (mat != Material.AIR)
-		{
-			ItemMeta meta = ret.getItemMeta();
-			if (display != null)
-				meta.setDisplayName(display);
-			List<String> lore = new ArrayList<String>();
-			for (String s : funcLore)
-				lore.add(s);
-			meta.setLore(lore);
-			ret.setItemMeta(meta);
-		}
-		return ret;
-	}
+    public static ItemStack getItem (Material mat, String display)
+    {
+        ItemStack ret = new ItemStack(mat, 1);
+        ret.getItemMeta().setDisplayName(display);
+        return ret;
+    }
 
-	public static Inventory getMenuGui ()
-	{
-		return guiPager.getFirstInventory();
-	}
+    public static ItemStack getFunctionalItem (Material mat, String display, String... funcLore)
+    {
+        ItemStack ret = new ItemStack(mat, 1);
+        if (mat != Material.AIR)
+        {
+            ItemMeta meta = ret.getItemMeta();
+            if (display != null)
+                meta.setDisplayName(display);
+            List<String> lore = new ArrayList<String>();
+            for (String s : funcLore)
+                lore.add(s);
+            meta.setLore(lore);
+            ret.setItemMeta(meta);
+        }
+        return ret;
+    }
 
-	public static List<ShopInventory> getGuiMap ()
-	{
-		return guiMap;
-	}
+    public static Inventory getMenuGui ()
+    {
+        return guiPager.getFirstInventory();
+    }
 
-	public static boolean isGuiInventory (Inventory inv)
-	{
-		if (inv.equals(guiCategories)/* || inv.equals(guiBuySell) */ )
-		{
-			return true;
-		}
-		for (ShopInventory i : GUIContainer.guiMap)
-		{
-			if (inv.equals(i.getInventory()))
-			{
-				return true;
-				// break;
-			}
-			for (Inventory in : i.getGuisBuySell())
-			{
-				if (inv.equals(in))
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    public static List<ShopInventory> getGuiMap ()
+    {
+        return guiMap;
+    }
 
-	public static void handleClickEvents (InventoryClickEvent event)
-	{
-		Inventory inv = event.getInventory();
-		for (int i = 0; i < guiMap.size(); i++)
-		{
-			if (guiMap.get(i).getInventory().equals(inv))
-			{
-				break;
-			} else
-			{
-				for (Inventory in : guiMap.get(i).getGuisBuySell())
-				{
-					if (inv.equals(in))
-					{
-						// Klick Kauf- und Verkaufsansicht
-						// TODO
-						for (ShopObject o : guiMap.get(i).getShopObjects())
-						{
-							if (o.getBuySellGui().equals(in))
-								handleBuySellGUI(event, o);
-						}
-					}
-				}
-			}
-		}
+    public static boolean isGuiInventory (Inventory inv)
+    {
+        if (inv.equals(guiCategories)/* || inv.equals(guiBuySell) */ )
+        {
+            return true;
+        }
+        for (ShopInventory i : GUIContainer.guiMap)
+        {
+            if (inv.equals(i.getInventory()))
+            {
+                return true;
+                // break;
+            }
+            for (Inventory in : i.getGuisBuySell())
+            {
+                if (inv.equals(in))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-		return;
-	}
+    public static void handleClickEvents (InventoryClickEvent event)
+    {
+        Inventory inv = event.getInventory();
+        for (int i = 0; i < guiMap.size(); i++)
+        {
+            if (guiMap.get(i).getInventory().equals(inv))
+            {
+                break;
+            } else
+            {
+                for (Inventory in : guiMap.get(i).getGuisBuySell())
+                {
+                    if (inv.equals(in))
+                    {
+                        // Klick Kauf- und Verkaufsansicht
+                        // TODO
+                        for (ShopObject o : guiMap.get(i).getShopObjects())
+                        {
+                            if (o.getBuySellGui().equals(in))
+                                handleBuySellGUI(event, o);
+                        }
+                    }
+                }
+            }
+        }
 
-	public static void handleBuySellGUI (InventoryClickEvent event, ShopObject object)
-	{
-		Player p = (Player) event.getWhoClicked();
-		boolean success = false;
-		ItemStack is = object.getItem();
-		int amount = 1;
-		switch (event.getSlot()) {
-		case 0: // Kauf 1
-			is.setAmount(amount);
-			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
-			break;
+        return;
+    }
 
-		case 1: // Kauf 16
-			amount = 16;
-			is.setAmount(amount);
-			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
-			break;
+    public static void handleBuySellGUI (InventoryClickEvent event, ShopObject object)
+    {
+        Player p = (Player) event.getWhoClicked();
+        boolean success = false;
+        ItemStack is = object.getItem();
+        int amount = 1;
+        switch (event.getSlot()) {
+        case 0: // Kauf 1
+            is.setAmount(amount);
+            success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
+            break;
 
-		case 2: // Kauf 64
-			amount = 64;
-			is.setAmount(amount);
-			success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
-			break;
-			
-		case 4: // Zurück
-			event.getWhoClicked().openInventory(object.getParent());
-			success = true;
-			break;
+        case 1: // Kauf 16
+            amount = 16;
+            is.setAmount(amount);
+            success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
+            break;
 
-		case 6: // Verkauf 1
-			amount = 1;
-			is.setAmount(amount);
-			success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
-			break;
+        case 2: // Kauf 64
+            amount = 64;
+            is.setAmount(amount);
+            success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
+            break;
 
-		case 7: // Verkauf 16
-			amount = 16;
-			is.setAmount(amount);
-			success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
-			break;
+        case 4: // Zurück
+            event.getWhoClicked().openInventory(object.getParent());
+            success = true;
+            break;
 
-		case 8: // Verkauf 64
-			amount = 64;
-			is.setAmount(amount);
-			success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
-			break;
+        case 6: // Verkauf 1
+            amount = 1;
+            is.setAmount(amount);
+            success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
+            break;
 
-		default:
-			success = true;
-			break;
-		}
-		if (!success)
-		{
-			UnitedShops.plugin.sendMessage(p, "You don't have the resources to do this transaction!");
-		}
-	}
+        case 7: // Verkauf 16
+            amount = 16;
+            is.setAmount(amount);
+            success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
+            break;
+
+        case 8: // Verkauf 64
+            amount = 64;
+            is.setAmount(amount);
+            success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
+            break;
+
+        default:
+            success = true;
+            break;
+        }
+        if (!success)
+        {
+            UnitedShops.plugin.sendMessage(p, UnitedShops.plugin.getMessage("transactionMissingResources"));
+        }
+    }
 }
 
 /*
