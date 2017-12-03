@@ -8,9 +8,9 @@ import io.github.nexadn.unitedshops.TestUtil;
 
 public class OfferTest {
 
-	@Test
-	public void test ()
-	{
-	}
+    @Test
+    public void test ()
+    {
+    }
 
 }

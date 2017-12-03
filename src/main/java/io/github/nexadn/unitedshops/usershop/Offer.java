@@ -15,72 +15,72 @@ import io.github.nexadn.unitedshops.ui.PagerItem;
 
 public class Offer implements PagerItem, Listener {
 
-	private Vendor						owner;
-	private Material					item;
-	private Inventory					supplyInventory;
-	private Inventory					viewInventory;
-	private double						priceBuy;
-	private double						priceSell;
-	private int							mode;
-	private HashMap<Player, Inventory>	lastParent;
+    private Vendor                     owner;
+    private Material                   item;
+    private Inventory                  supplyInventory;
+    private Inventory                  viewInventory;
+    private double                     priceBuy;
+    private double                     priceSell;
+    private int                        mode;
+    private HashMap<Player, Inventory> lastParent;
 
-	/**
-	 * Create a new Offer object and show the creator an inventory to supply the
-	 * shop offer
-	 * 
-	 * @param owner
-	 *            The owning Vendor
-	 * @param creator
-	 *            The creator to whom the supply view shall be shown
-	 * @param item
-	 *            The type of item to be sold
-	 * @param priceBuy
-	 *            The price on which players can buy items
-	 * @param priceSell
-	 *            The price on which players can sell items
-	 * @param mode
-	 *            The mode of the offer (1 = buy, 2 = sell, 3 = buy/sell)
-	 */
-	public Offer(Vendor owner, Player creator, Material item, double priceBuy, double priceSell, int mode)
-	{
-		this.owner = owner;
-		this.item = item;
-		this.priceBuy = priceBuy;
-		this.priceSell = priceSell;
-		this.mode = mode;
-		this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte items");
-		creator.openInventory(this.supplyInventory);
-		// TODO: Inventartitel hinzufügen
-		this.viewInventory = Bukkit.createInventory(null, 9 * 4);
-	}
+    /**
+     * Create a new Offer object and show the creator an inventory to supply the
+     * shop offer
+     * 
+     * @param owner
+     *            The owning Vendor
+     * @param creator
+     *            The creator to whom the supply view shall be shown
+     * @param item
+     *            The type of item to be sold
+     * @param priceBuy
+     *            The price on which players can buy items
+     * @param priceSell
+     *            The price on which players can sell items
+     * @param mode
+     *            The mode of the offer (1 = buy, 2 = sell, 3 = buy/sell)
+     */
+    public Offer(Vendor owner, Player creator, Material item, double priceBuy, double priceSell, int mode)
+    {
+        this.owner = owner;
+        this.item = item;
+        this.priceBuy = priceBuy;
+        this.priceSell = priceSell;
+        this.mode = mode;
+        this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte items");
+        creator.openInventory(this.supplyInventory);
+        // TODO: Inventartitel hinzufügen
+        this.viewInventory = Bukkit.createInventory(null, 9 * 4);
+    }
 
-	public void call (InventoryClickEvent e)
-	{
-		if (e.getWhoClicked() instanceof Player)
-		{
-			this.lastParent.put((Player) e.getWhoClicked(), e.getInventory());
-		}
-	}
+    public void call (InventoryClickEvent e)
+    {
+        if (e.getWhoClicked() instanceof Player)
+        {
+            this.lastParent.put((Player) e.getWhoClicked(), e.getInventory());
+        }
+    }
 
-	@EventHandler
-	public void onInventoryClick (InventoryClickEvent e)
-	{
-		if (e.getInventory().equals(this.viewInventory))
-		{
+    @EventHandler
+    public void onInventoryClick (InventoryClickEvent e)
+    {
+        if (e.getInventory().equals(this.viewInventory))
+        {
 
-		} else if (e.getInventory().equals(this.supplyInventory))
-		{
-			if (!(e.getCurrentItem().getType().equals(this.item)))
-			{
-				e.setCancelled(true);
-			}
-		}
-	}
+        } else if (e.getInventory().equals(this.supplyInventory))
+        {
+            if (! (e.getCurrentItem().getType().equals(this.item)))
+            {
+                e.setCancelled(true);
+            }
+        }
+    }
 
-	public ItemStack getIcon ()
-	{
-		return new ItemStack(this.item);
-	}
+    public ItemStack getIcon ()
+    {
+        return new ItemStack(this.item);
+    }
 
 }
 
