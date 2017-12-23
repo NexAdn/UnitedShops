@@ -47,9 +47,6 @@ public class UnitedShops extends JavaPlugin {
         plugin = this;
         this.autoSaleInventories = new HashMap<OfflinePlayer, AutoSellManager>();
 
-        if (!this.unitTest)
-            this.metrics = new Metrics(this);
-
         this.getLogger().log(Level.FINE, "Establishing economy hook...");
         if (!EcoManager.initEco())
         {
@@ -83,7 +80,11 @@ public class UnitedShops extends JavaPlugin {
             this.getLogger().log(Level.INFO, e.getMessage());
             e.printStackTrace();
             this.setEnabled(false);
+            this.getLogger().log(Level.SEVERE, "UnitedShops failed. Please send this Log file to the plugin's author.");
         }
+
+        if (!this.unitTest && this.getConfig().getBoolean("stats"))
+            this.metrics = new Metrics(this);
 
         ConfigMessages configMessages = new ConfigMessages(new File(getDataFolder(), "messages.yml"));
         configMessages.parseConfig();
@@ -146,7 +147,13 @@ public class UnitedShops extends JavaPlugin {
 
     public String getMessage (String key)
     {
-        return this.messages.get(key);
+        if (!unitTest)
+        {
+            return this.messages.get(key);
+        } else
+        {
+            return key;
+        }
     }
 }
 
