@@ -271,19 +271,23 @@ public class Pager implements Listener {
             }
             if ( (PREV & flags) > 0)
             {
-                bar.set(0, GUIContainer.getFunctionalItem(Material.PAPER, "<-", "Zurückblättern"));
+                bar.set(0, GUIContainer.getFunctionalItem(Material.PAPER, "<-",
+                        UnitedShops.plugin.getMessage("prevLore")));
             }
             if ( (UP & flags) > 0)
             {
-                bar.set(3, GUIContainer.getFunctionalItem(Material.PAPER, "Nach oben", "Zum übergeordneten Menü"));
+                bar.set(3, GUIContainer.getFunctionalItem(Material.PAPER, UnitedShops.plugin.getMessage("up"),
+                        UnitedShops.plugin.getMessage("upLore")));
             }
             if ( (CLOSE & flags) > 0)
             {
-                bar.set(5, GUIContainer.getFunctionalItem(Material.BARRIER, "Schließen", "---------"));
+                bar.set(5, GUIContainer.getFunctionalItem(Material.BARRIER, UnitedShops.plugin.getMessage("close"),
+                        UnitedShops.plugin.getMessage("closeLore")));
             }
             if ( (NEXT & flags) > 0)
             {
-                bar.set(8, GUIContainer.getFunctionalItem(Material.PAPER, "->", "Weiterblättern"));
+                bar.set(8, GUIContainer.getFunctionalItem(Material.PAPER, "->",
+                        UnitedShops.plugin.getMessage("nextLore")));
             }
             return bar;
         }
