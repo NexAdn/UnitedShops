@@ -12,6 +12,10 @@ commands:
     description: Open the automatic sale dialog
     permission: unitedshops.autosell
     usage: "Usage: /usell"
+  ushopreload:
+    description: Reload and applay the configuration files
+    permission: unitedshops.admin
+    usage: "Usage: /ushopreload"
 depend:
 - Vault 
 loadbefore: 

@@ -6,15 +6,19 @@ import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
-import io.github.nexadn.unitedshops.command.*;
+import io.github.nexadn.unitedshops.command.AutoSellHandler;
+import io.github.nexadn.unitedshops.command.ShopGUIHandler;
 import io.github.nexadn.unitedshops.config.ConfigMessages;
-import io.github.nexadn.unitedshops.events.*;
-import io.github.nexadn.unitedshops.shop.*;
+import io.github.nexadn.unitedshops.events.GUIClick;
+import io.github.nexadn.unitedshops.events.OnInventoryClose;
+import io.github.nexadn.unitedshops.shop.AutoSellManager;
+import io.github.nexadn.unitedshops.shop.GUIContainer;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 
 public class UnitedShops extends JavaPlugin {
@@ -154,6 +158,34 @@ public class UnitedShops extends JavaPlugin {
         {
             return key;
         }
+    }
+
+    @Override
+    public boolean onCommand (CommandSender commandSender, Command command, String label, String[] sArgv)
+    {
+        if (command.getName().equalsIgnoreCase("ushopreload"))
+        {
+            if (!commandSender.hasPermission("unitedshops.admin"))
+            {
+                this.sendMessage(commandSender, this.getMessage("missingPermission"));
+                return false;
+            }
+
+            this.getLogger().log(Level.INFO, "Reloading config");
+            this.sendMessage(commandSender, "Reloading UnitedShops...");
+
+            this.reloadConfig();
+
+            ConfigMessages configMessages = new ConfigMessages(new File(this.getDataFolder(), "messages.yml"));
+            configMessages.parseConfig();
+            this.messages = configMessages.getMessages();
+
+            GUIContainer.initGUI();
+            this.getLogger().log(Level.FINE, "Reload successful");
+            this.sendMessage(commandSender, "Reload successful");
+            return true;
+        }
+        return false;
     }
 }
 
