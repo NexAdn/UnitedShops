@@ -1,17 +1,29 @@
+# Enable metrics (recommended), disable with 'false'
+stats: true
+
 shops:
   # shop
   myexampleshop:
     # ID (start with 0)
     id: 0
-    # The title of the shop (displayed in menu)
+    # The title of the shop (displayed in the menu)
     title: ExampleTitle
     # The item to choose as icon
     iconitem: "COBBLESTONE"
     # All contents
     items:
       # Example: 1 Cobblestone; 100.00$ price (buy), 1.00$ price (sell)
-      # The key can be named as you think
       COBBLESTONE:
-        # Choose the item to offer
         buy: 100.0
         sell: 1.0
+      DIRT:
+        buy: 12.0
+        sell: 0.5
+  anothershop:
+    id: 1
+    title: Crazy Stuff
+    iconitem: "LOG"
+    items:
+      LOG:
+        buy: 200.0
+        sell: 10.0
