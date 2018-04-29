@@ -80,9 +80,9 @@ public class Vendor {
     {
         YamlConfiguration yamlConf = YamlConfiguration.loadConfiguration(this.saveFile);
         yamlConf.createSection("vendor");
-        yamlConf.set("vendor.owner", this.owner.getUniqueId().toString());
+        yamlConf.set("vendor.name", this.owner.getUniqueId().toString());
         yamlConf.set("vendor.label", this.label);
-        yamlConf.set("vendor.ratin", this.rating);
+        yamlConf.set("vendor.rating", this.rating);
         yamlConf.set("vendor.buyCount", this.buyCount);
         yamlConf.set("vendor.sellCount", this.sellCount);
         yamlConf.createSection("vendor.offers");
