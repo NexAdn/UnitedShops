@@ -82,6 +82,11 @@ public class Vendor {
         // TODO
     }
 
+    public UUID getPlayerUUID ()
+    {
+        return this.owner.getUniqueId();
+    }
+
     private void saveToDisk ()
     {
         YamlConfiguration yamlConf = YamlConfiguration.loadConfiguration(this.saveFile);
