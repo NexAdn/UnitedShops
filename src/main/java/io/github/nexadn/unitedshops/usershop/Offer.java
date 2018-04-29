@@ -50,7 +50,7 @@ public class Offer implements PagerItem, Listener {
         this.mode = mode;
         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte items");
         creator.openInventory(this.supplyInventory);
-        // TODO: Inventartitel hinzufügen
+        // TODO: Inventartikel hinzufügen
         this.viewInventory = Bukkit.createInventory(null, 9 * 4);
     }
 
@@ -60,6 +60,21 @@ public class Offer implements PagerItem, Listener {
         {
             this.lastParent.put((Player) e.getWhoClicked(), e.getInventory());
         }
+    }
+    
+    public double getBuyPrice()
+    {
+        return this.priceBuy;
+    }
+    
+    public int getMode()
+    {
+        return this.mode;
+    }
+    
+    public double getSellPrice()
+    {
+        return this.priceSell;
     }
 
     @EventHandler
