@@ -94,7 +94,7 @@ public class Vendor {
         yamlConf.createSection("vendor.offers");
         for (Offer o : this.offers.values())
         {
-
+            o.saveToConfig(yamlConf.createSection(o.getIcon().getType().toString()));
         }
     }
 }
