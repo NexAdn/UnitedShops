@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -66,6 +67,11 @@ public class Offer implements PagerItem, Listener {
     {
         return this.priceBuy;
     }
+
+    public ItemStack getIcon ()
+    {
+        return new ItemStack(this.item);
+    }
     
     public int getMode()
     {
@@ -91,10 +97,28 @@ public class Offer implements PagerItem, Listener {
             }
         }
     }
-
-    public ItemStack getIcon ()
+    
+    /**
+     * Save the offer to config
+     * @param section Where to save the offer
+     * @return The modified {@link ConfigurationSection}
+     */
+    public ConfigurationSection saveToConfig(ConfigurationSection section)
     {
-        return new ItemStack(this.item);
+        section.set("owner", this.owner.getPlayerUUID().toString());
+        section.set("item", this.item.toString());
+        int supply = 0;
+        for (ItemStack itemStack : this.supplyInventory)
+        {
+            if (itemStack.getType().equals(this.item))
+                supply += itemStack.getAmount();
+        }
+        section.set("supply", supply);
+        section.set("priceBuy", this.priceBuy);
+        section.set("priceSell", this.priceSell);
+        section.set("mode", this.mode);
+        
+        return section;
     }
 
 }
