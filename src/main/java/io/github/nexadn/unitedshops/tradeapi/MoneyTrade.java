@@ -29,7 +29,7 @@ public final class MoneyTrade {
             if (eReturn.transactionSuccess())
             {
                 player.getInventory().addItem(offer);
-                UnitedShops.plugin.sendMessage(player, "Trade: " + offer.toString() + " -> $" + want);
+                UnitedShops.plugin.sendMessage(player, UnitedShops.plugin.getMessage("tradePrefix") + offer.getType().toString() + " x" + offer.getAmount() + " -> $" + want);
                 return true;
             }
         }
@@ -55,7 +55,7 @@ public final class MoneyTrade {
                             ChatColor.RED + UnitedShops.plugin.getMessage("transactionFailed"));
                     return false;
                 }
-                UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.toString());
+                UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.getType().toString() + " x" + want.getAmount());
                 return true;
             }
         } else
