@@ -1,6 +1,6 @@
 messages:
   shopCategoriesTitle: "Shop - Categories"
-  transactionMissingResoucres: "You are missing the required resources for this transaction!"
+  transactionMissingResources: "You are missing the required resources for this transaction!"
   autosellTitle: "Autosell: "
   buyAmount: "Buy "
   prevLore: "Previous page"
