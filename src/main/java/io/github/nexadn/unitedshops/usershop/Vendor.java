@@ -102,6 +102,16 @@ public class Vendor {
             o.saveToConfig(yamlConf.createSection(o.getIcon().getType().toString()));
         }
     }
+    
+    private static void updateGlobalOfferMenu()
+    {
+        // TODO
+    }
+    
+    private static void updateGlobalVendorMenu()
+    {
+        // TODO
+    }
 }
 
 /*
