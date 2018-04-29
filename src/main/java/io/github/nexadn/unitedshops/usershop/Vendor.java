@@ -9,8 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import io.github.nexadn.unitedshops.UnitedShops;
+import io.github.nexadn.unitedshops.ui.Pager;
 
 public class Vendor {
     private Player                         owner;
@@ -21,6 +23,10 @@ public class Vendor {
     private HashMap<Material, Offer>       offers;
     private File                           saveFile;
 
+    private Pager vendorOfferMenu;
+
+    private static Pager globalOfferMenu;
+    private static Pager globalVendorMenu;
     private static HashMap<Player, Vendor> vendors;
 
     /**
