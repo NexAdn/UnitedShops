@@ -49,39 +49,25 @@ public class ShopObject implements PagerItem {
         for (int i = 0; i < 9; i++)
         {
             ItemStack it;
-            ItemMeta im;
-            List<String> il;
             switch (i) {
             case 0: // Kauf 1
                 it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
-                        UnitedShops.plugin.getMessage("buyAmount") + "1", "ev-b-1");
-                im = it.getItemMeta();
-                il = im.getLore();
-                il.add(UnitedShops.plugin.getMessage("price") + this.pricebuy * 1);
-                im.setLore(il);
-                it.setItemMeta(im);
+                        UnitedShops.plugin.getMessage("buyAmount") + "1",
+                        UnitedShops.plugin.getMessage("price") + this.pricebuy * 1);
                 it.setAmount(1);
                 this.buysellgui.setItem(i, it);
                 break;
             case 1: // Kauf 16
                 it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
-                        UnitedShops.plugin.getMessage("buyAmount") + "16", "ev-b-16");
-                im = it.getItemMeta();
-                il = im.getLore();
-                il.add(UnitedShops.plugin.getMessage("price") + this.pricebuy * 16);
-                im.setLore(il);
-                it.setItemMeta(im);
+                        UnitedShops.plugin.getMessage("buyAmount") + "16",
+                        UnitedShops.plugin.getMessage("price") + this.pricebuy * 16);
                 it.setAmount(16);
                 this.buysellgui.setItem(i, it);
                 break;
             case 2: // Kauf 64
                 it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
-                        UnitedShops.plugin.getMessage("buyAmount") + "64", "ev-b-64");
-                im = it.getItemMeta();
-                il = im.getLore();
-                il.add(UnitedShops.plugin.getMessage("price") + this.pricebuy * 64);
-                im.setLore(il);
-                it.setItemMeta(im);
+                        UnitedShops.plugin.getMessage("buyAmount") + "64",
+                        UnitedShops.plugin.getMessage("price") + this.pricebuy * 64);
                 it.setAmount(64);
                 this.buysellgui.setItem(i, it);
                 break;
@@ -89,8 +75,7 @@ public class ShopObject implements PagerItem {
                 this.buysellgui.setItem(i, GUIContainer.getBlank());
                 break;
             case 4: // Zurück
-                it = GUIContainer.getFunctionalItem(Material.BARRIER, UnitedShops.plugin.getMessage("back"),
-                        "ev-iback");
+                it = GUIContainer.getFunctionalItem(Material.BARRIER, UnitedShops.plugin.getMessage("back"));
                 it.setAmount(1);
                 this.buysellgui.setItem(i, it);
                 break;
@@ -99,34 +84,22 @@ public class ShopObject implements PagerItem {
                 break;
             case 6: // Verkauf 1
                 it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
-                        UnitedShops.plugin.getMessage("sellAmount") + "1", "ev-s-1");
-                im = it.getItemMeta();
-                il = im.getLore();
-                il.add(UnitedShops.plugin.getMessage("price") + this.pricesell * 1);
-                im.setLore(il);
-                it.setItemMeta(im);
+                        UnitedShops.plugin.getMessage("sellAmount") + "1",
+                        UnitedShops.plugin.getMessage("price") + this.pricesell * 1);
                 it.setAmount(1);
                 this.buysellgui.setItem(i, it);
                 break;
             case 7: // Verkauf 16
                 it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
-                        UnitedShops.plugin.getMessage("sellAmount") + "16", "ev-s-16");
-                im = it.getItemMeta();
-                il = im.getLore();
-                il.add(UnitedShops.plugin.getMessage("price") + this.pricesell * 16);
-                im.setLore(il);
-                it.setItemMeta(im);
+                        UnitedShops.plugin.getMessage("sellAmount") + "16",
+                        UnitedShops.plugin.getMessage("price") + this.pricesell * 16);
                 it.setAmount(16);
                 this.buysellgui.setItem(i, it);
                 break;
             case 8: // Verkauf 64
                 it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
-                        UnitedShops.plugin.getMessage("sellAmount") + "64", "ev-s-64");
-                im = it.getItemMeta();
-                il = im.getLore();
-                il.add(UnitedShops.plugin.getMessage("price") + this.pricesell * 64);
-                im.setLore(il);
-                it.setItemMeta(im);
+                        UnitedShops.plugin.getMessage("sellAmount") + "64",
+                        UnitedShops.plugin.getMessage("price") + this.pricesell * 64);
                 it.setAmount(64);
                 this.buysellgui.setItem(i, it);
             }
