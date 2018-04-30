@@ -206,7 +206,7 @@ public class UnitedShops extends JavaPlugin {
 }
 
 /*
- * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+ * Copyright (C) 2015-2018 Adrian Schollmeyer
  * 
  * This file is part of UnitedShops.
  * 
