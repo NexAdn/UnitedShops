@@ -18,7 +18,7 @@ public final class TradeManager {
     {
         this.economy = economy;
         this.plugin = plugin;
-_   }
+    }
 
     /**
      * Buy items

@@ -20,12 +20,15 @@ import io.github.nexadn.unitedshops.events.OnInventoryClose;
 import io.github.nexadn.unitedshops.shop.AutoSellManager;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
+import io.github.nexadn.unitedshops.tradeapi.TradeManager;
 
 public class UnitedShops extends JavaPlugin {
     private boolean                                 unitTest = false;
 
     private HashMap<OfflinePlayer, AutoSellManager> autoSaleInventories;
     private HashMap<String, String>                 messages;
+
+    private TradeManager                            tradeManager;
 
     public static UnitedShops                       plugin;
 
@@ -136,6 +139,11 @@ public class UnitedShops extends JavaPlugin {
             this.autoSaleInventories.put(player, new AutoSellManager(player));
         }
         return this.autoSaleInventories.get(player);
+    }
+    
+    public TradeManager getTradeManager()
+    {
+        return this.tradeManager;
     }
 
     public boolean hasAutoSellManager (OfflinePlayer player)
