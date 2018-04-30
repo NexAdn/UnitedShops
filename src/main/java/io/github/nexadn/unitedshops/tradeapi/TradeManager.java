@@ -9,27 +9,35 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
-public final class MoneyTrade {
+public class TradeManager {
 
-    private static Economy eco = EcoManager.getEconomy();
+    private Economy     economy;
+    private UnitedShops plugin;
+
+    public TradeManager(UnitedShops plugin, Economy economy)
+    {
+        this.economy = economy;
+        this.plugin = plugin;
+    }
 
     /**
      * Buy items
      */
-    public static boolean tradeItemForMoney (Player player, ItemStack offer, double want)
+    public boolean tradeItemForMoney (Player player, ItemStack offer, double want)
     {
         EconomyResponse eReturn = null;
-        double bal = eco.getBalance(player);
+        double bal = this.economy.getBalance(player);
         if (want > bal)
         {
             return false;
         } else
         {
-            eReturn = eco.withdrawPlayer(player, want);
+            eReturn = this.economy.withdrawPlayer(player, want);
             if (eReturn.transactionSuccess())
             {
                 player.getInventory().addItem(offer);
-                UnitedShops.plugin.sendMessage(player, UnitedShops.plugin.getMessage("tradePrefix") + offer.getType().toString() + " x" + offer.getAmount() + " -> $" + want);
+                this.plugin.sendMessage(player, UnitedShops.plugin.getMessage("tradePrefix")
+                        + offer.getType().toString() + " x" + offer.getAmount() + " -> $" + want);
                 return true;
             }
         }
@@ -39,23 +47,23 @@ public final class MoneyTrade {
     /**
      * Sell items
      */
-    public static boolean tradeMoneyForItem (Player player, double offer, ItemStack want)
+    public boolean tradeMoneyForItem (Player player, double offer, ItemStack want)
     {
         EconomyResponse eReturn = null;
         Inventory transactionInv = player.getInventory();
         if (transactionInv.containsAtLeast(want, want.getAmount()))
         {
-            eReturn = eco.depositPlayer(player, offer);
+            eReturn = this.economy.depositPlayer(player, offer);
             if (eReturn.transactionSuccess())
             {
-                if (!removeItems(transactionInv, want))
+                if (!this.removeItems(transactionInv, want))
                 {
-                    eco.withdrawPlayer(player, offer);
-                    UnitedShops.plugin.sendMessage(player,
-                            ChatColor.RED + UnitedShops.plugin.getMessage("transactionFailed"));
+                    this.economy.withdrawPlayer(player, offer);
+                    this.plugin.sendMessage(player, ChatColor.RED + UnitedShops.plugin.getMessage("transactionFailed"));
                     return false;
                 }
-                UnitedShops.plugin.sendMessage(player, "Trade: $" + offer + " -> " + want.getType().toString() + " x" + want.getAmount());
+                this.plugin.sendMessage(player,
+                        "Trade: $" + offer + " -> " + want.getType().toString() + " x" + want.getAmount());
                 return true;
             }
         } else
@@ -65,7 +73,7 @@ public final class MoneyTrade {
         return false;
     }
 
-    public static boolean removeItems (Inventory inventory, ItemStack items)
+    public boolean removeItems (Inventory inventory, ItemStack items)
     {
         int remaining = items.getAmount();
         for (int i = 0; i < inventory.getSize(); ++i)
@@ -94,7 +102,7 @@ public final class MoneyTrade {
 }
 
 /*
- * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+ * Copyright (C) 2015-2018 Adrian Schollmeyer
  * 
  * This file is part of UnitedShops.
  * 
