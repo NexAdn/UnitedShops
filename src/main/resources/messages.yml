@@ -13,6 +13,7 @@ messages:
   sellAmount: "Sell "
   price: "Price: "
   transactionFailed: "Transaction failed!"
+  tradePrefix: "Trade: "
   missingPermission: "You are missing the required permissions!"
   playerOnly: "You can only use that as a player!"
   
