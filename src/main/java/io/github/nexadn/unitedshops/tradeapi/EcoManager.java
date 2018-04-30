@@ -22,10 +22,6 @@ public final class EcoManager {
 
     public static Economy getEconomy ()
     {
-        while (economy == null)
-        {
-            initEco();
-        }
         return economy;
     }
 }
