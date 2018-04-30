@@ -28,11 +28,12 @@ public final class TestUtil {
             Whitebox.setInternalState(javaPluginLoader, "server", server);
             Logger.getLogger("Minecraft").setParent(server.getLogger());
             PluginDescriptionFile pluginDescriptionFile = new PluginDescriptionFile("UnitedShops", "-1",
-                    "io.github.nexadn.unitedshops.UnitedShops");
-            plugin = PowerMockito.spy(new UnitedShops(javaPluginLoader, pluginDescriptionFile, pluginDir,
+                    "io.github.nexadn.unitedshops.TestUnitedShops");
+            plugin = PowerMockito.spy(new TestUnitedShops(javaPluginLoader, pluginDescriptionFile, pluginDir,
                     new File(pluginDir, "testpluginfile.yml")));
             plugin.onUnitTest();
             plugin.onEnable();
+            UnitedShops.plugin = plugin;
         }
     }
 
