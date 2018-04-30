@@ -9,7 +9,7 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
-public final class MoneyTrade {
+public final class TradeManager {
 
     private static Economy eco = EcoManager.getEconomy();
 
