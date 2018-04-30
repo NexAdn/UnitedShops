@@ -84,6 +84,11 @@ public final class GUIContainer {
         return guiMap;
     }
 
+    public static Pager getRootPager ()
+    {
+        return guiPager;
+    }
+
     public static boolean isGuiInventory (Inventory inv)
     {
         if (inv.equals(guiCategories)/* || inv.equals(guiBuySell) */ )

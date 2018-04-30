@@ -58,6 +58,11 @@ public class ShopInventory implements PagerItem {
         im.setDisplayName(ChatColor.AQUA + this.title);
         this.icon.setItemMeta(im);
     }
+    
+    public Pager getPager()
+    {
+        return this.pager;
+    }
 
     public boolean handleTrades (int index, Player player, boolean isSell, int amount)
     {
