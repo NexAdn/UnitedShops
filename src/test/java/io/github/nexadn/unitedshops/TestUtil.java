@@ -9,12 +9,15 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.api.mockito.PowerMockito;
 
+import io.github.nexadn.unitedshops.tradeapi.TradeManager;
+
 public final class TestUtil {
     private static JavaPluginLoader javaPluginLoader;
     private static Server           server;
     private static UnitedShops      plugin;
     private static boolean          initialized = false;
     private static File             pluginDir   = new File("target/test/unitedshops");
+    private static TradeManager     testTradeManager;
 
     @SuppressWarnings ("deprecation")
     public static void init ()
@@ -34,7 +37,13 @@ public final class TestUtil {
             plugin.onUnitTest();
             plugin.onEnable();
             UnitedShops.plugin = plugin;
+            testTradeManager = plugin.getTradeManager();
         }
+    }
+
+    public static TradeManager getTradeManager ()
+    {
+        return testTradeManager;
     }
 
     public static Server getServer ()
