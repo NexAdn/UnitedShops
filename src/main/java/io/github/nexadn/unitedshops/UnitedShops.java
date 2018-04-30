@@ -64,7 +64,8 @@ public class UnitedShops extends JavaPlugin {
                 return;
             }
         }
-        this.tradeManager = new TradeManager(this, EcoManager.getEconomy());
+        if (!this.unitTest)
+            this.tradeManager = new TradeManager(this, EcoManager.getEconomy());
         this.getLogger().log(Level.FINE, "Economy hook successful.");
 
         // config.yml
