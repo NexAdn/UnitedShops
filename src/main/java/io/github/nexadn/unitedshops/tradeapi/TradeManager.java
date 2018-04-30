@@ -9,7 +9,7 @@ import io.github.nexadn.unitedshops.UnitedShops;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
-public final class TradeManager {
+public class TradeManager {
 
     private Economy     economy;
     private UnitedShops plugin;
