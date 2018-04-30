@@ -7,7 +7,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
-import io.github.nexadn.unitedshops.tradeapi.TradeManager;
 
 public class AutoSellManager {
     private Inventory     inventory;
@@ -44,8 +43,8 @@ public class AutoSellManager {
                         if (so.getItem().getType().equals(s.getType()))
                         {
                             this.player.getPlayer().getInventory().addItem(new ItemStack(s.getType(), s.getAmount()));
-                            TradeManager.removeItems(this.inventory, s);
-                            if (TradeManager.tradeMoneyForItem(this.player.getPlayer(), so.getSell() * s.getAmount(), s))
+                            UnitedShops.plugin.getTradeManager().removeItems(this.inventory, s);
+                            if (UnitedShops.plugin.getTradeManager().tradeMoneyForItem(this.player.getPlayer(), so.getSell() * s.getAmount(), s))
                             {
                                 nextitem = true;
                                 break;

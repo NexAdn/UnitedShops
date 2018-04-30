@@ -140,8 +140,8 @@ public class UnitedShops extends JavaPlugin {
         }
         return this.autoSaleInventories.get(player);
     }
-    
-    public TradeManager getTradeManager()
+
+    public TradeManager getTradeManager ()
     {
         return this.tradeManager;
     }

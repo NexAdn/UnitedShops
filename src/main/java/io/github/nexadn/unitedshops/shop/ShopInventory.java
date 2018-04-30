@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.nexadn.unitedshops.UnitedShops;
-import io.github.nexadn.unitedshops.tradeapi.TradeManager;
 import io.github.nexadn.unitedshops.ui.Pager;
 import io.github.nexadn.unitedshops.ui.PagerItem;
 
@@ -71,11 +70,11 @@ public class ShopInventory implements PagerItem {
         if (!isSell)
         {
             // Buy items
-            return TradeManager.tradeItemForMoney(player, item, buy1 * amount);
+            return UnitedShops.plugin.getTradeManager().tradeItemForMoney(player, item, buy1 * amount);
         } else if (isSell)
         {
             // Sell items
-            return TradeManager.tradeMoneyForItem(player, sell1 * amount, item);
+            return UnitedShops.plugin.getTradeManager().tradeMoneyForItem(player, sell1 * amount, item);
         }
 
         return false;
