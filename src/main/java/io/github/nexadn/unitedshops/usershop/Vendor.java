@@ -119,6 +119,22 @@ public class Vendor implements PagerItem {
         return this.rating;
     }
 
+    public void onOfferBuy (Offer o, int amount)
+    {
+        double volume = o.getBuyPrice() * amount;
+        this.buyVolume += volume;
+        globalBuyVolume += volume;
+        this.updateRating();
+    }
+
+    public void onOfferSell (Offer o, int amount)
+    {
+        double volume = o.getSellPrice() * amount;
+        this.sellVolume += volume;
+        globalSellVolume += volume;
+        this.updateRating();
+    }
+
     private void saveToDisk ()
     {
         YamlConfiguration yamlConf = YamlConfiguration.loadConfiguration(this.saveFile);
@@ -133,6 +149,13 @@ public class Vendor implements PagerItem {
         {
             o.saveToConfig(yamlConf.createSection(o.getIcon().getType().toString()));
         }
+    }
+
+    private void updateRating ()
+    {
+        // RMS of share of global trade volumes
+        this.rating = 100f * (float) Math.sqrt(
+                (Math.pow(this.buyVolume / globalBuyVolume, 2) + Math.pow(this.sellVolume / globalSellVolume, 2)) / 2.);
     }
 
     private static void updateGlobalOfferMenu ()
