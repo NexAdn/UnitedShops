@@ -19,23 +19,32 @@ import io.github.nexadn.unitedshops.ui.Pager;
 import io.github.nexadn.unitedshops.ui.PagerItem;
 
 public class Vendor implements PagerItem {
-    private Player                         owner;
-    private String                         label;
-    private float                          rating;
-    private int                            buyCount;                                // How many items were bought from
-                                                                                    // the vendor
-    private int                            sellCount;                               // How many items were sold to the
-                                                                                    // vendor
-    private HashMap<Material, Offer>       offers;
-    private File                           saveFile;
+    private Player                          owner;
+    private String                          label;
+    private float                           rating;
+    private double                          buyVolume;
+    private double                          sellVolume;
+    private HashMap<Material, Offer>        offers;
+    private File                            saveFile;
 
-    private Pager                          vendorOfferMenu;
+    private Pager                           vendorOfferMenu;
 
-    private static Pager                   globalOfferMenu;
-    private static Pager                   globalVendorMenu;
-    private static final ItemStack         icon    = new ItemStack(Material.CHEST); // Global icon for all Vendors in
-                                                                                    // Pager
-    private static HashMap<Player, Vendor> vendors = new HashMap<Player, Vendor>();
+    private static Pager                    globalOfferMenu;
+    private static HashMap<Material, Pager> globalOfferMenus           = new HashMap<>();
+    private static Pager                    globalVendorMenu;
+    // Global icon for all Vendors in the Pager
+    private static final ItemStack          icon                       = new ItemStack(Material.CHEST);
+    private static HashMap<Player, Vendor>  vendors                    = new HashMap<>();
+
+    private static double                   globalBuyVolume            = 0.;
+    private static double                   globalSellVolume           = 0.;
+
+    private static final int                pagerFlagsGlobalOfferMenu  = Pager.MenuButton.PREV | Pager.MenuButton.NEXT
+            | Pager.MenuButton.CLOSE;
+    private static final int                pagerFlagsGlobalOfferMenus = Pager.MenuButton.PREV | Pager.MenuButton.NEXT
+            | Pager.MenuButton.CLOSE | Pager.MenuButton.UP;
+    private static final int                pagerFlagsGlobalVendorMenu = Pager.MenuButton.PREV | Pager.MenuButton.NEXT
+            | Pager.MenuButton.CLOSE;
 
     /**
      * Create a new Vendor
@@ -49,9 +58,9 @@ public class Vendor implements PagerItem {
      */
     public Vendor(Player creator, String vendorLabel, File vendorDataFolder)
     {
-        this.buyCount = 0;
-        this.sellCount = 0;
-        this.rating = 0;
+        this.buyVolume = 0.;
+        this.sellVolume = 0.;
+        this.rating = 0f;
         this.owner = creator;
         this.label = vendorLabel;
         this.offers = new HashMap<Material, Offer>();
@@ -117,8 +126,8 @@ public class Vendor implements PagerItem {
         yamlConf.set("vendor.name", this.owner.getUniqueId().toString());
         yamlConf.set("vendor.label", this.label);
         yamlConf.set("vendor.rating", this.rating);
-        yamlConf.set("vendor.buyCount", this.buyCount);
-        yamlConf.set("vendor.sellCount", this.sellCount);
+        yamlConf.set("vendor.buyVolume", this.buyVolume);
+        yamlConf.set("vendor.sellVolume", this.sellVolume);
         yamlConf.createSection("vendor.offers");
         for (Offer o : this.offers.values())
         {
