@@ -22,10 +22,10 @@ public class Vendor implements PagerItem {
     private Player                         owner;
     private String                         label;
     private float                          rating;
-    private int                            buyCount;                               // How many items were bought from
-                                                                                   // the vendor
-    private int                            sellCount;                              // How many items were sold to the
-                                                                                   // vendor
+    private int                            buyCount;                                // How many items were bought from
+                                                                                    // the vendor
+    private int                            sellCount;                               // How many items were sold to the
+                                                                                    // vendor
     private HashMap<Material, Offer>       offers;
     private File                           saveFile;
 
@@ -33,6 +33,8 @@ public class Vendor implements PagerItem {
 
     private static Pager                   globalOfferMenu;
     private static Pager                   globalVendorMenu;
+    private static final ItemStack         icon    = new ItemStack(Material.CHEST); // Global icon for all Vendors in
+                                                                                    // Pager
     private static HashMap<Player, Vendor> vendors = new HashMap<Player, Vendor>();
 
     /**
@@ -95,7 +97,7 @@ public class Vendor implements PagerItem {
     @Override
     public ItemStack getIcon ()
     {
-
+        return icon;
     }
 
     public UUID getPlayerUUID ()
