@@ -1,7 +1,9 @@
 package io.github.nexadn.unitedshops.usershop;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -9,25 +11,29 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.ui.Pager;
+import io.github.nexadn.unitedshops.ui.PagerItem;
 
-public class Vendor {
+public class Vendor implements PagerItem {
     private Player                         owner;
     private String                         label;
     private float                          rating;
-    private int                            buyCount;  // How many items were bought from the vendor
-    private int                            sellCount; // How many items were sold to the vendor
+    private int                            buyCount;                               // How many items were bought from
+                                                                                   // the vendor
+    private int                            sellCount;                              // How many items were sold to the
+                                                                                   // vendor
     private HashMap<Material, Offer>       offers;
     private File                           saveFile;
 
-    private Pager vendorOfferMenu;
+    private Pager                          vendorOfferMenu;
 
-    private static Pager globalOfferMenu;
-    private static Pager globalVendorMenu;
-    private static HashMap<Player, Vendor> vendors;
+    private static Pager                   globalOfferMenu;
+    private static Pager                   globalVendorMenu;
+    private static HashMap<Player, Vendor> vendors = new HashMap<Player, Vendor>();
 
     /**
      * Create a new Vendor
@@ -49,8 +55,6 @@ public class Vendor {
         this.offers = new HashMap<Material, Offer>();
         this.saveFile = new File(vendorDataFolder, creator.getUniqueId().toString() + ".yml");
 
-        if (vendors == null)
-            vendors = new HashMap<Player, Vendor>();
         vendors.put(creator, this);
     }
 
@@ -82,9 +86,26 @@ public class Vendor {
         // TODO
     }
 
+    @Override
+    public void call (InventoryClickEvent e)
+    {
+        // TODO
+    }
+
+    @Override
+    public ItemStack getIcon ()
+    {
+
+    }
+
     public UUID getPlayerUUID ()
     {
         return this.owner.getUniqueId();
+    }
+
+    public float getRating ()
+    {
+        return this.rating;
     }
 
     private void saveToDisk ()
@@ -102,15 +123,21 @@ public class Vendor {
             o.saveToConfig(yamlConf.createSection(o.getIcon().getType().toString()));
         }
     }
-    
-    private static void updateGlobalOfferMenu()
+
+    private static void updateGlobalOfferMenu ()
     {
         // TODO
     }
-    
-    private static void updateGlobalVendorMenu()
+
+    private static void updateGlobalVendorMenu ()
     {
-        // TODO
+        List<Vendor> vendorList = new ArrayList<Vendor>(vendors.values());
+        vendorList.sort( (Vendor lhs, Vendor rhs) -> {
+            return lhs.getRating() > rhs.getRating() ? 1 : lhs.getRating() < rhs.getRating() ? -1 : 0;
+        });
+        globalVendorMenu = new Pager(vendorList,
+                Pager.MenuButton.NEXT | Pager.MenuButton.PREV | Pager.MenuButton.CLOSE | Pager.MenuButton.UP,
+                "Vendor menu", 5);
     }
 }
 
