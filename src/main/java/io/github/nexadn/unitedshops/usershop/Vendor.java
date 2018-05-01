@@ -115,7 +115,7 @@ public class Vendor {
 }
 
 /*
- * Copyright (C) 2017 Adrian Schollmeyer
+ * Copyright (C) 2017, 2018 Adrian Schollmeyer
  * 
  * This file is part of UnitedShops.
  * 
