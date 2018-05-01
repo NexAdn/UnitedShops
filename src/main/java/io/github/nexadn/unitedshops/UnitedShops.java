@@ -20,12 +20,15 @@ import io.github.nexadn.unitedshops.events.OnInventoryClose;
 import io.github.nexadn.unitedshops.shop.AutoSellManager;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
+import io.github.nexadn.unitedshops.tradeapi.TradeManager;
 
 public class UnitedShops extends JavaPlugin {
     private boolean                                 unitTest = false;
 
     private HashMap<OfflinePlayer, AutoSellManager> autoSaleInventories;
     private HashMap<String, String>                 messages;
+
+    protected TradeManager                          tradeManager;
 
     public static UnitedShops                       plugin;
 
@@ -55,9 +58,14 @@ public class UnitedShops extends JavaPlugin {
         if (!EcoManager.initEco())
         {
             this.getLogger().log(Level.SEVERE, "The Economy hook couldn't be initialized. Is Vault missing?");
-            this.setEnabled(false);
-            return;
+            if (!this.unitTest)
+            {
+                this.setEnabled(false);
+                return;
+            }
         }
+        if (!this.unitTest)
+            this.tradeManager = new TradeManager(this, EcoManager.getEconomy());
         this.getLogger().log(Level.FINE, "Economy hook successful.");
 
         // config.yml
@@ -94,13 +102,16 @@ public class UnitedShops extends JavaPlugin {
         configMessages.parseConfig();
         this.messages = configMessages.getMessages();
 
-        // Command executors
-        this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler()); // /ushop
-        this.getServer().getPluginCommand("usell").setExecutor(new AutoSellHandler()); // /usell
+        if (!this.unitTest)
+        {
+            // Command executors
+            this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler()); // /ushop
+            this.getServer().getPluginCommand("usell").setExecutor(new AutoSellHandler()); // /usell
 
-        // Event handler
-        this.getServer().getPluginManager().registerEvents(new GUIClick(), this);
-        this.getServer().getPluginManager().registerEvents(new OnInventoryClose(), this);
+            // Event handler
+            this.getServer().getPluginManager().registerEvents(new GUIClick(), this);
+            this.getServer().getPluginManager().registerEvents(new OnInventoryClose(), this);
+        }
 
         GUIContainer.initGUI();
 
@@ -136,6 +147,11 @@ public class UnitedShops extends JavaPlugin {
             this.autoSaleInventories.put(player, new AutoSellManager(player));
         }
         return this.autoSaleInventories.get(player);
+    }
+
+    public TradeManager getTradeManager ()
+    {
+        return this.tradeManager;
     }
 
     public boolean hasAutoSellManager (OfflinePlayer player)
@@ -190,7 +206,7 @@ public class UnitedShops extends JavaPlugin {
 }
 
 /*
- * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
+ * Copyright (C) 2015-2018 Adrian Schollmeyer
  * 
  * This file is part of UnitedShops.
  * 

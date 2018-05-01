@@ -2,28 +2,91 @@
 stats: true
 
 shops:
-  # shop
-  myexampleshop:
-    # ID (start with 0)
-    id: 0
-    # The title of the shop (displayed in the menu)
-    title: ExampleTitle
-    # The item to choose as icon
-    iconitem: "COBBLESTONE"
-    # All contents
-    items:
-      # Example: 1 Cobblestone; 100.00$ price (buy), 1.00$ price (sell)
-      COBBLESTONE:
-        buy: 100.0
-        sell: 1.0
-      DIRT:
-        buy: 12.0
-        sell: 0.5
-  anothershop:
-    id: 1
-    title: Crazy Stuff
-    iconitem: "LOG"
-    items:
-      LOG:
-        buy: 200.0
-        sell: 10.0
+    # shop
+    blockshop:
+        # ID (start with 0, increment by 1 for each new shop)
+        id: 0
+        # The title of the shop (displayed in the menu)
+        title: The block shop
+        # The item to choose as icon
+        iconitem: "MOSSY_COBBLESTONE"
+        # All contents
+        items:
+            COBBLESTONE:
+                buy: 10
+                sell: 1
+            DIRT:
+                buy: 10
+                sell: 1
+    toolshop:
+        id: 1
+        title: Tool shop
+        iconitem: "IRON_PICKAXE"
+        items:
+            IRON_PICKAXE:
+                buy: 100
+                sell: 10
+            IRON_SPADE:  # bukkit material has a weird name for shovel. --> spade
+                buy: 100
+                sell: 10
+            IRON_AXE:
+                buy: 100
+                sell: 10
+            IRON_HOE:
+                buy: 100
+                sell: 10
+    grocerystore:
+        id: 2
+        title: Grocery store
+        iconitem: "MUTTON"
+        items: 
+            MUTTON:
+                buy: 50
+                sell: 10
+            RABBIT:
+                buy: 50
+                sell: 10
+            EGG:
+                buy: 50
+                sell: 10
+            MILK_BUCKET:
+                buy: 50
+                sell: 10
+            WHEAT:
+                buy: 50
+                sell: 10
+            CAKE:
+                buy: 50
+                sell: 10
+            CARROT:
+                buy: 50
+                sell: 10
+            POTATO:
+                buy: 50
+                sell: 10
+    blacksmith:
+        id: 3
+        title: Blacksmith
+        iconitem: "CHAINMAIL_CHESTPLATE"
+        items:
+            IRON_SWORD:
+                buy: 100
+                sell: 10
+            CHAINMAIL_CHESTPLATE:
+                buy: 100
+                sell: 10
+            SHIELD:
+                buy: 100
+                sell: 10
+            IRON_HELMET:
+                buy: 100
+                sell: 10
+            BOW:
+                buy: 100
+                sell: 10
+            ARROW:
+                buy: 10
+                sell: 1
+            IRON_BOOTS:
+                buy: 50
+                sell: 10

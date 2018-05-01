@@ -13,7 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.config.ConfigShopMain;
-import io.github.nexadn.unitedshops.tradeapi.MoneyTrade;
 import io.github.nexadn.unitedshops.ui.Pager;
 
 public final class GUIContainer {
@@ -85,6 +84,11 @@ public final class GUIContainer {
         return guiMap;
     }
 
+    public static Pager getRootPager ()
+    {
+        return guiPager;
+    }
+
     public static boolean isGuiInventory (Inventory inv)
     {
         if (inv.equals(guiCategories)/* || inv.equals(guiBuySell) */ )
@@ -147,19 +151,19 @@ public final class GUIContainer {
         switch (event.getSlot()) {
         case 0: // Kauf 1
             is.setAmount(amount);
-            success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
+            success = UnitedShops.plugin.getTradeManager().tradeItemForMoney(p, is, object.getBuy() * amount);
             break;
 
         case 1: // Kauf 16
             amount = 16;
             is.setAmount(amount);
-            success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
+            success = UnitedShops.plugin.getTradeManager().tradeItemForMoney(p, is, object.getBuy() * amount);
             break;
 
         case 2: // Kauf 64
             amount = 64;
             is.setAmount(amount);
-            success = MoneyTrade.tradeItemForMoney(p, is, object.getBuy() * amount);
+            success = UnitedShops.plugin.getTradeManager().tradeItemForMoney(p, is, object.getBuy() * amount);
             break;
 
         case 4: // Zurück
@@ -170,19 +174,19 @@ public final class GUIContainer {
         case 6: // Verkauf 1
             amount = 1;
             is.setAmount(amount);
-            success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
+            success = UnitedShops.plugin.getTradeManager().tradeMoneyForItem(p, object.getSell() * amount, is);
             break;
 
         case 7: // Verkauf 16
             amount = 16;
             is.setAmount(amount);
-            success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
+            success = UnitedShops.plugin.getTradeManager().tradeMoneyForItem(p, object.getSell() * amount, is);
             break;
 
         case 8: // Verkauf 64
             amount = 64;
             is.setAmount(amount);
-            success = MoneyTrade.tradeMoneyForItem(p, object.getSell() * amount, is);
+            success = UnitedShops.plugin.getTradeManager().tradeMoneyForItem(p, object.getSell() * amount, is);
             break;
 
         default:

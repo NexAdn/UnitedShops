@@ -9,12 +9,15 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.api.mockito.PowerMockito;
 
+import io.github.nexadn.unitedshops.tradeapi.TradeManager;
+
 public final class TestUtil {
     private static JavaPluginLoader javaPluginLoader;
     private static Server           server;
     private static UnitedShops      plugin;
     private static boolean          initialized = false;
     private static File             pluginDir   = new File("target/test/unitedshops");
+    private static TradeManager     testTradeManager;
 
     @SuppressWarnings ("deprecation")
     public static void init ()
@@ -28,12 +31,19 @@ public final class TestUtil {
             Whitebox.setInternalState(javaPluginLoader, "server", server);
             Logger.getLogger("Minecraft").setParent(server.getLogger());
             PluginDescriptionFile pluginDescriptionFile = new PluginDescriptionFile("UnitedShops", "-1",
-                    "io.github.nexadn.unitedshops.UnitedShops");
-            plugin = PowerMockito.spy(new UnitedShops(javaPluginLoader, pluginDescriptionFile, pluginDir,
+                    "io.github.nexadn.unitedshops.TestUnitedShops");
+            plugin = PowerMockito.spy(new TestUnitedShops(javaPluginLoader, pluginDescriptionFile, pluginDir,
                     new File(pluginDir, "testpluginfile.yml")));
             plugin.onUnitTest();
             plugin.onEnable();
+            UnitedShops.plugin = plugin;
+            testTradeManager = plugin.getTradeManager();
         }
+    }
+
+    public static TradeManager getTradeManager ()
+    {
+        return testTradeManager;
     }
 
     public static Server getServer ()
