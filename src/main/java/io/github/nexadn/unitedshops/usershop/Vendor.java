@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.nexadn.unitedshops.UnitedShops;
@@ -45,6 +46,8 @@ public class Vendor implements PagerItem {
             | Pager.MenuButton.CLOSE | Pager.MenuButton.UP;
     private static final int                pagerFlagsGlobalVendorMenu = Pager.MenuButton.PREV | Pager.MenuButton.NEXT
             | Pager.MenuButton.CLOSE;
+    private static final int                pagerFlagsVendorMenu       = Pager.MenuButton.PREV | Pager.MenuButton.NEXT
+            | Pager.MenuButton.CLOSE;
 
     /**
      * Create a new Vendor
@@ -67,6 +70,11 @@ public class Vendor implements PagerItem {
         this.saveFile = new File(vendorDataFolder, creator.getUniqueId().toString() + ".yml");
 
         vendors.put(creator, this);
+
+        this.updateVendorOfferMenu();
+
+        updateGlobalOfferMenu();
+        updateGlobalVendorMenu();
     }
 
     /**
@@ -158,9 +166,65 @@ public class Vendor implements PagerItem {
                 (Math.pow(this.buyVolume / globalBuyVolume, 2) + Math.pow(this.sellVolume / globalSellVolume, 2)) / 2.);
     }
 
+    private void updateVendorOfferMenu ()
+    {
+        List<Offer> offers = new ArrayList<>(this.offers.values());
+        offers.sort(new OfferBuyComparator());
+
+        this.vendorOfferMenu = new Pager(offers, pagerFlagsVendorMenu, this.owner.getDisplayName());
+    }
+
     private static void updateGlobalOfferMenu ()
     {
-        // TODO
+        HashMap<Material, List<Offer>> offerMap = new HashMap<>();
+        Material tmpM;
+        for (Vendor vendor : vendors.values())
+        {
+            for (Offer offer : vendor.getOffers().values())
+            {
+                tmpM = offer.getIcon().getType();
+                if (!offerMap.containsKey(tmpM))
+                    offerMap.put(tmpM, new ArrayList<>());
+                offerMap.get(tmpM).add(offer);
+            }
+        }
+
+        // TODO figure out how to avoid using two containers
+        // TODO sort items
+        HashMap<Material, PagerItem> globalOfferMenuItemMap = new HashMap<>();
+        List<PagerItem> globalOfferMenuItemList = new ArrayList<>();
+        for (Material material : offerMap.keySet())
+        {
+            globalOfferMenuItemMap.put(material, new PagerItem() {
+                @Override
+                public ItemStack getIcon ()
+                {
+                    return new ItemStack(material);
+                }
+
+                @Override
+                public void call (InventoryClickEvent e)
+                {
+                    e.getWhoClicked().openInventory(globalOfferMenus.get(material).getFirstInventory());
+                }
+            });
+            globalOfferMenuItemList.add(globalOfferMenuItemMap.get(material));
+        }
+
+        globalOfferMenu = new Pager(globalOfferMenuItemList, pagerFlagsGlobalOfferMenu, "Offers by items");
+
+        for (List<Offer> list : offerMap.values())
+        {
+            list.sort(new OfferBuyComparator());
+            if (list.size() > 0)
+            {
+                // TODO Localized title, parent inventory
+                globalOfferMenus.put(list.get(0).getIcon().getType(),
+                        new Pager(list, pagerFlagsGlobalOfferMenus,
+                                "TODO GlobalOfferBuyMenu – " + list.get(0).getIcon().getType().toString(), 3,
+                                globalOfferMenu.getFirstInventory()));
+            }
+        }
     }
 
     private static void updateGlobalVendorMenu ()
