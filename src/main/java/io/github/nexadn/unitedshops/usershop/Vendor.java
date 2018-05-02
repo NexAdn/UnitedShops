@@ -117,6 +117,16 @@ public class Vendor implements PagerItem {
         return icon;
     }
 
+    public HashMap<Material, Offer> getOffers ()
+    {
+        return this.offers;
+    }
+
+    public Player getPlayer ()
+    {
+        return this.owner;
+    }
+
     public UUID getPlayerUUID ()
     {
         return this.owner.getUniqueId();
@@ -125,6 +135,11 @@ public class Vendor implements PagerItem {
     public float getRating ()
     {
         return this.rating;
+    }
+
+    public Inventory getVendorMenu ()
+    {
+        return this.vendorOfferMenu.getFirstInventory();
     }
 
     public void onOfferBuy (Offer o, int amount)

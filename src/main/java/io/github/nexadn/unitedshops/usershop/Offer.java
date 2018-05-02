@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,13 +12,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.ui.PagerItem;
 
 public class Offer implements PagerItem, Listener {
 
     private Vendor                     owner;
     private Material                   item;
+    private int                        itemAmount;
     private Inventory                  supplyInventory;
     private Inventory                  viewInventory;
     private double                     priceBuy;
@@ -46,13 +50,15 @@ public class Offer implements PagerItem, Listener {
     {
         this.owner = owner;
         this.item = item;
+        this.itemAmount = 0;
         this.priceBuy = priceBuy;
         this.priceSell = priceSell;
         this.mode = mode;
+        // TODO messages.yml
         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte items");
         creator.openInventory(this.supplyInventory);
-        // TODO: Inventartikel hinzufügen
-        this.viewInventory = Bukkit.createInventory(null, 9 * 4);
+        
+        this.recreateInventories();
     }
 
     public void call (InventoryClickEvent e)
@@ -60,10 +66,14 @@ public class Offer implements PagerItem, Listener {
         if (e.getWhoClicked() instanceof Player)
         {
             this.lastParent.put((Player) e.getWhoClicked(), e.getInventory());
+        } else if (e.getWhoClicked() instanceof CommandSender)
+        {
+            UnitedShops.plugin.sendMessage((CommandSender) e.getWhoClicked(),
+                    UnitedShops.plugin.getMessage("playerOnly"));
         }
     }
-    
-    public double getBuyPrice()
+
+    public double getBuyPrice ()
     {
         return this.priceBuy;
     }
@@ -72,13 +82,13 @@ public class Offer implements PagerItem, Listener {
     {
         return new ItemStack(this.item);
     }
-    
-    public int getMode()
+
+    public int getMode ()
     {
         return this.mode;
     }
-    
-    public double getSellPrice()
+
+    public double getSellPrice ()
     {
         return this.priceSell;
     }
@@ -97,13 +107,15 @@ public class Offer implements PagerItem, Listener {
             }
         }
     }
-    
+
     /**
      * Save the offer to config
-     * @param section Where to save the offer
+     * 
+     * @param section
+     *            Where to save the offer
      * @return The modified {@link ConfigurationSection}
      */
-    public ConfigurationSection saveToConfig(ConfigurationSection section)
+    public ConfigurationSection saveToConfig (ConfigurationSection section)
     {
         section.set("owner", this.owner.getPlayerUUID().toString());
         section.set("item", this.item.toString());
@@ -117,10 +129,45 @@ public class Offer implements PagerItem, Listener {
         section.set("priceBuy", this.priceBuy);
         section.set("priceSell", this.priceSell);
         section.set("mode", this.mode);
-        
+
         return section;
     }
-
+    
+    private void recreateInventories()
+    {
+         this.updateSupply();
+         
+         // TODO messages yml
+         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte Items");
+         
+         int amount = this.itemAmount;
+         while (amount > 0) {
+             // TODO detect max stack size
+             ItemStack stack = new ItemStack(this.item, amount >= 64 ? 64 : amount);
+             amount -= 64;
+             this.supplyInventory.addItem(stack);
+         }
+         
+         // TODO Größe anpassen
+         this.viewInventory = Bukkit.createInventory(null, 9 * 0, this.item.toString() + " – " + this.owner.getPlayer().getDisplayName());
+         // TODO Füllen
+    }
+    
+    private void updateSupply()
+    {
+        int amount = 0;
+        for (ItemStack stack : this.supplyInventory.getContents())
+        {
+            if (stack.getType() != this.item)
+            {
+                // FIXME DELETE ITEM; TO BE REPLACED BY SOME NICER CLEANUP
+                UnitedShops.plugin.getTradeManager().removeItems(this.supplyInventory, stack);
+            } else {
+                amount += stack.getAmount();
+            }
+        }
+        this.itemAmount = amount;
+    }
 }
 
 /*
