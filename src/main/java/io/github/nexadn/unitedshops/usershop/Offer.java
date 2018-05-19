@@ -94,6 +94,16 @@ public class Offer implements PagerItem, Listener {
         return this.priceSell;
     }
 
+    public Inventory getSupplyGui ()
+    {
+        return this.supplyInventory;
+    }
+
+    public Inventory getTradeGui ()
+    {
+        return this.viewInventory;
+    }
+
     @EventHandler
     public void onInventoryClick (InventoryClickEvent e)
     {
@@ -134,7 +144,7 @@ public class Offer implements PagerItem, Listener {
         return section;
     }
 
-    private void recreateInventories ()
+    public void recreateInventories ()
     {
         this.updateSupply();
 
@@ -155,7 +165,7 @@ public class Offer implements PagerItem, Listener {
 
         for (int i = 27; i < 36; i++)
         {
-            this.viewInventory.setItem(i, GUIContainer.getItem(Material.BARRIER, ""));
+            this.viewInventory.setItem(i, GUIContainer.getBlank());
         }
 
         for (int i = 36; i < 45; i++)
@@ -215,6 +225,8 @@ public class Offer implements PagerItem, Listener {
         int amount = 0;
         for (ItemStack stack : this.supplyInventory.getContents())
         {
+            if (stack == null)
+                continue;
             if (stack.getType() != this.item)
             {
                 // FIXME DELETE ITEM; TO BE REPLACED BY SOME NICER CLEANUP
