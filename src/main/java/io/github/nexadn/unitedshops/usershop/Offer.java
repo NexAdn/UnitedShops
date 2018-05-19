@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.nexadn.unitedshops.UnitedShops;
+import io.github.nexadn.unitedshops.shop.GUIContainer;
 import io.github.nexadn.unitedshops.ui.PagerItem;
 
 public class Offer implements PagerItem, Listener {
@@ -57,7 +58,7 @@ public class Offer implements PagerItem, Listener {
         // TODO messages.yml
         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte items");
         creator.openInventory(this.supplyInventory);
-        
+
         this.recreateInventories();
     }
 
@@ -132,28 +133,84 @@ public class Offer implements PagerItem, Listener {
 
         return section;
     }
-    
-    private void recreateInventories()
+
+    private void recreateInventories ()
     {
-         this.updateSupply();
-         
-         // TODO messages yml
-         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte Items");
-         
-         int amount = this.itemAmount;
-         while (amount > 0) {
-             // TODO detect max stack size
-             ItemStack stack = new ItemStack(this.item, amount >= 64 ? 64 : amount);
-             amount -= 64;
-             this.supplyInventory.addItem(stack);
-         }
-         
-         // TODO Größe anpassen
-         this.viewInventory = Bukkit.createInventory(null, 9 * 0, this.item.toString() + " – " + this.owner.getPlayer().getDisplayName());
-         // TODO Füllen
+        this.updateSupply();
+
+        // TODO messages yml
+        this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte Items");
+
+        int amount = this.itemAmount;
+        while (amount > 0)
+        {
+            // TODO detect max stack size
+            ItemStack stack = new ItemStack(this.item, amount > 64 ? 64 : amount);
+            amount -= 64;
+            this.supplyInventory.addItem(stack);
+        }
+
+        this.viewInventory = Bukkit.createInventory(null, 9 * 5,
+                this.item.toString() + " – " + this.owner.getPlayer().getDisplayName());
+
+        for (int i = 27; i < 36; i++)
+        {
+            this.viewInventory.setItem(i, GUIContainer.getItem(Material.BARRIER, ""));
+        }
+
+        for (int i = 36; i < 45; i++)
+        {
+            ItemStack it;
+            switch (i) {
+            case 36: // Buy 1
+                it = GUIContainer.getFunctionalItem(this.item, UnitedShops.plugin.getMessage("buyAmount") + "1",
+                        UnitedShops.plugin.getMessage("price") + this.priceBuy * 1);
+                it.setAmount(1);
+                break;
+
+            case 37: // Buy 10
+                it = GUIContainer.getFunctionalItem(this.item, UnitedShops.plugin.getMessage("buyAmount") + "10",
+                        UnitedShops.plugin.getMessage("price") + this.priceBuy * 10);
+                it.setAmount(10);
+                break;
+
+            case 38: // Buy 64
+                it = GUIContainer.getFunctionalItem(this.item, UnitedShops.plugin.getMessage("buyAmount") + "64",
+                        UnitedShops.plugin.getMessage("price") + this.priceBuy * 64);
+                it.setAmount(64);
+                break;
+
+            case 42: // Sell 1
+                it = GUIContainer.getFunctionalItem(this.item, UnitedShops.plugin.getMessage("sellAmount") + "1",
+                        UnitedShops.plugin.getMessage("price") + this.priceSell * 1);
+                it.setAmount(1);
+                break;
+
+            case 43: // Sell 10
+                it = GUIContainer.getFunctionalItem(this.item, UnitedShops.plugin.getMessage("sellAmount") + "10",
+                        UnitedShops.plugin.getMessage("price") + this.priceSell * 10);
+                it.setAmount(10);
+                break;
+
+            case 44: // Sell 64
+                it = GUIContainer.getFunctionalItem(this.item, UnitedShops.plugin.getMessage("sellAmount") + "64",
+                        UnitedShops.plugin.getMessage("price") + this.priceSell * 64);
+                it.setAmount(64);
+                break;
+
+            case 40: // Back
+                it = GUIContainer.getFunctionalItem(Material.BARRIER, UnitedShops.plugin.getMessage("back"));
+                break;
+
+            default: // 39, 41
+                it = GUIContainer.getBlank();
+                break;
+            }
+            this.viewInventory.setItem(i, it);
+        }
     }
-    
-    private void updateSupply()
+
+    private void updateSupply ()
     {
         int amount = 0;
         for (ItemStack stack : this.supplyInventory.getContents())
@@ -162,7 +219,8 @@ public class Offer implements PagerItem, Listener {
             {
                 // FIXME DELETE ITEM; TO BE REPLACED BY SOME NICER CLEANUP
                 UnitedShops.plugin.getTradeManager().removeItems(this.supplyInventory, stack);
-            } else {
+            } else
+            {
                 amount += stack.getAmount();
             }
         }
