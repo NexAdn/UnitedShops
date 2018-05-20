@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
@@ -33,7 +32,7 @@ public class Offer implements PagerItem, Listener {
     /**
      * Create a new Offer object and show the creator an inventory to supply the
      * shop offer
-     * 
+     *
      * @param owner
      *            The owning Vendor
      * @param creator
@@ -59,9 +58,69 @@ public class Offer implements PagerItem, Listener {
         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte items");
         creator.openInventory(this.supplyInventory);
 
+        this.updateSupply();
         this.recreateInventories();
     }
 
+    /**
+     * A player buys items from this shop
+     *
+     * @param buyer
+     *            The buying player
+     * @param amount
+     *            The amount of items that are bought from the shop
+     */
+    public void buy (Player buyer, int amount)
+    {
+        if (this.itemAmount < amount)
+        {
+            UnitedShops.plugin.sendMessage(buyer, UnitedShops.plugin.getMessage("userShopNotEnoughSupply"));
+            return;
+        } else
+        {
+            if (!UnitedShops.plugin.getTradeManager().tradeItemForMoney(buyer, new ItemStack(this.item, amount),
+                    this.priceBuy * amount))
+            {
+                UnitedShops.plugin.sendMessage(buyer, UnitedShops.plugin.getMessage("generalError"));
+            } else
+            {
+                this.itemAmount -= amount;
+                this.owner.storeMoney(this.priceBuy * amount);
+                this.owner.onOfferBuy(this, amount);
+            }
+        }
+    }
+
+    /**
+     * A player sells items to this shop
+     *
+     * @param seller
+     *            The selling player
+     * @param amount
+     *            The amount of item that are sold to the shop
+     */
+    public void sell (Player seller, int amount)
+    {
+        if (!this.owner.hasEnoughMoney(this.priceSell * amount))
+        {
+            UnitedShops.plugin.sendMessage(seller, UnitedShops.plugin.getMessage("userShopNotEnoughMoney"));
+            return;
+        } else
+        {
+            if (!UnitedShops.plugin.getTradeManager().tradeMoneyForItem(seller, this.priceSell * amount,
+                    new ItemStack(this.item, amount)))
+            {
+                UnitedShops.plugin.sendMessage(seller, UnitedShops.plugin.getMessage("generalError"));
+            } else
+            {
+                this.itemAmount += amount;
+                this.owner.withdrawMoney(this.priceSell * amount);
+                this.owner.onOfferSell(this, amount);
+            }
+        }
+    }
+
+    @Override
     public void call (InventoryClickEvent e)
     {
         if (e.getWhoClicked() instanceof Player)
@@ -79,6 +138,7 @@ public class Offer implements PagerItem, Listener {
         return this.priceBuy;
     }
 
+    @Override
     public ItemStack getIcon ()
     {
         return new ItemStack(this.item);
@@ -107,9 +167,60 @@ public class Offer implements PagerItem, Listener {
     @EventHandler
     public void onInventoryClick (InventoryClickEvent e)
     {
+        if (! (e.getWhoClicked() instanceof Player))
+        {
+            if (e.getWhoClicked() instanceof CommandSender)
+                UnitedShops.plugin.sendMessage((CommandSender) e.getWhoClicked(),
+                        UnitedShops.plugin.getMessage("playerOnly"));
+            return;
+        }
+
         if (e.getInventory().equals(this.viewInventory))
         {
+            e.setCancelled(true);
+            switch (e.getSlot()) {
+            case 36:
+                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
+                    this.buy((Player) e.getWhoClicked(), 1);
+                });
+                break;
 
+            case 37:
+                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
+                    this.buy((Player) e.getWhoClicked(), 10);
+                });
+                break;
+
+            case 38:
+                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
+                    this.buy((Player) e.getWhoClicked(), 64);
+                });
+                break;
+
+            case 40:
+                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
+                    e.getWhoClicked().openInventory(this.lastParent.get((Player) e.getWhoClicked()));
+                });
+                break;
+
+            case 42:
+                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
+                    this.sell((Player) e.getWhoClicked(), 1);
+                });
+                break;
+
+            case 43:
+                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
+                    this.sell((Player) e.getWhoClicked(), 10);
+                });
+                break;
+
+            case 44:
+                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
+                    this.sell((Player) e.getWhoClicked(), 64);
+                });
+                break;
+            }
         } else if (e.getInventory().equals(this.supplyInventory))
         {
             if (! (e.getCurrentItem().getType().equals(this.item)))
@@ -121,7 +232,7 @@ public class Offer implements PagerItem, Listener {
 
     /**
      * Save the offer to config
-     * 
+     *
      * @param section
      *            Where to save the offer
      * @return The modified {@link ConfigurationSection}
@@ -146,8 +257,6 @@ public class Offer implements PagerItem, Listener {
 
     public void recreateInventories ()
     {
-        this.updateSupply();
-
         // TODO messages yml
         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte Items");
 
@@ -220,7 +329,7 @@ public class Offer implements PagerItem, Listener {
         }
     }
 
-    private void updateSupply ()
+    public void updateSupply ()
     {
         int amount = 0;
         for (ItemStack stack : this.supplyInventory.getContents())
@@ -242,19 +351,19 @@ public class Offer implements PagerItem, Listener {
 
 /*
  * Copyright (C) 2017, 2018 Adrian Schollmeyer
- * 
+ *
  * This file is part of UnitedShops.
- * 
+ *
  * UnitedShops is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */

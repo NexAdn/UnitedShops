@@ -1,7 +1,7 @@
 package io.github.nexadn.unitedshops.usershop;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.UUID;
@@ -45,6 +45,7 @@ public class OfferTest {
         Inventory supplyGui = testOffer.getSupplyGui();
         assertEquals(null, supplyGui.getItem(0));
         supplyGui.setItem(0, new ItemStack(Material.COBBLESTONE, 64));
+        testOffer.updateSupply();
         testOffer.recreateInventories();
         supplyGui = testOffer.getSupplyGui();
         assertNotNull(supplyGui.getItem(0));

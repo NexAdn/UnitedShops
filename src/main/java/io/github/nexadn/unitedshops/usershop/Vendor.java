@@ -27,6 +27,7 @@ public class Vendor implements PagerItem {
     private double                          sellVolume;
     private HashMap<Material, Offer>        offers;
     private File                            saveFile;
+    private double                          storedMoney;
 
     private Pager                           vendorOfferMenu;
 
@@ -51,7 +52,7 @@ public class Vendor implements PagerItem {
 
     /**
      * Create a new Vendor
-     * 
+     *
      * @param creator
      *            The creator and initial owner
      * @param vendorLabel
@@ -66,7 +67,7 @@ public class Vendor implements PagerItem {
         this.rating = 0f;
         this.owner = creator;
         this.label = vendorLabel;
-        this.offers = new HashMap<Material, Offer>();
+        this.offers = new HashMap<>();
         this.saveFile = new File(vendorDataFolder, creator.getUniqueId().toString() + ".yml");
 
         vendors.put(creator, this);
@@ -79,7 +80,7 @@ public class Vendor implements PagerItem {
 
     /**
      * Load an existing Vendor YAML file
-     * 
+     *
      * @param dataFile
      *            The data file PLAYERUUID.yml
      */
@@ -174,6 +175,25 @@ public class Vendor implements PagerItem {
         }
     }
 
+    public void storeMoney (double amount)
+    {
+        this.storedMoney += amount;
+    }
+
+    public boolean hasEnoughMoney (double amount)
+    {
+        return this.storedMoney >= amount;
+    }
+
+    public boolean withdrawMoney (double amount)
+    {
+        if (this.storedMoney < amount)
+            return false;
+
+        this.storedMoney += amount;
+        return true;
+    }
+
     private void updateRating ()
     {
         // RMS of share of global trade volumes
@@ -244,7 +264,7 @@ public class Vendor implements PagerItem {
 
     private static void updateGlobalVendorMenu ()
     {
-        List<Vendor> vendorList = new ArrayList<Vendor>(vendors.values());
+        List<Vendor> vendorList = new ArrayList<>(vendors.values());
         vendorList.sort( (Vendor lhs, Vendor rhs) -> {
             return lhs.getRating() > rhs.getRating() ? 1 : lhs.getRating() < rhs.getRating() ? -1 : 0;
         });
@@ -256,19 +276,19 @@ public class Vendor implements PagerItem {
 
 /*
  * Copyright (C) 2017, 2018 Adrian Schollmeyer
- * 
+ *
  * This file is part of UnitedShops.
- * 
+ *
  * UnitedShops is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
