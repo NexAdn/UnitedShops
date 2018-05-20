@@ -87,6 +87,7 @@ public class Offer implements PagerItem, Listener {
                 this.itemAmount -= amount;
                 this.owner.storeMoney(this.priceBuy * amount);
                 this.owner.onOfferBuy(this, amount);
+                this.removeItemsFromSupplyViews(amount);
             }
         }
     }
@@ -116,6 +117,7 @@ public class Offer implements PagerItem, Listener {
                 this.itemAmount += amount;
                 this.owner.withdrawMoney(this.priceSell * amount);
                 this.owner.onOfferSell(this, amount);
+                this.addItemsToSupplyViews(amount);
             }
         }
     }
@@ -259,18 +261,19 @@ public class Offer implements PagerItem, Listener {
     {
         // TODO messages yml
         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte Items");
+        this.viewInventory = Bukkit.createInventory(null, 9 * 5,
+                this.item.toString() + " – " + this.owner.getPlayer().getDisplayName());
 
         int amount = this.itemAmount;
+        int index = 0;
         while (amount > 0)
         {
             // TODO detect max stack size
             ItemStack stack = new ItemStack(this.item, amount > 64 ? 64 : amount);
             amount -= 64;
-            this.supplyInventory.addItem(stack);
+            this.viewInventory.setItem(index, stack);
+            this.supplyInventory.setItem(index++, stack);
         }
-
-        this.viewInventory = Bukkit.createInventory(null, 9 * 5,
-                this.item.toString() + " – " + this.owner.getPlayer().getDisplayName());
 
         for (int i = 27; i < 36; i++)
         {
@@ -327,6 +330,63 @@ public class Offer implements PagerItem, Listener {
             }
             this.viewInventory.setItem(i, it);
         }
+    }
+
+    public void addItemsToSupplyViews (int amount)
+    {
+        // TODO dynamic max item stack size
+        int remaining = amount;
+        // Index value based on supply inventory size
+        for (int i = 0; i < 27; i++)
+        {
+            if (this.supplyInventory.getItem(i) == null)
+            {
+                this.supplyInventory.setItem(i, new ItemStack(this.item, remaining <= 64 ? remaining : 64));
+                if (remaining <= 64)
+                    break;
+                else
+                    remaining -= 64;
+            } else if (this.supplyInventory.getItem(i).getAmount() < 64)
+            {
+                int maxAddUp = 64 - this.supplyInventory.getItem(i).getAmount();
+                this.supplyInventory.setItem(i, new ItemStack(this.item,
+                        this.supplyInventory.getItem(i).getAmount() + (remaining <= maxAddUp ? remaining : maxAddUp)));
+                if (remaining <= maxAddUp)
+                    break;
+                else
+                    remaining -= maxAddUp;
+            } else
+            {
+                continue;
+            }
+        }
+
+        for (int i = 0; i < 26; i++)
+            this.viewInventory.setItem(i, this.supplyInventory.getItem(i));
+    }
+
+    public void removeItemsFromSupplyViews (int amount)
+    {
+        int remaining = amount;
+        // Index value based on supply inventory size (last slot index)
+        for (int i = 26; i >= 0; i--)
+        {
+            if (this.supplyInventory.getItem(i) != null)
+            {
+                if (this.supplyInventory.getItem(i).getAmount() > remaining)
+                {
+                    this.supplyInventory.getItem(i).setAmount(this.supplyInventory.getItem(i).getAmount() - remaining);
+                    break;
+                } else
+                {
+                    remaining -= this.supplyInventory.getItem(i).getAmount();
+                    this.supplyInventory.setItem(i, null);
+                }
+            }
+        }
+
+        for (int i = 0; i < 26; i++)
+            this.viewInventory.setItem(i, this.supplyInventory.getItem(i));
     }
 
     public void updateSupply ()
