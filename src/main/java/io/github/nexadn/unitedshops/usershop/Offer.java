@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,7 +28,7 @@ public class Offer implements PagerItem, Listener {
     private double                     priceBuy;
     private double                     priceSell;
     private int                        mode;
-    private HashMap<Player, Inventory> lastParent;
+    private HashMap<Player, Inventory> lastParent = new HashMap<>();
 
     /**
      * Create a new Offer object and show the creator an inventory to supply the
@@ -60,6 +61,8 @@ public class Offer implements PagerItem, Listener {
 
         this.updateSupply();
         this.recreateInventories();
+
+        UnitedShops.plugin.getServer().getPluginManager().registerEvents(this, UnitedShops.plugin);
     }
 
     /**
@@ -128,6 +131,7 @@ public class Offer implements PagerItem, Listener {
         if (e.getWhoClicked() instanceof Player)
         {
             this.lastParent.put((Player) e.getWhoClicked(), e.getInventory());
+            e.getWhoClicked().openInventory(this.viewInventory);
         } else if (e.getWhoClicked() instanceof CommandSender)
         {
             UnitedShops.plugin.sendMessage((CommandSender) e.getWhoClicked(),
@@ -182,53 +186,50 @@ public class Offer implements PagerItem, Listener {
             e.setCancelled(true);
             switch (e.getSlot()) {
             case 36:
-                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
-                    this.buy((Player) e.getWhoClicked(), 1);
-                });
+                this.buy((Player) e.getWhoClicked(), 1);
                 break;
 
             case 37:
-                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
-                    this.buy((Player) e.getWhoClicked(), 10);
-                });
+                this.buy((Player) e.getWhoClicked(), 10);
                 break;
 
             case 38:
-                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
-                    this.buy((Player) e.getWhoClicked(), 64);
-                });
+                this.buy((Player) e.getWhoClicked(), 64);
                 break;
 
             case 40:
-                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
-                    e.getWhoClicked().openInventory(this.lastParent.get((Player) e.getWhoClicked()));
-                });
+                e.getWhoClicked().openInventory(this.lastParent.get((Player) e.getWhoClicked()));
                 break;
 
             case 42:
-                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
-                    this.sell((Player) e.getWhoClicked(), 1);
-                });
+                this.sell((Player) e.getWhoClicked(), 1);
                 break;
 
             case 43:
-                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
-                    this.sell((Player) e.getWhoClicked(), 10);
-                });
+                this.sell((Player) e.getWhoClicked(), 10);
                 break;
 
             case 44:
-                Bukkit.getScheduler().runTaskAsynchronously(UnitedShops.plugin, () -> {
-                    this.sell((Player) e.getWhoClicked(), 64);
-                });
+                this.sell((Player) e.getWhoClicked(), 64);
                 break;
             }
         } else if (e.getInventory().equals(this.supplyInventory))
         {
-            if (! (e.getCurrentItem().getType().equals(this.item)))
+            if ( (! (e.getCurrentItem().getType().equals(this.item)))
+                    && (! (e.getCurrentItem().getType().equals(Material.AIR))))
             {
                 e.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose (InventoryCloseEvent e)
+    {
+        if (e.getInventory().equals(this.supplyInventory))
+        {
+            this.updateSupply();
+            this.recreateInventories();
         }
     }
 
