@@ -68,7 +68,6 @@ import org.bukkit.scheduler.BukkitWorker;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.CachedServerIcon;
 import org.mockito.Mockito;
-import org.mockito.internal.stubbing.answers.Returns;
 import org.powermock.api.mockito.PowerMockito;
 
 import com.avaje.ebean.config.ServerConfig;

@@ -1,11 +1,9 @@
 package io.github.nexadn.unitedshops.shop;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -19,16 +17,11 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
-import org.mockito.internal.matchers.Any;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import io.github.nexadn.unitedshops.TestTradeManager;
-import io.github.nexadn.unitedshops.TestUnitedShops;
 import io.github.nexadn.unitedshops.TestUtil;
 import io.github.nexadn.unitedshops.UnitedShops;
-import io.github.nexadn.unitedshops.events.GUIClick;
 
 @RunWith (PowerMockRunner.class)
 public class ShopTest {
