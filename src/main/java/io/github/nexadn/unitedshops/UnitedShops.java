@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -21,6 +23,7 @@ import io.github.nexadn.unitedshops.shop.AutoSellManager;
 import io.github.nexadn.unitedshops.shop.GUIContainer;
 import io.github.nexadn.unitedshops.tradeapi.EcoManager;
 import io.github.nexadn.unitedshops.tradeapi.TradeManager;
+import io.github.nexadn.unitedshops.usershop.Vendor;
 
 public class UnitedShops extends JavaPlugin {
     private boolean                                 unitTest = false;
@@ -44,7 +47,7 @@ public class UnitedShops extends JavaPlugin {
             File file)
     {
         super(mockPluginLoader, pluginDescriptionFile, pluginDir, file);
-        log(Level.SEVERE, "Running in Unit testing mode!");
+        this.log(Level.SEVERE, "Running in Unit testing mode!");
     }
 
     @Override
@@ -52,7 +55,7 @@ public class UnitedShops extends JavaPlugin {
     public void onEnable ()
     {
         plugin = this;
-        this.autoSaleInventories = new HashMap<OfflinePlayer, AutoSellManager>();
+        this.autoSaleInventories = new HashMap<>();
 
         this.getLogger().log(Level.FINE, "Establishing economy hook...");
         if (!EcoManager.initEco())
@@ -71,17 +74,17 @@ public class UnitedShops extends JavaPlugin {
         // config.yml
         try
         {
-            if (!getDataFolder().exists())
+            if (!this.getDataFolder().exists())
             {
-                getDataFolder().mkdirs();
+                this.getDataFolder().mkdirs();
             }
-            File configyml = new File(getDataFolder(), "config.yml");
+            File configyml = new File(this.getDataFolder(), "config.yml");
             if (!configyml.exists())
             {
                 this.getLogger().log(Level.INFO, "config.yml not found, creating a new one just for you!");
                 this.saveResource("config.yml", true);
             }
-            File messagesyml = new File(getDataFolder(), "messages.yml");
+            File messagesyml = new File(this.getDataFolder(), "messages.yml");
             if (!messagesyml.exists())
             {
                 this.getLogger().log(Level.INFO, "messages.yml not found, creating a new one just for you!");
@@ -98,7 +101,7 @@ public class UnitedShops extends JavaPlugin {
         if (!this.unitTest && this.getConfig().getBoolean("stats"))
             this.metrics = new Metrics(this);
 
-        ConfigMessages configMessages = new ConfigMessages(new File(getDataFolder(), "messages.yml"));
+        ConfigMessages configMessages = new ConfigMessages(new File(this.getDataFolder(), "messages.yml"));
         configMessages.parseConfig();
         this.messages = configMessages.getMessages();
 
@@ -127,7 +130,7 @@ public class UnitedShops extends JavaPlugin {
     @Override
     public void onDisable ()
     {
-        saveConfig();
+        this.saveConfig();
     }
 
     public void log (Level loglevel, String message)
@@ -167,7 +170,7 @@ public class UnitedShops extends JavaPlugin {
 
     public String getMessage (String key)
     {
-        if (!unitTest)
+        if (!this.unitTest)
         {
             return this.messages.get(key);
         } else
@@ -200,6 +203,91 @@ public class UnitedShops extends JavaPlugin {
             this.getLogger().log(Level.FINE, "Reload successful");
             this.sendMessage(commandSender, "Reload successful");
             return true;
+        } else if (command.getName().equalsIgnoreCase("ushopoffer"))
+        {
+            if (!commandSender.hasPermission("unitedshops.admin"))
+            {
+                this.sendMessage(commandSender, this.getMessage("missingPermission"));
+                return false;
+            }
+
+            if (! (commandSender instanceof Player))
+            {
+                this.sendMessage(commandSender, this.getMessage("playerOnly"));
+                return false;
+            }
+
+            Player player = (Player) commandSender;
+
+            if (player.getItemInHand() == null)
+                return false;
+
+            if (player.getItemInHand().getType() == Material.AIR)
+                return false;
+
+            this.log(Level.INFO, player.getItemInHand().toString());
+
+            Vendor vendor = Vendor.getOrCreateVendor(player);
+            vendor.getOrCreateOffer(player.getItemInHand().getType());
+            player.openInventory(vendor.getVendorMenu());
+        } else if (command.getName().equalsIgnoreCase("uvmenu"))
+        {
+            if (!commandSender.hasPermission("unitedshops.admin"))
+            {
+                this.sendMessage(commandSender, this.getMessage("missingPermission"));
+                return false;
+            }
+
+            if (! (commandSender instanceof Player))
+            {
+                this.sendMessage(commandSender, this.getMessage("playerOnly"));
+                return false;
+            }
+
+            Player player = (Player) commandSender;
+
+            player.openInventory(Vendor.getGlobalVendorMenu());
+        } else if (command.getName().equalsIgnoreCase("uomenu"))
+        {
+            if (!commandSender.hasPermission("unitedshops.admin"))
+            {
+                this.sendMessage(commandSender, this.getMessage("missingPermission"));
+                return false;
+            }
+
+            if (! (commandSender instanceof Player))
+            {
+                this.sendMessage(commandSender, this.getMessage("playerOnly"));
+                return false;
+            }
+
+            Player player = (Player) commandSender;
+
+            player.openInventory(Vendor.getGlobalOfferMenu());
+        } else if (command.getName().equalsIgnoreCase("uosupply"))
+        {
+            if (!commandSender.hasPermission("unitedshops.admin"))
+            {
+                this.sendMessage(commandSender, this.getMessage("missingPermission"));
+                return false;
+            }
+
+            if (! (commandSender instanceof Player))
+            {
+                this.sendMessage(commandSender, this.getMessage("playerOnly"));
+                return false;
+            }
+
+            Player player = (Player) commandSender;
+
+            if (player.getItemInHand() == null)
+                return false;
+
+            if (player.getItemInHand().getType() == Material.AIR)
+                return false;
+
+            player.openInventory(
+                    Vendor.getOrCreateVendor(player).getOrCreateOffer(player.getItemInHand().getType()).getSupplyGui());
         }
         return false;
     }
@@ -207,19 +295,19 @@ public class UnitedShops extends JavaPlugin {
 
 /*
  * Copyright (C) 2015-2018 Adrian Schollmeyer
- * 
+ *
  * This file is part of UnitedShops.
- * 
+ *
  * UnitedShops is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
