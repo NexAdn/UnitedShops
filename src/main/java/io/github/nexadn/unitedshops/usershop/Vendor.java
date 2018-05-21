@@ -1,7 +1,9 @@
 package io.github.nexadn.unitedshops.usershop;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.ui.Pager;
@@ -28,6 +31,7 @@ public class Vendor implements PagerItem {
     private HashMap<Material, Offer>        offers;
     private File                            saveFile;
     private double                          storedMoney;
+    private ItemStack                       icon                       = new ItemStack(Material.CHEST);
 
     private Pager                           vendorOfferMenu;
 
@@ -35,7 +39,6 @@ public class Vendor implements PagerItem {
     private static HashMap<Material, Pager> globalOfferMenus           = new HashMap<>();
     private static Pager                    globalVendorMenu;
     // Global icon for all Vendors in the Pager
-    private static final ItemStack          icon                       = new ItemStack(Material.CHEST);
     private static HashMap<Player, Vendor>  vendors                    = new HashMap<>();
 
     private static double                   globalBuyVolume            = 0.;
@@ -72,6 +75,7 @@ public class Vendor implements PagerItem {
 
         vendors.put(creator, this);
 
+        this.updateIcon();
         this.updateVendorOfferMenu();
 
         updateGlobalOfferMenu();
@@ -106,16 +110,30 @@ public class Vendor implements PagerItem {
         // TODO
     }
 
+    public Offer getOrCreateOffer (Material type)
+    {
+        // TODO Improve
+        if (!this.offers.containsKey(type))
+        {
+            Offer offer = new Offer(this, this.owner, type, 1., 1., 3);
+            this.offers.put(type, offer);
+            this.updateVendorOfferMenu();
+            updateGlobalOfferMenu();
+        }
+
+        return this.offers.get(type);
+    }
+
     @Override
     public void call (InventoryClickEvent e)
     {
-        // TODO
+        e.getWhoClicked().openInventory(this.getVendorMenu());
     }
 
     @Override
     public ItemStack getIcon ()
     {
-        return icon;
+        return this.icon;
     }
 
     public HashMap<Material, Offer> getOffers ()
@@ -149,6 +167,7 @@ public class Vendor implements PagerItem {
         this.buyVolume += volume;
         globalBuyVolume += volume;
         this.updateRating();
+        updateGlobalVendorMenu();
     }
 
     public void onOfferSell (Offer o, int amount)
@@ -157,6 +176,8 @@ public class Vendor implements PagerItem {
         this.sellVolume += volume;
         globalSellVolume += volume;
         this.updateRating();
+        this.updateIcon();
+        updateGlobalVendorMenu();
     }
 
     private void saveToDisk ()
@@ -173,11 +194,25 @@ public class Vendor implements PagerItem {
         {
             o.saveToConfig(yamlConf.createSection(o.getIcon().getType().toString()));
         }
+        try
+        {
+            yamlConf.save(this.saveFile);
+        } catch (IOException e)
+        {
+            UnitedShops.plugin.log(Level.SEVERE,
+                    "Error whilst saving vendor file for user " + this.owner.getDisplayName() + "!");
+            e.printStackTrace();
+        }
     }
 
     public void storeMoney (double amount)
     {
         this.storedMoney += amount;
+    }
+
+    public double getStoredMoney ()
+    {
+        return this.storedMoney;
     }
 
     public boolean hasEnoughMoney (double amount)
@@ -194,11 +229,21 @@ public class Vendor implements PagerItem {
         return true;
     }
 
+    private void updateIcon ()
+    {
+        ItemMeta iconMeta = this.icon.getItemMeta();
+        iconMeta.setDisplayName(this.label);
+        iconMeta.setLore(Arrays.asList("Rating: " + this.rating));
+        this.icon.setItemMeta(iconMeta);
+    }
+
     private void updateRating ()
     {
         // RMS of share of global trade volumes
         this.rating = 100f * (float) Math.sqrt(
                 (Math.pow(this.buyVolume / globalBuyVolume, 2) + Math.pow(this.sellVolume / globalSellVolume, 2)) / 2.);
+        if (Float.isNaN(this.rating))
+            this.rating = 0.f;
     }
 
     private void updateVendorOfferMenu ()
@@ -207,6 +252,36 @@ public class Vendor implements PagerItem {
         offers.sort(new OfferBuyComparator());
 
         this.vendorOfferMenu = new Pager(offers, pagerFlagsVendorMenu, this.owner.getDisplayName());
+    }
+
+    public static Inventory getGlobalOfferMenu ()
+    {
+        return globalOfferMenu.getFirstInventory();
+    }
+
+    public static Inventory getGlobalVendorMenu ()
+    {
+        return globalVendorMenu.getFirstInventory();
+    }
+
+    public static Vendor getOrCreateVendor (Player owner)
+    {
+        if (!vendors.containsKey(owner))
+        {
+            vendors.put(owner,
+                    new Vendor(owner, owner.getDisplayName(), new File(UnitedShops.plugin.getDataFolder(), "vendors")));
+            updateGlobalVendorMenu();
+        }
+
+        return vendors.get(owner);
+    }
+
+    public static void onDisable ()
+    {
+        for (Vendor vendor : vendors.values())
+        {
+            vendor.saveToDisk();
+        }
     }
 
     private static void updateGlobalOfferMenu ()
