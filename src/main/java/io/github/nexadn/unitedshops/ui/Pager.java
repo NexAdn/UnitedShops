@@ -27,7 +27,7 @@ public class Pager implements Listener {
 
     /**
      * Create and initialize a pager object
-     * 
+     *
      * @param pagerItems
      *            The pager's content
      * @param menuButtons
@@ -48,7 +48,7 @@ public class Pager implements Listener {
 
     /**
      * Create and initialize a pager object
-     * 
+     *
      * @param pagerItems
      *            The pager's content
      * @param menuButtons
@@ -71,7 +71,7 @@ public class Pager implements Listener {
 
     /**
      * Create and initialize a pager object
-     * 
+     *
      * @param pagerItems
      *            The pager's content
      * @param menuButtons
@@ -94,7 +94,7 @@ public class Pager implements Listener {
 
     /**
      * Create and initialize a pager object
-     * 
+     *
      * @param pagerItems
      *            The pager's content
      * @param menuButtons
@@ -143,7 +143,7 @@ public class Pager implements Listener {
         {
             int inventoryCount = this.getInventoryCount();
             if (this.uiInventorys == null)
-                this.uiInventorys = new ArrayList<Inventory>();
+                this.uiInventorys = new ArrayList<>();
             this.uiInventorys.clear();
 
             for (int i = 0; i < inventoryCount; ++i)
@@ -232,7 +232,8 @@ public class Pager implements Listener {
                     // UI item
                     int page = this.uiInventorys.lastIndexOf(i);
                     int slot = page * this.rowsPerPage * 9 + event.getSlot();
-                    callItem(slot, event);
+                    if (slot < this.items.size())
+                        this.callItem(slot, event);
                 }
             }
         }
@@ -240,13 +241,13 @@ public class Pager implements Listener {
 
     public int getmenuButtonSettings ()
     {
-        return menuButtonSettings;
+        return this.menuButtonSettings;
     }
 
     public void setmenuButtonSettings (int menuButtonSettings)
     {
         this.menuButtonSettings = menuButtonSettings;
-        init();
+        this.init();
     }
 
     public List<Inventory> getInventorys ()
@@ -264,7 +265,7 @@ public class Pager implements Listener {
 
         public static List<ItemStack> createIconBar (int flags)
         {
-            List<ItemStack> bar = new ArrayList<ItemStack>();
+            List<ItemStack> bar = new ArrayList<>();
             for (int i = 0; i < 9; ++i)
             {
                 bar.add(i, GUIContainer.getBlank());
@@ -296,19 +297,19 @@ public class Pager implements Listener {
 
 /*
  * Copyright (C) 2017 Adrian Schollmeyer
- * 
+ *
  * This file is part of UnitedShops.
- * 
+ *
  * UnitedShops is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
