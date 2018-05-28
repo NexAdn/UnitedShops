@@ -20,7 +20,7 @@ public class ConfigShopMain extends ConfigBase {
     public ConfigShopMain()
     {
         super("shops");
-        this.menus = new HashMap<String, ShopInventory>();
+        this.menus = new HashMap<>();
     }
 
     @Override
@@ -55,7 +55,8 @@ public class ConfigShopMain extends ConfigBase {
                 UnitedShops.plugin.log(Level.FINEST, "Item: " + sub);
                 String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub; // shops.[key].items.[key2]
                 Material mat = Material.getMaterial(sub);
-                this.menus.get(s).addContent(new ShopObject(mat, super.getConf().getDouble(path + ".buy"),
+                short damage = (short) super.getConf().getInt(path + ".damage", 0);
+                this.menus.get(s).addContent(new ShopObject(mat, damage, super.getConf().getDouble(path + ".buy"),
                         super.getConf().getDouble(path + ".sell")));
             }
         }
@@ -63,7 +64,7 @@ public class ConfigShopMain extends ConfigBase {
 
     public List<ShopInventory> getMenus ()
     {
-        List<ShopInventory> temp = new Vector<ShopInventory>();
+        List<ShopInventory> temp = new Vector<>();
         Collection<ShopInventory> inv = this.menus.values();
         int highest = 0;
         for (ShopInventory i : inv)
@@ -92,19 +93,19 @@ public class ConfigShopMain extends ConfigBase {
 
 /*
  * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
- * 
+ *
  * This file is part of UnitedShops.
- * 
+ *
  * UnitedShops is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
