@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 
 import io.github.nexadn.unitedshops.command.AutoSellHandler;
 import io.github.nexadn.unitedshops.command.ShopGUIHandler;
+import io.github.nexadn.unitedshops.command.UsershopCommandHandler;
 import io.github.nexadn.unitedshops.config.ConfigMessages;
 import io.github.nexadn.unitedshops.events.GUIClick;
 import io.github.nexadn.unitedshops.events.OnInventoryClose;
@@ -110,6 +111,7 @@ public class UnitedShops extends JavaPlugin {
             // Command executors
             this.getServer().getPluginCommand("ushop").setExecutor(new ShopGUIHandler()); // /ushop
             this.getServer().getPluginCommand("usell").setExecutor(new AutoSellHandler()); // /usell
+            this.getServer().getPluginCommand("usershop").setExecutor(new UsershopCommandHandler()); // /usershop
 
             // Event handler
             this.getServer().getPluginManager().registerEvents(new GUIClick(), this);
@@ -290,6 +292,18 @@ public class UnitedShops extends JavaPlugin {
                     Vendor.getOrCreateVendor(player).getOrCreateOffer(player.getItemInHand().getType()).getSupplyGui());
         }
         return false;
+    }
+
+    public boolean requirePermission (CommandSender commandSender, String perm)
+    {
+        if (!commandSender.hasPermission(perm))
+        {
+            this.sendMessage(commandSender, this.getMessage("missingPermission"));
+            return false;
+        } else
+        {
+            return true;
+        }
     }
 }
 

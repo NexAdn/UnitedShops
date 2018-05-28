@@ -57,7 +57,6 @@ public class Offer implements PagerItem, Listener {
         this.mode = mode;
         // TODO messages.yml
         this.supplyInventory = Bukkit.createInventory(null, 9 * 3, "Gelagerte items");
-        creator.openInventory(this.supplyInventory);
 
         this.updateSupply();
         this.recreateInventories();
@@ -256,6 +255,37 @@ public class Offer implements PagerItem, Listener {
         section.set("mode", this.mode);
 
         return section;
+    }
+
+    /**
+     * Set this Offer's mode
+     *
+     * @param mode
+     */
+    public void setMode (int mode)
+    {
+        this.mode = mode;
+    }
+
+    public void setPriceBuy (double price)
+    {
+        this.priceBuy = price;
+    }
+
+    public void setPriceSell (double price)
+    {
+        this.priceSell = price;
+    }
+
+    @Override
+    public String toString ()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append(this.item.toString() + "\n");
+        buf.append("Buy:" + this.priceBuy + "\n");
+        buf.append("Sell: " + this.priceSell + "\n");
+        buf.append("Stock:" + this.itemAmount + "\n");
+        return buf.toString();
     }
 
     public void recreateInventories ()

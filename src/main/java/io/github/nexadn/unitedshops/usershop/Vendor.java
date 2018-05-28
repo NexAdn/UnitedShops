@@ -256,11 +256,15 @@ public class Vendor implements PagerItem {
 
     public static Inventory getGlobalOfferMenu ()
     {
+        if (globalOfferMenu == null)
+            updateGlobalOfferMenu();
         return globalOfferMenu.getFirstInventory();
     }
 
     public static Inventory getGlobalVendorMenu ()
     {
+        if (globalVendorMenu == null)
+            updateGlobalVendorMenu();
         return globalVendorMenu.getFirstInventory();
     }
 
