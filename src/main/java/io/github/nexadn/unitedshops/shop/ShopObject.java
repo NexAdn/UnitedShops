@@ -19,14 +19,24 @@ public class ShopObject implements PagerItem {
 
     public ShopObject(Material material, double buy)
     {
-        this.itemstack = new ItemStack(material, 1);
+        this(material, (short) 0, buy);
+    }
+
+    public ShopObject(Material material, short damage, double buy)
+    {
+        this.itemstack = new ItemStack(material, 1, damage);
         this.pricebuy = buy;
         this.pricesell = buy / 3;
     }
 
     public ShopObject(Material material, double buy, double sell)
     {
-        this.itemstack = new ItemStack(material, 1);
+        this(material, (short) 0, buy, sell);
+    }
+
+    public ShopObject(Material material, short damage, double buy, double sell)
+    {
+        this.itemstack = new ItemStack(material, 1, damage);
         this.pricebuy = buy;
         this.pricesell = sell;
         if (! (this.pricebuy >= this.pricesell))
@@ -48,21 +58,21 @@ public class ShopObject implements PagerItem {
             ItemStack it;
             switch (i) {
             case 0: // Kauf 1
-                it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
+                it = GUIContainer.getFunctionalItem(this.itemstack.getType(), this.itemstack.getDurability(),
                         UnitedShops.plugin.getMessage("buyAmount") + "1",
                         UnitedShops.plugin.getMessage("price") + this.pricebuy * 1);
                 it.setAmount(1);
                 this.buysellgui.setItem(i, it);
                 break;
             case 1: // Kauf 16
-                it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
+                it = GUIContainer.getFunctionalItem(this.itemstack.getType(), this.itemstack.getDurability(),
                         UnitedShops.plugin.getMessage("buyAmount") + "16",
                         UnitedShops.plugin.getMessage("price") + this.pricebuy * 16);
                 it.setAmount(16);
                 this.buysellgui.setItem(i, it);
                 break;
             case 2: // Kauf 64
-                it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
+                it = GUIContainer.getFunctionalItem(this.itemstack.getType(), this.itemstack.getDurability(),
                         UnitedShops.plugin.getMessage("buyAmount") + "64",
                         UnitedShops.plugin.getMessage("price") + this.pricebuy * 64);
                 it.setAmount(64);
@@ -80,21 +90,21 @@ public class ShopObject implements PagerItem {
                 this.buysellgui.setItem(i, GUIContainer.getBlank());
                 break;
             case 6: // Verkauf 1
-                it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
+                it = GUIContainer.getFunctionalItem(this.itemstack.getType(), this.itemstack.getDurability(),
                         UnitedShops.plugin.getMessage("sellAmount") + "1",
                         UnitedShops.plugin.getMessage("price") + this.pricesell * 1);
                 it.setAmount(1);
                 this.buysellgui.setItem(i, it);
                 break;
             case 7: // Verkauf 16
-                it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
+                it = GUIContainer.getFunctionalItem(this.itemstack.getType(), this.itemstack.getDurability(),
                         UnitedShops.plugin.getMessage("sellAmount") + "16",
                         UnitedShops.plugin.getMessage("price") + this.pricesell * 16);
                 it.setAmount(16);
                 this.buysellgui.setItem(i, it);
                 break;
             case 8: // Verkauf 64
-                it = GUIContainer.getFunctionalItem(this.itemstack.getType(),
+                it = GUIContainer.getFunctionalItem(this.itemstack.getType(), this.itemstack.getDurability(),
                         UnitedShops.plugin.getMessage("sellAmount") + "64",
                         UnitedShops.plugin.getMessage("price") + this.pricesell * 64);
                 it.setAmount(64);
@@ -133,14 +143,16 @@ public class ShopObject implements PagerItem {
         return this.parentShop;
     }
 
+    @Override
     public void call (InventoryClickEvent e)
     {
         e.getWhoClicked().openInventory(this.buysellgui);
     }
 
+    @Override
     public ItemStack getIcon ()
     {
-        return new ItemStack(this.itemstack.getType());
+        return new ItemStack(this.itemstack.getType(), 1, this.itemstack.getDurability());
     }
 
     public void setParent (Inventory inventory)
@@ -151,19 +163,19 @@ public class ShopObject implements PagerItem {
 
 /*
  * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
- * 
+ *
  * This file is part of UnitedShops.
- * 
+ *
  * UnitedShops is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
