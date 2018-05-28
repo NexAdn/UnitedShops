@@ -32,6 +32,10 @@ commands:
     description: Supply an offer
     permission: unitedshops.admin
     usage: "Usage: /uosupply"
+  usershop:
+    description: Usershop management
+    permission: unitedshops.usershop
+    usage: "Usage: /usershop <vendors|offers|vendor|offer [info|mode|setBuyPrice|setSellPrice]>"
 depend:
 - Vault 
 loadbefore: 
