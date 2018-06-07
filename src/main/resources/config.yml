@@ -29,9 +29,9 @@ shops:
             IRON_SPADE:  # bukkit material has a weird name for shovel. --> spade
                 buy: 50
                 sell: 10
-                # You might also set an optional durability value for tools and to get items like andesite,
+                # You might also set an optional damage value for tools and to get items like andesite,
                 # which are subtypes of other items (e.g. andesite is a subtype of minecraft:stone) 
-                durability: 125
+                damage: 125
             IRON_AXE:
                 buy: 100
                 sell: 10

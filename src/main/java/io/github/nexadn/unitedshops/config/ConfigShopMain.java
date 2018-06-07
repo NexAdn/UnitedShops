@@ -55,7 +55,7 @@ public class ConfigShopMain extends ConfigBase {
                 UnitedShops.plugin.log(Level.FINEST, "Item: " + sub);
                 String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub; // shops.[key].items.[key2]
                 Material mat = Material.getMaterial(sub);
-                short damage = (short) super.getConf().getInt(path + ".damage", 0);
+                short damage = (short) super.getConf().getInt(path + ".damage");
                 this.menus.get(s).addContent(new ShopObject(mat, damage, super.getConf().getDouble(path + ".buy"),
                         super.getConf().getDouble(path + ".sell")));
             }
