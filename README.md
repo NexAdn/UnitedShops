@@ -10,8 +10,8 @@ Strings (titles, messages) are hard-coded and german.
 Localization will be added in further updates in the config.yml or other YAML config files. 
 
 ## Permissions
-* `ushop.use` use admin shop /ushop
-* `ushop.autosell` use autosell UI /usell
+* `unitedshops.useshop` use admin shop /ushop
+* `unitedshops.autosell` use autosell UI /usell
 
 ## Configuration
 A detailed documentation of the config.yml is in progress, but a basic example config.yml is located at src/main/resources/config.yml.
