@@ -1,4 +1,7 @@
 language: java
+cache:
+  directories:
+  - $HOME/.m2
 deploy:
   provider: releases
   file: target/UnitedShops-1.4.1.jar
