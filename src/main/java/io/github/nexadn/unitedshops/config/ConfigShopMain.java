@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.nexadn.unitedshops.Pair;
 import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.shop.ShopInventory;
 import io.github.nexadn.unitedshops.shop.ShopObject;
@@ -42,10 +45,12 @@ public class ConfigShopMain extends ConfigBase {
         {
             String title = super.getMainSection().getString(s + ".title"); // shops.[key].title
             UnitedShops.plugin.log(Level.FINE, "Add shop: " + title);
-            Material icon = Material.getMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
+            Material icon = Material.matchMaterial(super.getMainSection().getString(s + ".iconitem")); // shops.[key].iconitem
             int id = super.getMainSection().getInt(s + ".id"); // shops.[key].id
             UnitedShops.plugin.log(Level.FINER, "key: " + s);
             UnitedShops.plugin.log(Level.FINER, "id: " + id);
+            if (icon == null)
+                icon = Material.GOLDEN_APPLE;
             this.menus.put(s, new ShopInventory(title, new ItemStack(icon, 1), id));
 
             String sect = super.getWorkKey() + "." + s + "." + "items";
@@ -54,9 +59,28 @@ public class ConfigShopMain extends ConfigBase {
             {
                 UnitedShops.plugin.log(Level.FINEST, "Item: " + sub);
                 String path = super.getWorkKey() + "." + s + "." + "items" + "." + sub; // shops.[key].items.[key2]
-                Material mat = Material.getMaterial(sub);
-                short damage = (short) super.getConf().getInt(path + ".damage");
-                this.menus.get(s).addContent(new ShopObject(mat, damage, super.getConf().getDouble(path + ".buy"),
+                Pair<Material, Short> item;
+                Material mat = Material.matchMaterial(sub);
+                if (mat == null)
+                {
+                    Pattern pattern = Pattern.compile("^([A-Za-z_]+):([0-9+])");
+                    Matcher matcher = pattern.matcher(sub);
+                    if (matcher.matches())
+                    {
+                        Material material = Material.matchMaterial(matcher.group(1));
+                        Short damage = Short.parseShort(matcher.group(2));
+                        item = new Pair<>(material, damage);
+                    } else
+                    {
+                        UnitedShops.plugin.log(Level.SEVERE, "Invalid item name found in config: " + sub);
+                        item = new Pair<>(Material.AIR, (short) 0);
+                    }
+                } else
+                {
+                    short damage = (short) super.getConf().getInt(path + ".damage");
+                    item = new Pair<>(mat, damage);
+                }
+                this.menus.get(s).addContent(new ShopObject(item, super.getConf().getDouble(path + ".buy"),
                         super.getConf().getDouble(path + ".sell")));
             }
         }

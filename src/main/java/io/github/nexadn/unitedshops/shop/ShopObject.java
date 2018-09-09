@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.nexadn.unitedshops.Pair;
 import io.github.nexadn.unitedshops.UnitedShops;
 import io.github.nexadn.unitedshops.ui.PagerItem;
 
@@ -29,6 +30,11 @@ public class ShopObject implements PagerItem {
         this.pricesell = buy / 3;
     }
 
+    public ShopObject(Pair<Material, Short> item, double buy)
+    {
+        this(item.first, item.second.shortValue(), buy);
+    }
+
     public ShopObject(Material material, double buy, double sell)
     {
         this(material, (short) 0, buy, sell);
@@ -43,6 +49,11 @@ public class ShopObject implements PagerItem {
         {
             this.pricesell = this.pricebuy / 3;
         }
+    }
+
+    public ShopObject(Pair<Material, Short> item, double buy, double sell)
+    {
+        this(item.first, item.second.shortValue(), buy, sell);
     }
 
     public ShopObject()
@@ -116,6 +127,11 @@ public class ShopObject implements PagerItem {
     public ItemStack getItem ()
     {
         return this.itemstack;
+    }
+
+    public Pair<Material, Short> getItemType ()
+    {
+        return new Pair<>(this.itemstack.getType(), this.itemstack.getDurability());
     }
 
     public double getBuy ()

@@ -31,7 +31,7 @@ public class ShopInventory implements PagerItem {
         this.order = 0;
         this.title = "null";
         this.icon = new ItemStack(Material.BARRIER);
-        this.content = new ArrayList<ShopObject>();
+        this.content = new ArrayList<>();
     }
 
     public ShopInventory(String title, ItemStack icon, int id)
@@ -39,7 +39,7 @@ public class ShopInventory implements PagerItem {
         this.icon = icon;
         this.title = title;
         this.order = id;
-        this.content = new ArrayList<ShopObject>();
+        this.content = new ArrayList<>();
     }
 
     public void initInventory ()
@@ -58,8 +58,8 @@ public class ShopInventory implements PagerItem {
         im.setDisplayName(ChatColor.AQUA + this.title);
         this.icon.setItemMeta(im);
     }
-    
-    public Pager getPager()
+
+    public Pager getPager ()
     {
         return this.pager;
     }
@@ -120,6 +120,7 @@ public class ShopInventory implements PagerItem {
         return this.order;
     }
 
+    @Override
     public ItemStack getIcon ()
     {
         return this.icon;
@@ -137,7 +138,7 @@ public class ShopInventory implements PagerItem {
 
     public List<Inventory> getGuisBuySell ()
     {
-        List<Inventory> gui = new ArrayList<Inventory>();
+        List<Inventory> gui = new ArrayList<>();
         for (ShopObject o : this.content)
         {
             gui.add(o.getBuySellGui());
@@ -145,11 +146,12 @@ public class ShopInventory implements PagerItem {
         return gui;
     }
 
+    @Override
     public void call (InventoryClickEvent e)
     {
         if (this.pager.getFirstInventory() == null)
         {
-            UnitedShops.plugin.log(Level.SEVERE, "Gotcha!");
+            UnitedShops.plugin.log(Level.SEVERE, "Unitialized ShopInventory!");
         }
         e.getWhoClicked().openInventory(this.pager.getFirstInventory());
     }
@@ -157,19 +159,19 @@ public class ShopInventory implements PagerItem {
 
 /*
  * Copyright (C) 2015, 2016, 2017 Adrian Schollmeyer
- * 
+ *
  * This file is part of UnitedShops.
- * 
+ *
  * UnitedShops is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
