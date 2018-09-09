@@ -3,7 +3,7 @@
 #
 
 # Enable metrics (recommended), disable with 'false'
-stats: true
+stats: false
 
 shops:
   # shop
@@ -23,6 +23,9 @@ shops:
       DIRT:
         buy: 12.0
         sell: 0.5
+      "COBBLESTONE:1":
+        buy: 100.0
+        sell: 1.0
   anothershop:
     id: 1
     title: Crazy Stuff
