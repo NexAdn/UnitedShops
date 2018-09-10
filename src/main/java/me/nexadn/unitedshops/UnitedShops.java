@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.nexadn.unitedshops.tradeapi.TradeManager;
+import me.nexadn.unitedshops.ui.AutoSellGui;
 import me.nexadn.unitedshops.ui.GlobalMenuGui;
 
 public class UnitedShops extends JavaPlugin {
@@ -26,18 +27,18 @@ public class UnitedShops extends JavaPlugin {
 
     @Override
     public void onEnable() {
-	this.metrics = new Metrics(this);
+        this.metrics = new Metrics(this);
 
-	this.baseConfigHandler = new ConfigFileHandler(this, this.getResource("config.yml"),
-		new File(this.getDataFolder(), "config.yml"));
-	this.shopConfigHandler = new ConfigFileHandler(this, this.getResource("shops.yml"),
-		new File(this.getDataFolder(), "shops.yml"));
+        this.baseConfigHandler = new ConfigFileHandler(this, this.getResource("config.yml"),
+                new File(this.getDataFolder(), "config.yml"));
+        this.shopConfigHandler = new ConfigFileHandler(this, this.getResource("shops.yml"),
+                new File(this.getDataFolder(), "shops.yml"));
 
-	this.l10n = new LocalizationHandler(this, this.baseConfigHandler);
-	this.tradeManager = new TradeManager(this);
+        this.l10n = new LocalizationHandler(this, this.baseConfigHandler);
+        this.tradeManager = new TradeManager(this);
 
-	this.menuGui = new GlobalMenuGui(this, this.shopConfigHandler);
-	this.menuGui.init();
+        this.menuGui = new GlobalMenuGui(this, this.shopConfigHandler);
+        this.menuGui.init();
     }
 
     @Override
@@ -47,76 +48,92 @@ public class UnitedShops extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-	if (cmd.getName().equalsIgnoreCase("unitedshops")) {
-	    if (args.length > 0) {
-		if (args[0].equalsIgnoreCase("shop")) {
-		    if (!(cs instanceof Player)) {
-			this.sendMessage(cs, this.getL10n().getMessage("playerOnly").str());
-			return true;
-		    }
+        if (cmd.getName().equalsIgnoreCase("unitedshops")) {
+            if (args.length > 0) {
+                if (args[0].equalsIgnoreCase("shop")) {
+                    if (!(cs instanceof Player)) {
+                        this.sendMessage(cs, this.getL10n().getMessage("playerOnly").str());
+                        return true;
+                    }
 
-		    if (!cs.hasPermission("unitedshops.shop")) {
-			this.sendMessage(cs, this.getL10n().getMessage("missingPermission")
-				.arg("permission", "unitedshops.shop").str());
-			return true;
-		    }
+                    if (!cs.hasPermission("unitedshops.shop")) {
+                        this.sendMessage(cs, this.getL10n().getMessage("missingPermission")
+                                .arg("permission", "unitedshops.shop").str());
+                        return true;
+                    }
 
-		    ((Player) cs).openInventory(this.menuGui.getUi());
-		    return true;
-		} else if (args[0].equalsIgnoreCase("reload")) {
-		    // TODO reload
-		} else if (args[0].equalsIgnoreCase("sell")) {
+                    ((Player) cs).openInventory(this.menuGui.getUi());
+                    return true;
+                } else if (args[0].equalsIgnoreCase("reload")) {
+                    // TODO reload
+                } else if (args[0].equalsIgnoreCase("sell")) {
+                    if (!(cs instanceof Player)) {
+                        this.sendMessage(cs, this.getL10n().getMessage("playerOnly").str());
+                        return true;
+                    }
 
-		}
-	    }
-	    return false;
-	} else if (cmd.getName().equalsIgnoreCase("shop")) {
-	    if (cs instanceof Player) {
-		((Player) cs).performCommand("unitedshops shop");
-	    } else {
-		this.sendMessage(cs, this.getL10n().getMessage("playeronly").str());
-	    }
-	}
-	return true;
+                    if (!cs.hasPermission("unitedshops.sell")) {
+                        this.sendMessage(cs, this.getL10n().getMessage("missingPermission")
+                                .arg("permission", "unitedshops.shop").str());
+                        return true;
+                    }
+
+                    ((Player) cs).openInventory(AutoSellGui.getGui(this, (Player) cs).getInventory());
+                    return true;
+                }
+            }
+            return false;
+        } else if (cmd.getName().equalsIgnoreCase("shop")) {
+            if (cs instanceof Player) {
+                ((Player) cs).performCommand("unitedshops shop");
+            } else {
+                this.sendMessage(cs, this.getL10n().getMessage("playeronly").str());
+            }
+        }
+        return true;
     }
 
     public ConfigFileHandler getConf() {
-	return this.baseConfigHandler;
+        return this.baseConfigHandler;
     }
 
     public LocalizationHandler getL10n() {
-	return this.l10n;
+        return this.l10n;
     }
 
     public TradeManager getTradeManager() {
-	return this.tradeManager;
+        return this.tradeManager;
+    }
+
+    public GlobalMenuGui getMenuGui() {
+        return this.menuGui;
     }
 
     public void sendMessage(CommandSender recv, String message) {
-	recv.sendMessage(this.l10n.getMessage("prefix") + " " + message);
+        recv.sendMessage(this.l10n.getMessage("prefix") + " " + message);
     }
 
     public void log(Level loglevel, String message) {
-	this.getLogger().log(loglevel, message);
+        this.getLogger().log(loglevel, message);
     }
 
     public void logSevere(String message) {
-	this.log(Level.SEVERE, message);
+        this.log(Level.SEVERE, message);
     }
 
     public void logInfo(String message) {
-	this.log(Level.INFO, message);
+        this.log(Level.INFO, message);
     }
 
     public void logFine(String message) {
-	this.log(Level.FINE, message);
+        this.log(Level.FINE, message);
     }
 
     public void logFiner(String message) {
-	this.log(Level.FINER, message);
+        this.log(Level.FINER, message);
     }
 
     public void logFinest(String message) {
-	this.log(Level.FINEST, message);
+        this.log(Level.FINEST, message);
     }
 }

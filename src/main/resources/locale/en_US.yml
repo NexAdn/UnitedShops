@@ -6,7 +6,7 @@ messages:
   # The prefix which is prepended to all chat messages by this plugin
   prefix: "§a[UnitedShops]§f"
   # Command responses
-  missingPermission: "You are lacking the required permission ${permission}"
+  missingPermission: "§4You are lacking the required permission ${permission}"
   playerOnly: "You can only do that as a player!"
   # Navigation button text for the inventories
   pagerPrevLore: "Page ${prevPageNo}"
@@ -23,6 +23,9 @@ messages:
   transactionGuiSell: "Sell ${amount} items"
   transactionGuiPrice: "Price: $${price}"
   # Transactions
-  transactionFailed: "Transaction failed"
+  transactionFailed: "§4Transaction failed"
   transactionBuy: "Bought ${item} for $${price}"
   transactionSell: "Sold ${item} for $${price}"
+  # Autosell
+  autosellTitle: "Autosell: ${playername}"
+  autosellItemFailed: "§4Failed to sell item ${item}. Please remove it from the autosell inventory or it will be gone soon."

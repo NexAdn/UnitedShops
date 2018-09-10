@@ -8,7 +8,7 @@ commands:
     usgae: /shop
   unitedshops:
     description: Main unitedshops command
-    usage: /unitedshops <shop|autosell|reload>
+    usage: /unitedshops <shop|sell|reload>
     
 depend:
 - Vault

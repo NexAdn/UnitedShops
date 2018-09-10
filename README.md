@@ -7,7 +7,8 @@ It enables you to use an Admin Shop system with a GUI which can be called using 
 Offers can be edited using the plugin's shops.yml. 
 
 ## Permissions
-* `unitedshops.shop` use the shop /unitedshops shop
+* `unitedshops.shop` use the shop `/unitedshops shop` or `/shop`
+* `unitedshops.sell` use the automatic sell mechanism `/unitedshops sell`
 
 ## Configuration
 A detailed documentation of the config.yml is in progress, but a basic example config.yml is located at src/main/resources/config.yml.
@@ -41,5 +42,5 @@ See the AUTHORS file for list of all contributors.
 # Contributing
 I appreciate every type of contribution, be it feature requests, bug reports or new/improved code.
 
-If you'd like to submit a Pull Request, please be so kind and format your code using the Oracle Java code conventions and stick to a similar naming and coding scheme as used throughout the repo.
-Should you deliberately ignore these reqirements, you must state a good reason or your PR won't be merged.
+If you'd like to submit a Pull Request, please be so kind and format your code using the Oracle Java code conventions and always using 4-space indentation and stick to a similar naming and coding scheme as used throughout the repo.
+Should you deliberately ignore these requirements, you must state a good reason or your PR won't be merged.

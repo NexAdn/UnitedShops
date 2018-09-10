@@ -6,6 +6,6 @@ public class UserShopGui {
     private UnitedShops plugin;
 
     public UserShopGui(UnitedShops plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 }

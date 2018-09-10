@@ -10,19 +10,19 @@ public class UserShop implements Shop {
 
     @Override
     public void call(InventoryClickEvent e) {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public ItemStack getIcon() {
-	// TODO Auto-generated method stub
-	return null;
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public void init(Inventory parent) {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 

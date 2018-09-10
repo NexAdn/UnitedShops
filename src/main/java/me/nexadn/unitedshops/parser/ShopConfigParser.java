@@ -18,29 +18,29 @@ public class ShopConfigParser {
     private static final String baseKey = "shops";
 
     public ShopConfigParser(UnitedShops plugin, ConfigFileHandler configFileHandler) {
-	this.plugin = plugin;
-	this.configFileHandler = configFileHandler;
+        this.plugin = plugin;
+        this.configFileHandler = configFileHandler;
     }
 
     public void parse() {
-	Set<String> keys = this.configFileHandler.readChildren(baseKey);
-	for (String k : keys) {
-	    String type = this.configFileHandler.readString(baseKey + "." + k + ".type");
-	    if (type.equalsIgnoreCase("shop")) {
-		ShopConfigShopParser parser = new ShopConfigShopParser(this.plugin, this.configFileHandler, baseKey, k);
-		parser.parse();
-		this.objects.add(parser.get());
-	    } else if (type.equalsIgnoreCase("item")) {
-		ShopConfigItemParser parser = new ShopConfigItemParser(this.plugin, this.configFileHandler, baseKey, k);
-		parser.parse();
-		this.objects.add(parser.get());
-	    } else {
-		throw new InvalidConfigException(baseKey + "." + k + ".type");
-	    }
-	}
+        Set<String> keys = this.configFileHandler.readChildren(baseKey);
+        for (String k : keys) {
+            String type = this.configFileHandler.readString(baseKey + "." + k + ".type");
+            if (type.equalsIgnoreCase("shop")) {
+                ShopConfigShopParser parser = new ShopConfigShopParser(this.plugin, this.configFileHandler, baseKey, k);
+                parser.parse();
+                this.objects.add(parser.get());
+            } else if (type.equalsIgnoreCase("item")) {
+                ShopConfigItemParser parser = new ShopConfigItemParser(this.plugin, this.configFileHandler, baseKey, k);
+                parser.parse();
+                this.objects.add(parser.get());
+            } else {
+                throw new InvalidConfigException(baseKey + "." + k + ".type");
+            }
+        }
     }
 
     public List<ShopObject> get() {
-	return this.objects;
+        return this.objects;
     }
 }

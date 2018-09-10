@@ -26,32 +26,36 @@ public class AdminShop implements Shop {
     private Pager ui;
 
     public AdminShop(UnitedShops plugin, String title, Pair<Material, Short> icon) {
-	this.plugin = plugin;
-	this.title = ChatColor.BLUE + title;
-	this.icon = icon;
-	this.iconItem = Util.getItem(this.icon, 1, this.title);
+        this.plugin = plugin;
+        this.title = ChatColor.BLUE + title;
+        this.icon = icon;
+        this.iconItem = Util.getItem(this.icon, 1, this.title);
     }
 
     public void addItem(ShopObject item) {
-	this.items.add(item);
+        this.items.add(item);
     }
 
     @Override
     public void init(Inventory parent) {
-	this.ui = new Pager(this.plugin, this.items, this.title, parent);
-	for (ShopObject item : this.items)
-	    item.init(this.ui.getFirstInventory());
+        this.ui = new Pager(this.plugin, this.items, this.title, parent);
+        for (ShopObject item : this.items)
+            item.init(this.ui.getFirstInventory());
+    }
+
+    public List<ShopObject> getItems() {
+        return this.items;
     }
 
     @Override
     public void call(InventoryClickEvent e) {
-	if (this.ui != null) {
-	    e.getWhoClicked().openInventory(this.ui.getFirstInventory());
-	}
+        if (this.ui != null) {
+            e.getWhoClicked().openInventory(this.ui.getFirstInventory());
+        }
     }
 
     @Override
     public ItemStack getIcon() {
-	return this.iconItem;
+        return this.iconItem;
     }
 }

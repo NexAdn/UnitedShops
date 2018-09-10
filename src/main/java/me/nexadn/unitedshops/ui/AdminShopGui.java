@@ -17,24 +17,28 @@ public class AdminShopGui {
     Pager ui;
 
     public AdminShopGui(UnitedShops plugin, ConfigFileHandler shopConfig, Inventory parent) {
-	this.plugin = plugin;
-	this.parent = parent;
+        this.plugin = plugin;
+        this.parent = parent;
 
-	ShopConfigParser parser = new ShopConfigParser(this.plugin, shopConfig);
-	parser.parse();
-	this.items = parser.get();
+        ShopConfigParser parser = new ShopConfigParser(this.plugin, shopConfig);
+        parser.parse();
+        this.items = parser.get();
     }
 
     public void init() {
-	this.ui = new Pager(this.plugin, this.items, this.plugin.getL10n().getMessage("adminShopTitle").str(),
-		this.parent);
+        this.ui = new Pager(this.plugin, this.items, this.plugin.getL10n().getMessage("adminShopTitle").str(),
+                this.parent);
 
-	for (ShopObject item : this.items) {
-	    item.init(this.getUi());
-	}
+        for (ShopObject item : this.items) {
+            item.init(this.getUi());
+        }
     }
 
     public Inventory getUi() {
-	return this.ui.getFirstInventory();
+        return this.ui.getFirstInventory();
+    }
+
+    public List<ShopObject> getItems() {
+        return this.items;
     }
 }
