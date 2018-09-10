@@ -9,7 +9,7 @@ commands:
   unitedshops:
     description: Main unitedshops command
     usage: /unitedshops <shop|sell|reload>
-    
+
 depend:
 - Vault
 loadBefore:

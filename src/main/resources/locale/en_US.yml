@@ -5,6 +5,8 @@
 messages:
   # The prefix which is prepended to all chat messages by this plugin
   prefix: "§a[UnitedShops]§f"
+  # Generic error message
+  generalError: "§4An unexpected error occured!"
   # Command responses
   missingPermission: "§4You are lacking the required permission ${permission}"
   playerOnly: "You can only do that as a player!"

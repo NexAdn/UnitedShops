@@ -6,24 +6,24 @@
     <name>UnitedShops</name>
     <description>UnitedShops rewritten from scratch</description>
     <url>https://github.com/NexAdn/UnitedShops</url>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
+
         <!--  Versions -->
         <minecraft.version>1.8</minecraft.version>
         <bukkit.rev>R0.1-SNAPSHOT</bukkit.rev>
         <vaultapi.version>1.6</vaultapi.version>
-        
+
         <!--  Testing -->
         <junit.version>4.11</junit.version>
         <powermock.version>1.7.3</powermock.version>
     </properties>
-  
+
     <scm>
         <url>https://github.com/NexAdn/UnitedShops</url>
     </scm>
-    
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -38,7 +38,7 @@
             <url>https://repo.bstats.org/content/repositories/releases/</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
@@ -65,7 +65,7 @@
             <version>1.2</version>
             <scope>compile</scope>
         </dependency>
-        
+
         <!--  Testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -92,7 +92,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-  
+
     <build>
         <finalName>
             ${project.artifactId}
@@ -135,5 +135,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>
