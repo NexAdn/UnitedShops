@@ -1,0 +1,28 @@
+# All messages that can be customized and localized
+# 
+# Some messages contain variables in the form ${NAME}, where NAME is the name of the variable.
+# These variables are replaced by a meaningful value later on
+messages:
+  # The prefix which is prepended to all chat messages by this plugin
+  prefix: "§a[UnitedShops]§f"
+  # Command responses
+  missingPermission: "You are lacking the required permission ${permission}"
+  playerOnly: "You can only do that as a player!"
+  # Navigation button text for the inventories
+  pagerPrevLore: "Page ${prevPageNo}"
+  pagerNextLore: "Page ${nextPageNo}"
+  pagerUp: "Up"
+  pagerUpLore: "${parentInvTitle}"
+  pagerClose: "Close"
+  pagerCloseLore: "-----"
+  # Inventory titles
+  adminShopTitle: "Admin Shop"
+  globalMenuTitle: "Shops"
+  # Buy/Sell GUI
+  transactionGuiBuy: "Buy ${amount} items"
+  transactionGuiSell: "Sell ${amount} items"
+  transactionGuiPrice: "Price: $${price}"
+  # Transactions
+  transactionFailed: "Transaction failed"
+  transactionBuy: "Bought ${item} for $${price}"
+  transactionSell: "Sold ${item} for $${price}"

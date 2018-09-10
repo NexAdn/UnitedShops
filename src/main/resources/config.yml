@@ -1,100 +1,13 @@
-# Enable metrics (recommended), disable with 'false'
+# Enable statistical data to be sent to the plugin author (recommended)
 stats: true
+# Preferred language. A file named "LC.yml" (replace LC with your language's code)
+# must be present in the locale/ subdirectory" 
+locale: en_US
 
-shops:
-    # shop
-    blockshop:
-        # ID (start with 0, increment by 1 for each new shop)
-        id: 0
-        # The title of the shop (displayed in the menu)
-        title: The block shop
-        # The item to choose as icon
-        iconitem: "MOSSY_COBBLESTONE"
-        # All contents
-        items:
-            COBBLESTONE:
-                buy: 10
-                sell: 1
-            DIRT:
-                buy: 10
-                sell: 1
-    toolshop:
-        id: 1
-        title: Tool shop
-        iconitem: "IRON_PICKAXE"
-        items:
-            IRON_PICKAXE:
-                buy: 100
-                sell: 10
-            "IRON_SPADE:125":  # bukkit material has a weird name for shovel. --> spade
-                # You might also set an optional damage value for tools and to get items like andesite,
-                # which are subtypes of other items (e.g. andesite is a subtype of minecraft:stone).
-                # To do so, add a colon (:) and the damage value after the material name and (most importantly)
-                # put everything in "" or ''. For example, "IRON_SPADE:125" would be an iron shovel with a damage
-                # value of 125.  
-                buy: 50
-                sell: 10
-                # Deprecated method for setting damage values. Can lead to items being not added to the shop when
-                # adding multiple items of the same material name. Add the damage value as shown above.
-                #damage: 125
-            IRON_AXE:
-                buy: 100
-                sell: 10
-            IRON_HOE:
-                buy: 100
-                sell: 10
-    grocerystore:
-        id: 2
-        title: Grocery store
-        iconitem: "MUTTON"
-        items: 
-            MUTTON:
-                buy: 50
-                sell: 10
-            RABBIT:
-                buy: 50
-                sell: 10
-            EGG:
-                buy: 50
-                sell: 10
-            MILK_BUCKET:
-                buy: 50
-                sell: 10
-            WHEAT:
-                buy: 50
-                sell: 10
-            CAKE:
-                buy: 50
-                sell: 10
-            CARROT:
-                buy: 50
-                sell: 10
-            POTATO:
-                buy: 50
-                sell: 10
-    blacksmith:
-        id: 3
-        title: Blacksmith
-        iconitem: "CHAINMAIL_CHESTPLATE"
-        items:
-            IRON_SWORD:
-                buy: 100
-                sell: 10
-            CHAINMAIL_CHESTPLATE:
-                buy: 100
-                sell: 10
-            SHIELD:
-                buy: 100
-                sell: 10
-            IRON_HELMET:
-                buy: 100
-                sell: 10
-            BOW:
-                buy: 100
-                sell: 10
-            ARROW:
-                buy: 10
-                sell: 1
-            IRON_BOOTS:
-                buy: 50
-                sell: 10
+# Icons for the shops inside the global menu
+icons:
+  adminShop: "GOLDEN_APPLE:1"
+  userShop: "CHEST:0"
+
+# DO NOT TOUCH
+configVersion: 1

@@ -1,22 +1,16 @@
 name: UnitedShops
-version: 1.5
+main: me.nexadn.unitedshops.UnitedShops
+version: 2.0.0
 author: NexAdn
-main: io.github.nexadn.unitedshops.UnitedShops
-description: Admin shop plugins
 commands:
-  ushop:
-    description: Open the AdminShop
-    permission: unitedshops.useshop
-    usage: "Usage: /ushop"
-  usell:
-    description: Open the automatic sale dialog
-    permission: unitedshops.autosell
-    usage: "Usage: /usell"
-  ushopreload:
-    description: Reload and applay the configuration files
-    permission: unitedshops.admin
-    usage: "Usage: /ushopreload"
+  shop:
+    description: Open the shop
+    usgae: /shop
+  unitedshops:
+    description: Main unitedshops command
+    usage: /unitedshops <shop|autosell|reload>
+    
 depend:
-- Vault 
-loadbefore: 
+- Vault
+loadBefore:
 - Vault
