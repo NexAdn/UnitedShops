@@ -1,0 +1,44 @@
+# Shop configuration
+shops:
+  # Add all shops here, specify names as you want. Every name must be unique to be recognized correctly
+  myexampleshop:
+    # Specify the type (item/shop) correctly
+    type: shop
+    # What name the shop gets
+    title: "The block shop"
+    # Whatever item you wish to use as an icon
+    icon: "COBBLESTONE:0"
+    
+    items:
+      # List all items or subordinate shops here
+      "LOG:0":
+        # An example of an item. The type 'item' must be specified. The name is converted into an item
+        type: item
+        # Buy and sell prices for one item (does not need to be an integer value)
+        # Set to a negative value (e.g. -1.0) to disable the respective action.
+        buy: 99.99
+        sell: -1.0 # Here selling is being disabled. Users are not able to sell this item to the shop
+      "LOG:1":
+        # If you want variants of the same item (e.g. different sorts of log), you need to specify the "damage" value
+        # after the colon in the name. 0 is the default and should be used whenever the default or only variant is used
+        type: item
+        buy: 120.0
+        sell: 55.0
+       
+      subshop:
+        # An example of a subshop. The configuration structure is equal among all shops
+        type: shop
+        title: "Hard rock"
+        icon: "STONE:0"
+        items:
+          "COBBLESTONE:0":
+            type: item
+            buy: 10.0
+            sell: 5.0
+          "STONE:0":
+            type: item
+            buy: 10.0
+            sell: 5.0
+
+# DO NOT TOUCH
+configVersion: 1

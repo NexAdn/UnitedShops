@@ -1,7 +1,10 @@
 language: java
+cache:
+  directories:
+  - $HOME/.m2
 deploy:
   provider: releases
-  file: target/UnitedShops-2.0.0.jar
+  file: target/UnitedShops.jar
   skip_cleanup: true
   on:
     tags: true
