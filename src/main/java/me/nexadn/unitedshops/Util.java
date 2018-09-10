@@ -11,45 +11,38 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class Util {
-    public static ItemStack getBlank ()
-    {
-        return getItem(new Pair<Material, Short>(Material.THIN_GLASS, (short) 0), 1, " ");
+    public static ItemStack getBlank() {
+	return getItem(new Pair<Material, Short>(Material.THIN_GLASS, (short) 0), 1, " ");
     }
 
-    public static ItemStack getItem (Pair<Material, Short> type, int amount, String... nameAndLore)
-    {
-        ItemStack item = new ItemStack(type.first, amount, type.second);
-        ItemMeta meta = item.getItemMeta();
-        List<String> lores = Arrays.asList(nameAndLore);
-        if (lores.size() > 0)
-        {
-            meta.setDisplayName(lores.get(0));
-            List<String> lore = new ArrayList<>();
-            for (int i = 1; i < lores.size(); i++)
-            {
-                lore.add(lores.get(i));
-            }
-            if (lore.size() > 0)
-                meta.setLore(lore);
-        }
-        item.setItemMeta(meta);
-        return item;
+    public static ItemStack getItem(Pair<Material, Short> type, int amount, String... nameAndLore) {
+	ItemStack item = new ItemStack(type.first, amount, type.second);
+	ItemMeta meta = item.getItemMeta();
+	List<String> lores = Arrays.asList(nameAndLore);
+	if (lores.size() > 0) {
+	    meta.setDisplayName(lores.get(0));
+	    List<String> lore = new ArrayList<>();
+	    for (int i = 1; i < lores.size(); i++) {
+		lore.add(lores.get(i));
+	    }
+	    if (lore.size() > 0)
+		meta.setLore(lore);
+	}
+	item.setItemMeta(meta);
+	return item;
     }
 
-    public static Pair<Material, Short> parseItemType (String s)
-    {
-        Material material = null;
-        short damage = -1;
-        Matcher matcher = Pattern.compile("^([A-Za-z_]+):([0-9+])").matcher(s);
-        if (matcher.matches())
-        {
-            material = Material.matchMaterial(matcher.group(1));
-            damage = Short.parseShort(matcher.group(2));
-        }
-        if (material == null || damage < 0)
-        {
-            throw new RuntimeException("Malformed item type string: " + s);
-        }
-        return new Pair<>(material, damage);
+    public static Pair<Material, Short> parseItemType(String s) {
+	Material material = null;
+	short damage = -1;
+	Matcher matcher = Pattern.compile("^([A-Za-z_]+):([0-9+])").matcher(s);
+	if (matcher.matches()) {
+	    material = Material.matchMaterial(matcher.group(1));
+	    damage = Short.parseShort(matcher.group(2));
+	}
+	if (material == null || damage < 0) {
+	    throw new RuntimeException("Malformed item type string: " + s);
+	}
+	return new Pair<>(material, damage);
     }
 }
