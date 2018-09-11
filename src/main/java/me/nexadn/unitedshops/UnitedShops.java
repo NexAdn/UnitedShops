@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.nexadn.unitedshops.exception.InvalidConfigException;
+import me.nexadn.unitedshops.exception.InvalidValueException;
 import me.nexadn.unitedshops.tradeapi.TradeManager;
 import me.nexadn.unitedshops.ui.AutoSellGui;
 import me.nexadn.unitedshops.ui.GlobalMenuGui;
@@ -37,8 +39,19 @@ public class UnitedShops extends JavaPlugin {
         this.l10n = new LocalizationHandler(this, this.baseConfigHandler);
         this.tradeManager = new TradeManager(this);
 
-        this.menuGui = new GlobalMenuGui(this, this.shopConfigHandler);
-        this.menuGui.init();
+        try {
+            this.menuGui = new GlobalMenuGui(this, this.shopConfigHandler);
+            this.menuGui.init();
+        } catch (InvalidConfigException e) {
+            e.printStackTrace();
+            this.logSevere(
+                    "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
+            this.menuGui = null;
+        } catch (InvalidValueException e) {
+            this.logSevere(
+                    "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
+            this.menuGui = null;
+        }
     }
 
     @Override

@@ -10,9 +10,11 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.nexadn.unitedshops.exception.InvalidValueException;
+
 public abstract class Util {
     public static ItemStack getBlank() {
-        return getItem(new Pair<Material, Short>(Material.THIN_GLASS, (short) 0), 1, " ");
+        return getItem(new Pair<>(Material.THIN_GLASS, (short) 0), 1, " ");
     }
 
     public static ItemStack getItem(Pair<Material, Short> type, int amount, String... nameAndLore) {
@@ -35,13 +37,16 @@ public abstract class Util {
     public static Pair<Material, Short> parseItemType(String s) {
         Material material = null;
         short damage = -1;
+        material = Material.matchMaterial(s);
+        if (material != null)
+            return new Pair<>(material, (short) 0);
         Matcher matcher = Pattern.compile("^([A-Za-z_]+):([0-9+])").matcher(s);
         if (matcher.matches()) {
             material = Material.matchMaterial(matcher.group(1));
             damage = Short.parseShort(matcher.group(2));
         }
         if (material == null || damage < 0) {
-            throw new RuntimeException("Malformed item type string: " + s);
+            throw new InvalidValueException("Malformed item type string: " + s);
         }
         return new Pair<>(material, damage);
     }

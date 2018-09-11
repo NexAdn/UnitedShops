@@ -62,10 +62,9 @@ public class AutoSellGui implements Listener {
             Pair<Material, Short> itemType = asi.getItemType();
             if (asi.getPriceSell() >= 0. && itemType.first.toString().equalsIgnoreCase(currentItem.getType().toString())
                     && itemType.second.shortValue() == currentItem.getDurability()) {
-                if (plugin.getTradeManager().tradeOfferMoneyForItem(p, asi.getPriceSell() * currentItem.getAmount(),
-                        currentItem, inv)) {
-                    return true;
-                }
+                plugin.getTradeManager().tradeOfferMoneyForItem(p, asi.getPriceSell() * currentItem.getAmount(),
+                        currentItem, inv);
+                return true;
             }
         } else if (object instanceof AdminShop) {
             for (ShopObject o : ((AdminShop) object).getItems()) {
