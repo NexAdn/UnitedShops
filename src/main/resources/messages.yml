@@ -1,4 +1,5 @@
 messages:
+  generalError: "Error."
   shopCategoriesTitle: "Shop - Categories"
   transactionMissingResources: "You are missing the required resources for this transaction!"
   autosellTitle: "Autosell: "
@@ -16,4 +17,6 @@ messages:
   tradePrefix: "Trade: "
   missingPermission: "You are missing the required permissions!"
   playerOnly: "You can only use that as a player!"
-  
+  userShopNotEnoughSupply: "This shop doesn't have enough supplies!"
+  userShopNotEnoughMoney: "This shop doesn't have enough money!"
+  needAppropriateItemInHand: "You need to hold an appropriate item in your hand!"
