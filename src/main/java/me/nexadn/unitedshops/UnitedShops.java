@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -48,6 +49,7 @@ public class UnitedShops extends JavaPlugin {
                     "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
             this.menuGui = null;
         } catch (InvalidValueException e) {
+            e.printStackTrace();
             this.logSevere(
                     "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
             this.menuGui = null;
