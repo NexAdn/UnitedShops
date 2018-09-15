@@ -36,11 +36,11 @@ public class TestUtil {
         plugin.onEnable();
     }
 
-    public UnitedShops getPlugin() {
+    public static UnitedShops getPlugin() {
         return plugin;
     }
 
-    public Server getServer() {
+    public static Server getServer() {
         return server;
     }
 
