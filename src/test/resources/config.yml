@@ -1,0 +1,13 @@
+# Enable statistical data to be sent to the plugin author (recommended)
+stats: false
+# Preferred language. A file named "LC.yml" (replace LC with your language's code)
+# must be present in the locale/ subdirectory" 
+locale: en_US
+
+# Icons for the shops inside the global menu
+icons:
+  adminShop: "GOLDEN_APPLE:1"
+  userShop: "CHEST:0"
+
+# DO NOT TOUCH
+configVersion: 1
