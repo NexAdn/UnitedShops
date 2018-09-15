@@ -4,11 +4,12 @@ import java.io.File;
 import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
 import me.nexadn.unitedshops.exception.InvalidConfigException;
 import me.nexadn.unitedshops.exception.InvalidValueException;
@@ -28,14 +29,22 @@ public class UnitedShops extends JavaPlugin {
     @SuppressWarnings("unused")
     private Metrics metrics;
 
+    protected boolean unitTest = false;
+
+    public UnitedShops(JavaPluginLoader mpl, PluginDescriptionFile pdf, File pd, File file) {
+        super(mpl, pdf, pd, file);
+    }
+
     @Override
     public void onEnable() {
-        this.metrics = new Metrics(this);
 
         this.baseConfigHandler = new ConfigFileHandler(this, this.getResource("config.yml"),
                 new File(this.getDataFolder(), "config.yml"));
         this.shopConfigHandler = new ConfigFileHandler(this, this.getResource("shops.yml"),
                 new File(this.getDataFolder(), "shops.yml"));
+
+        if (!this.unitTest && this.baseConfigHandler.readBoolean("stats"))
+            this.metrics = new Metrics(this);
 
         this.l10n = new LocalizationHandler(this, this.baseConfigHandler);
         this.tradeManager = new TradeManager(this);

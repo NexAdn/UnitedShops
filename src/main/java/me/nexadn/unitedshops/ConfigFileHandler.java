@@ -98,6 +98,10 @@ public class ConfigFileHandler {
         return confRes;
     }
 
+    public boolean readBoolean(String key) {
+        return this.configuration.getBoolean(key);
+    }
+
     public Pair<Material, Short> readItemType(String key) {
         String confRes = this.configuration.getString(key);
         if (confRes == "")
