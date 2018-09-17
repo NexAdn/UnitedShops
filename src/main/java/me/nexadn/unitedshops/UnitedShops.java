@@ -31,6 +31,10 @@ public class UnitedShops extends JavaPlugin {
 
     protected boolean unitTest = false;
 
+    public UnitedShops() {
+        super();
+    }
+
     public UnitedShops(JavaPluginLoader mpl, PluginDescriptionFile pdf, File pd, File file) {
         super(mpl, pdf, pd, file);
     }
@@ -102,13 +106,13 @@ public class UnitedShops extends JavaPlugin {
     }
 
     private void fetchConfigData() {
-        if (!this.unitTest && this.baseConfigHandler.readBoolean("stats"))
-            this.metrics = new Metrics(this);
-
         this.baseConfigHandler = new ConfigFileHandler(this, this.getResource("config.yml"),
                 new File(this.getDataFolder(), "config.yml"));
         this.shopConfigHandler = new ConfigFileHandler(this, this.getResource("shops.yml"),
                 new File(this.getDataFolder(), "shops.yml"));
+
+        if (!this.unitTest && this.baseConfigHandler.readBoolean("stats"))
+            this.metrics = new Metrics(this);
 
         this.l10n = new LocalizationHandler(this, this.baseConfigHandler);
         this.tradeManager = new TradeManager(this);
