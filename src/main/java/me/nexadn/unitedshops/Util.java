@@ -40,7 +40,7 @@ public abstract class Util {
         material = Material.matchMaterial(s);
         if (material != null)
             return new Pair<>(material, (short) 0);
-        Matcher matcher = Pattern.compile("^([A-Za-z_]+):([0-9+])").matcher(s);
+        Matcher matcher = Pattern.compile("^([A-Za-z_]+):([0-9]+)").matcher(s);
         if (matcher.matches()) {
             material = Material.matchMaterial(matcher.group(1));
             damage = Short.parseShort(matcher.group(2));
