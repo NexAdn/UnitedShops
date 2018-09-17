@@ -1,5 +1,12 @@
 # Shop configuration
 shops:
+  myshop:
+    type: shop
+    title: "Empty shop"
+    icon: "LOG"
+    items: {}
+    
+    
   myexampleshop:
     type: shop
     title: "The block shop"

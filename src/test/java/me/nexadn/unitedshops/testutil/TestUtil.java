@@ -20,6 +20,9 @@ public class TestUtil {
     private static File pluginDir = new File("target/test/unitedshops");
 
     public static void init() {
+        if (initialized)
+            return;
+
         initialized = true;
         pluginDir.mkdirs();
 
