@@ -11,8 +11,11 @@ import org.bukkit.entity.EntityType;
 import org.junit.Test;
 
 import me.nexadn.unitedshops.ConfigFileHandler;
+import me.nexadn.unitedshops.exception.InvalidConfigException;
+import me.nexadn.unitedshops.exception.InvalidValueException;
 import me.nexadn.unitedshops.shop.Shop;
 import me.nexadn.unitedshops.shop.ShopObject;
+import me.nexadn.unitedshops.testutil.TestUnitedShops;
 import me.nexadn.unitedshops.testutil.TestUtil;
 
 public class ParserTest {
@@ -37,5 +40,27 @@ public class ParserTest {
         assertEquals(0, emptyShop.getIcon().getDurability());
         assertEquals(Material.COBBLESTONE, myexampleshop.getIcon().getType());
         assertEquals(0, myexampleshop.getIcon().getDurability());
+    }
+
+    @Test(expected = InvalidValueException.class)
+    public void shopConfigBrokenParserTest() {
+        TestUtil.init();
+
+        ShopConfigParser shopConfigParser = new ShopConfigParser(TestUtil.getPlugin(),
+                new ConfigFileHandler(TestUtil.getPlugin(), ClassLoader.getSystemResourceAsStream("shops2.yml"),
+                        new File(TestUtil.getPlugin().getDataFolder(), "shops2.yml")));
+
+        shopConfigParser.parse();
+    }
+
+    @Test(expected = InvalidConfigException.class)
+    public void shopConfigBroken2ParserTest() {
+        TestUtil.init();
+
+        ShopConfigParser shopConfigParser = new ShopConfigParser(TestUtil.getPlugin(),
+                new ConfigFileHandler(TestUtil.getPlugin(), ClassLoader.getSystemResourceAsStream("shops3.yml"),
+                        new File(TestUtil.getPlugin().getDataFolder(), "shops3.yml")));
+
+        shopConfigParser.parse();
     }
 }
