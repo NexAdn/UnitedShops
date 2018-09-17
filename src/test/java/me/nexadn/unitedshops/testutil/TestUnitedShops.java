@@ -12,6 +12,7 @@ import me.nexadn.unitedshops.UnitedShops;
 public class TestUnitedShops extends UnitedShops {
     public TestUnitedShops(JavaPluginLoader mpl, PluginDescriptionFile pdf, File pd, File file) {
         super(mpl, pdf, pd, file);
+        this.unitTest = true;
     }
 
     @Override
