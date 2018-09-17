@@ -83,4 +83,8 @@ public class AutoSellGui implements Listener {
             return getGui(plugin, p);
         }
     }
+
+    public static void clearGuis() {
+        guis.clear();
+    }
 }

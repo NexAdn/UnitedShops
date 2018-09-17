@@ -37,32 +37,7 @@ public class UnitedShops extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
-        this.baseConfigHandler = new ConfigFileHandler(this, this.getResource("config.yml"),
-                new File(this.getDataFolder(), "config.yml"));
-        this.shopConfigHandler = new ConfigFileHandler(this, this.getResource("shops.yml"),
-                new File(this.getDataFolder(), "shops.yml"));
-
-        if (!this.unitTest && this.baseConfigHandler.readBoolean("stats"))
-            this.metrics = new Metrics(this);
-
-        this.l10n = new LocalizationHandler(this, this.baseConfigHandler);
-        this.tradeManager = new TradeManager(this);
-
-        try {
-            this.menuGui = new GlobalMenuGui(this, this.shopConfigHandler);
-            this.menuGui.init();
-        } catch (InvalidConfigException e) {
-            e.printStackTrace();
-            this.logSevere(
-                    "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
-            this.menuGui = null;
-        } catch (InvalidValueException e) {
-            e.printStackTrace();
-            this.logSevere(
-                    "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
-            this.menuGui = null;
-        }
+        this.fetchConfigData();
     }
 
     @Override
@@ -104,6 +79,15 @@ public class UnitedShops extends JavaPlugin {
 
                     ((Player) cs).openInventory(AutoSellGui.getGui(this, (Player) cs).getInventory());
                     return true;
+                } else if (args[0].equalsIgnoreCase("reload")) {
+                    if (!cs.hasPermission("unitedshops.reload")) {
+                        this.sendMessage(cs, this.getL10n().getMessage("missingPermission")
+                                .arg("permission", "unitedshops.reload").str());
+                        return true;
+                    } else {
+                        AutoSellGui.clearGuis();
+                        this.fetchConfigData();
+                    }
                 }
             }
             return false;
@@ -115,6 +99,34 @@ public class UnitedShops extends JavaPlugin {
             }
         }
         return true;
+    }
+
+    private void fetchConfigData() {
+        if (!this.unitTest && this.baseConfigHandler.readBoolean("stats"))
+            this.metrics = new Metrics(this);
+
+        this.baseConfigHandler = new ConfigFileHandler(this, this.getResource("config.yml"),
+                new File(this.getDataFolder(), "config.yml"));
+        this.shopConfigHandler = new ConfigFileHandler(this, this.getResource("shops.yml"),
+                new File(this.getDataFolder(), "shops.yml"));
+
+        this.l10n = new LocalizationHandler(this, this.baseConfigHandler);
+        this.tradeManager = new TradeManager(this);
+
+        try {
+            this.menuGui = new GlobalMenuGui(this, this.shopConfigHandler);
+            this.menuGui.init();
+        } catch (InvalidConfigException e) {
+            e.printStackTrace();
+            this.logSevere(
+                    "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
+            this.menuGui = null;
+        } catch (InvalidValueException e) {
+            e.printStackTrace();
+            this.logSevere(
+                    "We've encountered some malformed config files. Please fix the shown errors before using UnitedShops!");
+            this.menuGui = null;
+        }
     }
 
     public ConfigFileHandler getConf() {
