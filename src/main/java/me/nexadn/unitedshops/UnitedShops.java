@@ -68,7 +68,14 @@ public class UnitedShops extends JavaPlugin {
                     ((Player) cs).openInventory(this.menuGui.getUi());
                     return true;
                 } else if (args[0].equalsIgnoreCase("reload")) {
-                    // TODO reload
+                    if (!cs.hasPermission("unitedshops.reload")) {
+                        this.sendMessage(cs, this.getL10n().getMessage("missingPermission")
+                                .arg("permission", "unitedshops.reload").str());
+                        return true;
+                    }
+                    this.fetchConfigData();
+                    this.sendMessage(cs, this.getL10n().getMessage("reloadSuccess").str());
+                    return true;
                 } else if (args[0].equalsIgnoreCase("sell")) {
                     if (!(cs instanceof Player)) {
                         this.sendMessage(cs, this.getL10n().getMessage("playerOnly").str());
