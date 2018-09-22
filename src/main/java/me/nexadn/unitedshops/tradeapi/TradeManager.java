@@ -51,7 +51,7 @@ public class TradeManager {
                 this.plugin.sendMessage(player,
                         this.plugin.getL10n().getMessage("transactionBuy")
                                 .arg("item", offer.getType().toString() + ":" + offer.getDurability())
-                                .arg("price", "" + want).str());
+                                .arg("price", String.format("%.2g%n", want)).str());
                 return true;
             }
         }
@@ -81,7 +81,7 @@ public class TradeManager {
                     this.plugin.sendMessage(player,
                             this.plugin.getL10n().getMessage("transactionSell")
                                     .arg("item", want.getType().toString() + ":" + want.getDurability())
-                                    .arg("price", "" + offer).str());
+                                    .arg("price", String.format("%.2g%n", offer)).str());
                     return true;
                 }
             }

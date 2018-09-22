@@ -44,13 +44,16 @@ public class AutoSellGui implements Listener {
                 if (i == null)
                     continue;
 
+                boolean success = false;
                 for (ShopObject object : this.plugin.getMenuGui().getAdminShop().getItems()) {
                     if (handleShopObject(this.plugin, this.player, i, this.inv, object))
-                        break;
+                        success = true;
+                    break;
                 }
 
-                this.plugin.sendMessage(this.player, this.plugin.getL10n().getMessage("autosellItemFailed")
-                        .arg("item", i.getType().toString() + ":" + i.getDurability()).str());
+                if (!success)
+                    this.plugin.sendMessage(this.player, this.plugin.getL10n().getMessage("autosellItemFailed")
+                            .arg("item", i.getType().toString() + ":" + i.getDurability()).str());
             }
         }
     }
