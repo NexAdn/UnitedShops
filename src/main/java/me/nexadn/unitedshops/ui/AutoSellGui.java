@@ -46,9 +46,10 @@ public class AutoSellGui implements Listener {
 
                 boolean success = false;
                 for (ShopObject object : this.plugin.getMenuGui().getAdminShop().getItems()) {
-                    if (handleShopObject(this.plugin, this.player, i, this.inv, object))
+                    if (handleShopObject(this.plugin, this.player, i, this.inv, object)) {
                         success = true;
-                    break;
+                        break;
+                    }
                 }
 
                 if (!success)
