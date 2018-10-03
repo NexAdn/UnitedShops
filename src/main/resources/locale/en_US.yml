@@ -7,6 +7,7 @@ messages:
   prefix: "§a[UnitedShops]§f"
   # Generic error message
   generalError: "§4An unexpected error occured!"
+  reloadSuccess: "Reload successful"
   # Command responses
   missingPermission: "§4You are lacking the required permission ${permission}"
   playerOnly: "You can only do that as a player!"
