@@ -1,0 +1,34 @@
+# All messages that can be customized and localized
+# 
+# Some messages contain variables in the form ${NAME}, where NAME is the name of the variable.
+# These variables are replaced by a meaningful value later on
+messages:
+  # The prefix which is prepended to all chat messages by this plugin
+  prefix: "§a[UnitedShops]§f"
+  # Generic error message
+  generalError: "§4Une erreur innatendue est apparue!"
+  reloadSuccess: "Rechargement effectué avec succès"
+  # Command responses
+  missingPermission: "§4Vous n'avez par la permission ${permission}"
+  playerOnly: "Vous ne pouvez faire ceci qu'en tant que joueur!"
+  # Navigation button text for the inventories
+  pagerPrevLore: "Page ${prevPageNo}"
+  pagerNextLore: "Page ${nextPageNo}"
+  pagerUp: "Monter"
+  pagerUpLore: "${parentInvTitle}"
+  pagerClose: "Fermer"
+  pagerCloseLore: "-----"
+  # Inventory titles
+  adminShopTitle: "Boutique Admin"
+  globalMenuTitle: "Boutiques"
+  # Buy/Sell GUI
+  transactionGuiBuy: "Acheter ${amount} objets"
+  transactionGuiSell: "Vendre ${amount} objets"
+  transactionGuiPrice: "Prix: $${price}"
+  # Transactions
+  transactionFailed: "§4Échec de la transaction"
+  transactionBuy: "${item} acheté pour $${price}"
+  transactionSell: "${item} vendu pour $${price}"
+  # Autosell
+  autosellTitle: "Vente-auto: ${playername}"
+  autosellItemFailed: "§4Échec de la vente de ${item}. Veuillez l'enlever de l'inventaire de vente-auto ou il s'en ira sous peu."
