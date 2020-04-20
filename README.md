@@ -1,5 +1,12 @@
 [![Build Status](https://travis-ci.org/NexAdn/unitedshops.svg?branch=master)](https://travis-ci.org/NexAdn/unitedshops)
 
+# Archived
+
+This repository has been archived.
+
+I am no longer actively playing minecraft and I am not administrating any servers using this plugin anymore.
+Feel free to fork and continue this plugin if you still find it useful for your purposes.
+
 # UnitedShops
 
 UnitedShops is a Spigot plugin for Minecraft 1.8 or later.
