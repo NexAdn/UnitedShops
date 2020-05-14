@@ -15,6 +15,12 @@ public class UserShop implements Shop {
     }
 
     @Override
+    public String getTitle() {
+        // TODO
+        return "";
+    }
+
+    @Override
     public ItemStack getIcon() {
         // TODO Auto-generated method stub
         return null;

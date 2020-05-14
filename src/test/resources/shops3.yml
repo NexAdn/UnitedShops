@@ -1,0 +1,40 @@
+# Shop configuration
+shops:
+  myshop:
+    type: shop
+    title: "Empty shop"
+    icon: "LOG"
+    items: {}
+    
+    
+  myexampleshop:
+    type: shop
+    title: "The block shop"
+    icon: "COBBLESTONE:0"
+    
+    items:
+      "LOG:0":
+        type: ite # Invalid type
+        buy: 99.99
+        sell: -1.0
+      "LOG:1":
+        type: item
+        buy: 120.0
+        sell: 55.0
+       
+      subshop:
+        type: shop
+        title: "Hard rock"
+        icon: "STONE:0"
+        items:
+          "COBBLESTONE:0":
+            type: item
+            buy: 10.0
+            sell: 5.0
+          "STONE:0":
+            type: item
+            buy: 10.0
+            sell: 5.0
+
+# DO NOT TOUCH
+configVersion: 1

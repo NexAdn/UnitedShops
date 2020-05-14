@@ -43,6 +43,11 @@ public class AdminShop implements Shop {
             item.init(this.ui.getFirstInventory());
     }
 
+    @Override
+    public String getTitle() {
+        return this.title;
+    }
+
     public List<ShopObject> getItems() {
         return this.items;
     }
